@@ -2,3 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+.fc-theme-standard .fc-scrollgrid {
+	@apply border-0
+}
+
+.fc-theme-standard td, .fc-theme-standard th {
+	@apply border-0 p-0.5
+}
+
+.fc-theme-standard td {
+	@apply border-0
+}
+
+.fc-daygrid-day-frame {
+	@apply p-1 border border-slate-200 rounded-lg
+}
+
+.fc-h-event .fc-event-title-container {
+	@apply pl-1 font-medium
+}

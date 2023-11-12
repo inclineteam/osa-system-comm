@@ -55,16 +55,16 @@ const CalendarCard = ({ viewButton = false, className = "", expandButton = false
                 </div>
             </ModalComponent>
             <Card className={`border-0 shadow-sm ${className}`}>
-                <Card.Header className='bg-white'>
+                <Card.Header className='bg-white px-4'>
                     <div className="flex justify-between items-center">
                         <p className="my-0 fw-bold">
                             Event Calendar
                         </p>
                         {
                             viewButton && (
-                                <Button href={route('calendar')} variant='light-success' as={Link}>
+                                <Link href={route('calendar')} className='text-sm px-3 py-2 text-green-600 font-medium rounded-md'>
                                     View
-                                </Button>
+                                </Link>
                             )
                         }
                         {

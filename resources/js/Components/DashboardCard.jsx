@@ -6,11 +6,11 @@ const DashboardCard = ({ label = "Card", subLabel = "", icon, variant = "primary
         <Card className={`dashboard-card  border-${variant} ${className}`}>
             <Card.Body className='p-4 flex justify-between'>
                 <div className=''>
-                    <div className={`icon p-2 flex items-center justify-center w-[45px] h-[45px] rounded-2 fs-4 bg-light-${variant} text-center mb-3`}>
+                    <div className={`icon p-2 flex items-center justify-center w-[45px] h-[45px] rounded-2 fs-4 bg-gradient-to-tr from-emerald-200 to-emerald-100 text-center mb-3`}>
                         {/* <i className="fi fi-rr-boxes leading-none"></i>  */}
                         {icon}
                     </div>
-                    <p className=" mb-2 fw-bold text-black-50 fs-6">{label}</p>
+                    <p className=" mb-2 font-medium text-black-50 fs-6">{label}</p>
                     {subLabel && (
                         <p className="mt-0 mb-0 fw-bold text-dark fs-6">{subLabel}</p>
                     )}
