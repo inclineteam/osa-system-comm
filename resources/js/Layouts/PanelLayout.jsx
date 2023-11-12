@@ -33,7 +33,7 @@ const Sidebar = ({ layout, isActive, activeLink, setShowFeedbackModal }) => {
     }
 }
 
-const PanelLayout = ({ userAuth = null, children, layout = null, headerTitle = null, defaultActiveLink, pageTitle = "" }) => {
+const PanelLayout = ({ children, layout = null, headerTitle = null, defaultActiveLink, pageTitle = "" }) => {
 
     const [activeLink, setActiveLink] = useState(defaultActiveLink)
     const [showFeedbackModal, setShowFeedbackModal] = useState(false)
@@ -56,16 +56,9 @@ const PanelLayout = ({ userAuth = null, children, layout = null, headerTitle = n
 
     }, [])
 
-    const markPolicyAsRead = () =>{
-        axios.post('/policy/read')
-        .then(res => console.log(res))
-    }
-
     return (
         <AppLayout auth={auth}>
-            <PolicyModal show={showPolicyModal} handleClose={() => {
-                setShowPolicyModal(false)
-            }} />
+            <PolicyModal show={showPolicyModal} handleClose={() => setShowPolicyModal(false)} />
             <Head title={pageTitle || headerTitle || activeLink[0].toUpperCase() + activeLink.substr(1).toLowerCase()} />
             <ToastContainer hideProgressBar autoClose={1500} theme="light" position="bottom-right" />
             <NavbarComponent headerTitle={headerTitle || activeLink} setIsActive={setNavActive} isActive={isNavActive} />

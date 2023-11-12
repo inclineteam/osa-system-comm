@@ -39,7 +39,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('/users')->group(function () {
     // Route::post('/check', [ProfileController::class, 'checkEmailAndPhone']);
-    Route::post('/check', [UsersController::class, 'check']);
+    Route::post('/check', [UsersController::class, 'check'])->name('users.check');
 });
 
 Route::prefix('/classifications')->group(function () {
@@ -98,13 +98,6 @@ Route::prefix('/comments')->group(function () {
     Route::get('/{unit_head_id}/{submission_bin_id}/get', [ReportCommentController::class, 'get']);
 });
 
-Route::post('/policy/read', function (Request $request) {
-    // $request->session()->put('has_read_policy', true);
-    session(['has_read_policy' => true]);
-    return response()->json(['success' => true]);
-});
-
-
 Route::prefix('/campus')->group(function () {
     Route::get('/', [CampusController::class, 'all']);
     Route::post('/', [CampusController::class, 'store']);
@@ -140,4 +133,9 @@ Route::prefix('/reminders')->group(function () {
     Route::get('/', [ReminderController::class, 'all']);
 })->middleware(['auth']);
 
-Route::get('/policy', [AppSettingsController::class, 'getPolicy']);
+Route::get('/policy', [AppSettingsController::class, 'getPolicy'])->name('policy');
+
+Route::post('/policy/read', function (Request $request) {
+    $request->session()->put('has_read_policy', true);
+    return redirect()->back();
+})->name('policy.read');

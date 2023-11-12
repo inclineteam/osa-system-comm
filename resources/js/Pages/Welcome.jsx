@@ -34,7 +34,7 @@ const Welcome = () => {
                     xhr.send();
                 });
 
-                axios.post('/users/check', {
+                axios.post(route('users.check'), {
                     type: userType.value,
                     email: userInfo.email,
                 }).then((res) => {

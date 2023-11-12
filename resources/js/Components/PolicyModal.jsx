@@ -14,7 +14,7 @@ const PolicyModal = ({ show, handleClose }) => {
 
     useEffect(() => {
         const fetchPolicy = () => {
-            axios.get('/policy')
+            axios.get(route('policy'))
                 .then((res) => {
                     setPrivacyPolicy(res.data.policy)
                     setProcessing(false)
@@ -31,7 +31,7 @@ const PolicyModal = ({ show, handleClose }) => {
 
     const onSubmit = e => {
         e.preventDefault();
-        router.post('/policy/read', {}, {
+        router.post(route('policy.read'), {}, {
             onFinish: () => handleClose()
         });
     }
