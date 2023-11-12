@@ -135,7 +135,14 @@ Route::prefix('/reminders')->group(function () {
 
 Route::get('/policy', [AppSettingsController::class, 'getPolicy'])->name('policy');
 
-Route::post('/policy/read', function (Request $request) {
-    $request->session()->put('has_read_policy', true);
-    return redirect()->back();
-})->name('policy.read');
+// Route::post('/policy/read', function (Request $request) {
+//     $request->session()->put('has_read_policy', true);
+//     return redirect()->back();
+// })->name('policy.read');
+
+Route::group(['middleware' => ['web']], function () {
+    Route::post('/policy/read', function (Request $request) {
+        $request->session()->put('has_read_policy', true);
+        return redirect()->back();
+    })->name('policy.read');
+});
