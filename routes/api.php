@@ -109,9 +109,9 @@ Route::prefix('/calendar')->group(function () {
 
 Route::prefix('/notifications')->group(function () {
     Route::get('/{id}', [NotificationController::class, 'get']);
-    Route::get('/general/{user}', [NotificationController::class, 'general']);
-    Route::get('/calendar/{user}', [NotificationController::class, 'calendar']);
-    Route::patch('/read/{user}', [NotificationController::class, 'markAsRead']);
+    Route::get('/general/{user}', [NotificationController::class, 'general'])->name('notifications.general');
+    Route::get('/calendar/{user}', [NotificationController::class, 'calendar'])->name('notifications.calendar');
+    Route::patch('/read/{user}', [NotificationController::class, 'markAsRead'])->name('notifications.read');
     Route::patch('/read/calendar/{user}', [NotificationController::class, 'markAsReadCalendar']);
 })->middleware(['auth']);
 
@@ -119,7 +119,9 @@ Route::prefix('/unit_heads')->group(function () {
     Route::post('/delete/many', [UnitHeadController::class, 'deleteMany'])->name('unit_heads.delete.many');
 })->middleware(['auth']);
 
-Route::post('/admins/delete/many', [AdminController::class, 'deleteMany'])->name('admins.delete.many')->middleware(['auth', 'role:super_admin']);
+Route::prefix('/admins')->group(function () {
+    Route::post('/delete/many', [AdminController::class, 'deleteMany'])->name('admins.delete.many');
+})->middleware(['auth', 'role:super_admin']);
 
 Route::prefix('/reminders')->group(function () {
     Route::get('/', [ReminderController::class, 'all']);

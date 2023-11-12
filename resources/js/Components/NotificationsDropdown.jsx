@@ -27,7 +27,7 @@ const NotificationsDropdown = () => {
 
 
     const getNotifications = () => {
-        axios.get(`/notifications/general/${auth.user.id}`)
+        axios.get(route(`notifications.general`, auth.user.id))
             .then((res) => {
                 console.log('notifs: ', res)
                 setNotifications(res.data.notifications);
@@ -61,7 +61,7 @@ const NotificationsDropdown = () => {
     )
 
     const markAsRead = () => {
-        axios.patch(`/notifications/read/${auth.user.id}`)
+        axios.patch(route('notifications.read', auth.user.id))
         .then((res) => {
             console.log(res);
             if(res.data.success){
