@@ -73,7 +73,7 @@ Route::patch('/announcements/order', [AnnouncementController::class, 'order']);
 Route::get('/announcements', [AnnouncementController::class, 'getAll']);
 Route::get('/announcements/dashboard', [AnnouncementController::class, 'dashboard']);
 Route::post('/unit-heads/designations', [AdminController::class, 'unit_heads_by_designation']);
-Route::get('/admins', [AdminController::class, 'getAdmins']);
+Route::get('/admins', [AdminController::class, 'getAdmins'])->name('admins');
 Route::get('/admins/{campus_id}', [AdminController::class, 'getAdminsByCampus']);
 
 
