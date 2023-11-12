@@ -53,7 +53,7 @@ Route::post('/image-upload', function (Request $request) {
     $imageUrl = "/images/" .  $imageName;
 
     return response()->json(['imageUrl' => $imageUrl]);
-});
+})->name('image.upload');
 
 Route::post('/file-upload', function (Request $request) {
     $file = $request->file('file');
@@ -70,8 +70,8 @@ Route::delete('/report/{id}/attachment', [ReportController::class, 'removeAttach
 Route::delete('/reminders/{id}', [ReminderController::class, 'delete']);
 Route::delete('/announcements/{id}', [AnnouncementController::class, 'delete'])->name('announcements.delete');
 Route::patch('/announcements/order', [AnnouncementController::class, 'order']);
-Route::get('/announcements', [AnnouncementController::class, 'getAll']);
-Route::get('/announcements/dashboard', [AnnouncementController::class, 'dashboard']);
+Route::get('/announcements', [AnnouncementController::class, 'getAll'])->name('announcements.index');
+Route::get('/announcements/dashboard', [AnnouncementController::class, 'dashboard'])->name('announcements.dashboard');
 Route::post('/unit-heads/designations', [AdminController::class, 'unit_heads_by_designation']);
 Route::get('/admins', [AdminController::class, 'getAdmins'])->name('admins');
 Route::get('/admins/{campus_id}', [AdminController::class, 'getAdminsByCampus']);
@@ -91,8 +91,8 @@ Route::prefix('/comments')->group(function () {
 });
 
 Route::prefix('/campus')->group(function () {
-    Route::get('/', [CampusController::class, 'all']);
-    Route::post('/', [CampusController::class, 'store']);
+    Route::get('/', [CampusController::class, 'all'])->name('campus.index');
+    Route::post('/', [CampusController::class, 'store'])->name('campus.store');
 })->middleware(['auth']);
 
 Route::prefix('/submissionBins')->group(function () {

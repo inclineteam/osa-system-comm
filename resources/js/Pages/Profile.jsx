@@ -55,7 +55,7 @@ const Profile = ({ auth, }) => {
         formData.append('image', image);
         setIsUploading(true);
         axios.post(
-            '/image-upload',
+            route('image.upload'),
             formData,
             {
                 headers: {

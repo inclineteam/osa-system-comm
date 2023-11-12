@@ -16,7 +16,7 @@ const CalendarCard = ({ viewButton = false, className = "", expandButton = false
     const [showModal, setShowModal] = useState(false)
 
     const fetchEvents = () => {
-        axios.get('/calendar')
+        axios.get(route('calendar.index'))
             .then((res) => {
                 setEvents(res.data.events)
             })

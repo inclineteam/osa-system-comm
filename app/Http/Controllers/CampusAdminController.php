@@ -13,10 +13,12 @@ class CampusAdminController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|unique:users,email',
             'firstname' => 'required|string',
             'lastname' => 'required|string',
             'campus_id' => 'required',
+            'email' => 'required|email|unique:users,email|regex:/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/',
+        ], [
+            'email.regex' => 'This email is not a google account.'
         ]);
 
         $campus_admin = User::create([
@@ -36,10 +38,12 @@ class CampusAdminController extends Controller
     {
         $id = $request->user()->id;
         $request->validate([
-            'email' => ['required','string',Rule::unique('users','email')->ignore($request->id)],
+            'email' => ['required','string','regex:/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/', Rule::unique('users','email')->ignore($request->id)],
             'firstname' => 'required|string',
             'lastname' => 'required|string',
             'campus_id' => 'required',
+        ], [
+            'email.regex' => 'This email is not a google account.'
         ]);
 
         $campus_admin = User::find($request->id);

@@ -21,7 +21,7 @@ const SuperAdminDashboard = () => {
     useEffect(() => {
         const fetchCampuses = () => {
             setFetchingCampus(true)
-            axios.get('/campus')
+            axios.get(route('campus.index'))
                 .then((res) => {
                     console.log(res)
                     setCampuses(res.data.campuses);
@@ -29,14 +29,14 @@ const SuperAdminDashboard = () => {
                 })
         }
         const fetchEvents = () => {
-            axios.get('/calendar')
+            axios.get(route('calendar.index'))
                 .then(res => {
                     setEvents(res.data.events)
                 })
         }
 
         const fetchAnnouncements = () => {
-            axios.get('/announcements')
+            axios.get(route('announcements.index'))
                 .then(res => {
                     console.log('announcements: ', res.data)
                     setAnnouncements(res.data.announcements)

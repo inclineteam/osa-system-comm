@@ -20,25 +20,10 @@ const AnnouncementsCard = ({ className = "",link=null }) => {
                     </Placeholder>
                 </div>
                 <Col>
-                    <Placeholder as="p" animation='wave' className="my-0 ">
+                    <Placeholder as="div" animation='wave' className="my-0 ">
                         <Placeholder xs={12} bg="light" />
                     </Placeholder>
-                    <Placeholder as="p" animation='wave' className="my-0 ">
-                        <Placeholder xs={12} bg="light" />
-                    </Placeholder>
-                </Col>
-            </Row>
-            <Row className='mb-3'>
-                <div className='col col-auto'>
-                    <Placeholder animation='wave'>
-                        <div className='w-[50px] h-[50px] bg-light shadow-sm'></div>
-                    </Placeholder>
-                </div>
-                <Col>
-                    <Placeholder as="p" animation='wave' className="my-0 ">
-                        <Placeholder xs={12} bg="light" />
-                    </Placeholder>
-                    <Placeholder as="p" animation='wave' className="my-0 ">
+                    <Placeholder as="div" animation='wave' className="my-0 ">
                         <Placeholder xs={12} bg="light" />
                     </Placeholder>
                 </Col>
@@ -50,10 +35,25 @@ const AnnouncementsCard = ({ className = "",link=null }) => {
                     </Placeholder>
                 </div>
                 <Col>
-                    <Placeholder as="p" animation='wave' className="my-0 ">
+                    <Placeholder as="div" animation='wave' className="my-0 ">
                         <Placeholder xs={12} bg="light" />
                     </Placeholder>
-                    <Placeholder as="p" animation='wave' className="my-0 ">
+                    <Placeholder as="div" animation='wave' className="my-0 ">
+                        <Placeholder xs={12} bg="light" />
+                    </Placeholder>
+                </Col>
+            </Row>
+            <Row className='mb-3'>
+                <div className='col col-auto'>
+                    <Placeholder animation='wave'>
+                        <div className='w-[50px] h-[50px] bg-light shadow-sm'></div>
+                    </Placeholder>
+                </div>
+                <Col>
+                    <Placeholder as="div" animation='wave' className="my-0 ">
+                        <Placeholder xs={12} bg="light" />
+                    </Placeholder>
+                    <Placeholder as="div" animation='wave' className="my-0 ">
                         <Placeholder xs={12} bg="light" />
                     </Placeholder>
                 </Col>
@@ -65,7 +65,7 @@ const AnnouncementsCard = ({ className = "",link=null }) => {
     useEffect(() => {
         const fetchAnnouncements = () => {
             setFetching(true);
-            axios.get('/announcements/dashboard')
+            axios.get(route('announcements.dashboard'))
                 .then((res) => {
                     setAnnouncements(res.data.announcements);
                     setTimeout(() => setFetching(false), 1000)
@@ -99,10 +99,10 @@ const AnnouncementsCard = ({ className = "",link=null }) => {
     return (
         <Card className={`border-0 rounded-0 shadow-sm p-3 ${className}`}>
             <Card.Body>
-                <p className="mt-0 mb-4 fw-bold position-relative">
+                <div className="mt-0 mb-4 fw-bold position-relative">
                     Announcements
                     <div className="w-[10px] h-[10px] rounded-cirlce"></div>
-                </p>
+                </div>
                 {
                     fetching ? (
                         <PlaceHolders />
@@ -159,5 +159,5 @@ const AnnouncementsCard = ({ className = "",link=null }) => {
         </Card>
     )
 }
-
+// /^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/g
 export default AnnouncementsCard;

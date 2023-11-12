@@ -16,11 +16,13 @@ class UnitHeadController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users,email|regex:/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/',
             'firstname' => 'required|string',
             'lastname' => 'required|string',
             'campus_id' => 'required',
             'designation_id' => 'required',
+        ], [
+            'email.regex' => 'This email is not a google account.'
         ]);
 
         $user = User::create([
@@ -40,10 +42,12 @@ class UnitHeadController extends Controller
     public function edit(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'string', Rule::unique('users', 'email')->ignore($request->id)],
+            'email' => ['required', 'string','regex:/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/', Rule::unique('users', 'email')->ignore($request->id)],
             'firstname' => 'required|string',
             'lastname' => 'required|string',
             'campus_id' => 'required',
+        ], [
+            'email.regex' => 'This email is not a google account.'
         ]);
 
         $unitHead = User::find($request->id);
