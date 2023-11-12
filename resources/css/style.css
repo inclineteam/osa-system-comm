@@ -971,10 +971,6 @@ body::-webkit-scrollbar-thumb:hover {
     background: transparent;
   }
 }
-.dashboard-card {
-  border-width: 0px 0px 1px 0px;
-  border-style: solid;
-}
 
 .dropdown .dropdown-menu {
   z-index: 300 !important;
