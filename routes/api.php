@@ -111,8 +111,8 @@ Route::prefix('/notifications')->group(function () {
     Route::get('/{id}', [NotificationController::class, 'get']);
     Route::get('/general/{user}', [NotificationController::class, 'general'])->name('notifications.general');
     Route::get('/calendar/{user}', [NotificationController::class, 'calendar'])->name('notifications.calendar');
-    Route::patch('/read/{user}', [NotificationController::class, 'markAsRead'])->name('notifications.read');
-    Route::patch('/read/calendar/{user}', [NotificationController::class, 'markAsReadCalendar']);
+    Route::patch('/read/{user}', [NotificationController::class, 'markAsRead'])->name('notifications.read.general');
+    Route::patch('/read/calendar/{user}', [NotificationController::class, 'markAsReadCalendar'])->name('notifications.read.calendar');
 })->middleware(['auth']);
 
 Route::prefix('/unit_heads')->group(function () {
