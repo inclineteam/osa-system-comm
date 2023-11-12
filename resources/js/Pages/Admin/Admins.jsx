@@ -32,7 +32,7 @@ const Admins = ({ campus_admins }) => {
     const fetchAllAdmins = () => {
         if (!fetching) {
             setFetching(true);
-            axios.get("/admins").then((res) => {
+            axios.get(route('admins')).then((res) => {
                 console.log(res);
                 setRows(res.data.admins);
                 setFetching(false);
