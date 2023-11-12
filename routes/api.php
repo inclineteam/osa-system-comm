@@ -68,7 +68,7 @@ Route::post('/upload-report', [ReportController::class, 'addReport']);
 Route::delete('/report/{id}/attachment', [ReportController::class, 'removeAttachment']);
 
 Route::delete('/reminders/{id}', [ReminderController::class, 'delete']);
-Route::delete('/announcements/{id}', [AnnouncementController::class, 'delete']);
+Route::delete('/announcements/{id}', [AnnouncementController::class, 'delete'])->name('announcements.delete');
 Route::patch('/announcements/order', [AnnouncementController::class, 'order']);
 Route::get('/announcements', [AnnouncementController::class, 'getAll']);
 Route::get('/announcements/dashboard', [AnnouncementController::class, 'dashboard']);
@@ -102,9 +102,9 @@ Route::prefix('/submissionBins')->group(function () {
 })->middleware(['auth']);
 
 Route::prefix('/calendar')->group(function () {
-    Route::get('/', [CalendarEventController::class, 'index']);
-    Route::post('/', [CalendarEventController::class, 'store']);
-    Route::delete('/{id}', [CalendarEventController::class, 'destroy']);
+    Route::get('/', [CalendarEventController::class, 'index'])->name('calendar.index');
+    Route::post('/', [CalendarEventController::class, 'store'])->name('calendar.store');
+    Route::delete('/{id}', [CalendarEventController::class, 'destroy'])->name('calendar.destroy');
 })->middleware(['auth']);
 
 Route::prefix('/notifications')->group(function () {
