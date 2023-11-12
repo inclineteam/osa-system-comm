@@ -102,9 +102,9 @@ Route::prefix('/submissionBins')->group(function () {
 })->middleware(['auth']);
 
 Route::prefix('/calendar')->group(function () {
-    Route::get('/', [CalendarEventController::class, 'index']);
-    Route::post('/', [CalendarEventController::class, 'store']);
-    Route::delete('/{id}', [CalendarEventController::class, 'destroy']);
+    Route::get('/', [CalendarEventController::class, 'index'])->name('calendar.index');
+    Route::post('/', [CalendarEventController::class, 'store'])->name('calendar.store');
+    Route::delete('/{id}', [CalendarEventController::class, 'destroy'])->name('calendar.destroy');
 })->middleware(['auth']);
 
 Route::prefix('/notifications')->group(function () {
