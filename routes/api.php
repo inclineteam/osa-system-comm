@@ -55,14 +55,6 @@ Route::post('/image-upload', function (Request $request) {
     return response()->json(['imageUrl' => $imageUrl]);
 });
 
-Route::post('/image-upload', function (Request $request) {
-    $image = $request->file('image');
-    $imageName = $image->getClientOriginalName();
-    $image->move(public_path('images'), $imageName);
-    $imageUrl = "/images/" .  $imageName;
-
-    return response()->json(['imageUrl' => $imageUrl]);
-});
 Route::post('/file-upload', function (Request $request) {
     $file = $request->file('file');
     $fileName = $file->getClientOriginalName();
