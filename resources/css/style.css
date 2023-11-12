@@ -890,7 +890,7 @@ a {
   left: 0;
   bottom: 0;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   background: rgba(0, 0, 0, 0.549);
   padding: 10px;
   gap: 10px;
