@@ -67,7 +67,7 @@ Route::post('/file-upload', function (Request $request) {
 Route::post('/upload-report', [ReportController::class, 'addReport']);
 Route::delete('/report/{id}/attachment', [ReportController::class, 'removeAttachment']);
 
-Route::delete('/reminders/{id}', [ReminderController::class, 'delete']);
+Route::delete('/reminders/{id}', [ReminderController::class, 'delete'])->name('reminder.delete');
 Route::delete('/announcements/{id}', [AnnouncementController::class, 'delete'])->name('announcements.delete');
 Route::patch('/announcements/order', [AnnouncementController::class, 'order']);
 Route::get('/announcements', [AnnouncementController::class, 'getAll'])->name('announcements.index');

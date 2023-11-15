@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('logo');
-            $table->longText('policy')->default('');
+            $table->longText('policy');
         });
     }
 

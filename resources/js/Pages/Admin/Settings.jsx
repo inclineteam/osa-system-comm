@@ -25,7 +25,7 @@ const Settings = ({ settings }) => {
             formData.append('image', file);
             setIsUploading(true);
             axios.post(
-                '/image-upload',
+                route('image.upload'),
                 formData,
                 {
                     headers: {

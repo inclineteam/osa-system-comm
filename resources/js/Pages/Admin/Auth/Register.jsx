@@ -1,14 +1,13 @@
 import ElegantNav from '@/Components/ElegantNav';
 import FormInput from '@/Components/FormInput';
 import AuthLayout from '@/Layouts/AuthLayout'
-import { Link, router, useForm } from '@inertiajs/react';
+import { Link, router, useForm, usePage } from '@inertiajs/react';
 import { GoogleLogin, hasGrantedAllScopesGoogle, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Button, Form, Image, Spinner, Row, Container, Col, Alert } from 'react-bootstrap'
 
 const Register = () => {
-    const navList = ['Basic Info', 'Password'];
     const [firstname, setFirstname] = useState('')
     const [middlename, setMiddlename] = useState('')
     const [lastname, setLastname] = useState('')
@@ -17,70 +16,11 @@ const Register = () => {
     const [email, setEmail] = useState('')
     const [googleAccount, setGoogleAccount] = useState(null)
     const [googleAccesstoken, setGoogleAccesstoken] = useState(null)
-    const [activeNavKey, setActiveNavKey] = useState(0);
-    const [basicInfoError, setBasicInfoError] = useState("")
-    const [isChecking, setIsChecking] = useState(false);
-    const [showPassword, setShowPassword] = useState(false)
-    const [formErrors, setFormErrors] = useState({
-        email: [''],
-        phone: [''],
-    })
-    const [passwordRules, setPasswordRules] = useState([
-        {
-            rule: 'Your password should be at least eight characters.',
-            validate: (password) => password.length > 8,
-            status: 0 // 0-null,1-unmet,2-met
-        },
-        {
-            rule: 'Your password should have at least one capital letter.',
-            validate: (password) => {
-                let regex = new RegExp('[A-Z]');
-                return regex.test(password);
-            },
-            status: 0 // 0-null,1-unmet,2-met
-        },
-        {
-            rule: 'Your password should have at least one number.',
-            validate: (password) => {
-                let regex = new RegExp('[0-9]');
-                return regex.test(password);
-            },
-            status: 0 // 0-null,1-unmet,2-met
-        },
-    ])
-
-    const testPassword = (password) => {
-        if (password === '' || password.length <= 0) {
-            resetPasswordRule()
-            return;
-        }
-        let rules = []
-        for (let r of passwordRules) {
-            let rule = { ...r };
-            rule.status = rule.validate(password) ? 2 : 1;
-            rules.push(rule);
-        }
-
-        setPasswordRules(rules);
-    }
-
-    const resetPasswordRule = () => {
-        let newRules = passwordRules.map((rule, i) => ({ ...rule, status: 0 }));
-        setPasswordRules([...newRules]);
-    }
-
-    const isPasswordValid = () => {
-        for (let p of passwordRules) {
-            if (p.status != 2) return false;
-        }
-
-        return data.password == data.password_confirmation;
-    }
+    const {flash} = usePage().props
 
     const onSubmit = (e) => {
         e.preventDefault();
-        router.visit(route('super_admin.register'), {
-            data: {
+        router.post(route('super_admin.register'), {
                 email,
                 firstname,
                 lastname,
@@ -88,9 +28,7 @@ const Register = () => {
                 phone,
                 access_token: googleAccesstoken,
                 image
-            },
-            method: 'post'
-        });
+            })
     }
 
     const googleLogin = useGoogleLogin({
@@ -115,7 +53,7 @@ const Register = () => {
                 };
                 xhr.send();
             });
-            console.log('user info: ',userInfo);
+            console.log('user info: ', userInfo);
 
             setGoogleAccesstoken(tokenResponse.access_token)
             setGoogleAccount(userInfo)
@@ -136,30 +74,6 @@ const Register = () => {
         prompt: 'consent'
     });
 
-    const checkBasicInfo = () => {
-        if (data.firstname === '' || data.middlename === '' || data.lastname === '' || data.email === '' || data.phone === '') {
-            setBasicInfoError('You need to fill everything up.')
-            return;
-        }
-        setBasicInfoError('');
-        setIsChecking(true);
-        axios.post('/users/check', {
-            email: data.email,
-            phone: data.phone,
-        })
-            .then(res => {
-                console.log('res: ', res);
-                setIsChecking(false);
-                setFormErrors({ email: [''], phone: [''] })
-                setActiveNavKey(data => data + 1)
-            })
-            .catch(err => {
-                console.log('error: ', err);
-                setFormErrors(data => ({ ...data, ...err.response.data.errors }))
-                setIsChecking(false);
-            })
-    }
-
     return (
         <div className="bg-[#F3F4F6] min-h-screen">
             <Container>
@@ -177,6 +91,11 @@ const Register = () => {
                         </div>
                     </Col>
                     <Col>
+                    {flash && flash.failed ?                                         <Alert variant='danger' className='col-xl-7 col-lg-10 mx-auto text-sm shadow'>
+                                            <div className="flex items-center gap-2 justify-center">
+                                                <span className='fw-bold'>{flash.failed}</span>
+                                            </div>
+                                        </Alert> : null}
                         <div className="card mb-5 border-0 shadow-md md:min-h-max min-h-full rounded-3">
                             <div className="card-header md:p-20 p-4 bg-white">
                                 <div className="text-start">

@@ -25,3 +25,7 @@
 .dashboard-card {
   @apply !border-0 !border-b border-slate-100
 }
+
+.fc .fc-daygrid-day.fc-day-today {
+	@apply bg-gradient-to-br from-yellow-500/20 to-cyan-500/20 rounded-xl
+}

@@ -97,7 +97,7 @@ const AnnouncementsCard = ({ className = "",link=null }) => {
     }
 
     return (
-        <Card className={`border-0 rounded-0 shadow-sm p-3 ${className}`}>
+        <Card className={`border-0 rounded-xl shadow-sm p-3 ${className}`}>
             <Card.Body>
                 <div className="mt-0 mb-4 fw-bold position-relative">
                     Announcements

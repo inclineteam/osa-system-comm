@@ -33,7 +33,7 @@ const Reminders = ({ auth, reminders }) => {
 
     const deleteReminder = () => {
         setProcessing(true);
-        axios.delete(`/reminders/${reminderId}`)
+        axios.delete(route('reminder.delete', reminderId))
             .then((res) => {
                 console.log(res)
                 removeFromList(reminderId);
