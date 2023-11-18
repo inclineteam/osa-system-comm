@@ -13,7 +13,7 @@ const UnitHeadReports = ({ submissionBins: bins, auth, rows, reports }) => {
 
     const fetchSubmissionBins = () => {
         setFetching(true)
-        axios.get(`/submissionBins/${lastRowId}`)
+        axios.get(route('submission-bins.index', lastRowId))
             .then((res) => {
                 let bins = res.data.submissionBins;
                 setLastRowId(bins[bins.length - 1].id);

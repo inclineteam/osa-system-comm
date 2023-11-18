@@ -133,6 +133,7 @@ class AdminController extends Controller
     {
         if ($request->user()->hasRole('admin')) {
             $data['reports'] = Report::whereIn('user_id', User::select('id')->where('campus_id', $request->user()->campus_id))->where('is_submitted', true)->get();
+
             $data['submission_bins'] = SubmissionBin::limit(10)->orderByDesc('id')->get();
         } else {
             $data['submission_bins'] = SubmissionBin::with(['approved_reports'])->limit(5)->orderByDesc('id')->get();

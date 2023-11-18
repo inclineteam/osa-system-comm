@@ -64,8 +64,8 @@ Route::post('/file-upload', function (Request $request) {
     return response()->json(['fileUrl' => $fileUrl]);
 });
 
-Route::post('/upload-report', [ReportController::class, 'addReport']);
-Route::delete('/report/{id}/attachment', [ReportController::class, 'removeAttachment']);
+Route::post('/upload-report', [ReportController::class, 'addReport'])->name('report.upload');
+Route::delete('/report/{id}/attachment', [ReportController::class, 'removeAttachment'])->name('report.attachment.delete');
 
 Route::delete('/reminders/{id}', [ReminderController::class, 'delete'])->name('reminder.delete');
 Route::delete('/announcements/{id}', [AnnouncementController::class, 'delete'])->name('announcements.delete');
@@ -78,11 +78,11 @@ Route::get('/admins/{campus_id}', [AdminController::class, 'getAdminsByCampus'])
 
 
 Route::prefix('/reports')->group(function () {
-    Route::get('/{campus_id}/{submission_bin_id}/{unit_head_id}/all', [ReportController::class, 'all']);
-    Route::get('/{campus_id}/{submission_bin_id}/{unit_head_id}/approved', [ReportController::class, 'getApproved']);
-    Route::get('/{campus_id}/{designation_id}/unit_heads', [ReportController::class, 'unit_heads']);
+    Route::get('/{campus_id}/{submission_bin_id}/{unit_head_id}/all', [ReportController::class, 'all'])->name('reports.all.index');
+    Route::get('/{campus_id}/{submission_bin_id}/{unit_head_id}/approved', [ReportController::class, 'getApproved'])->name('reports.approved.index');
+    Route::get('/{campus_id}/{designation_id}/unit_heads', [ReportController::class, 'unit_heads'])->name('reports.designation.unit_heads.index');
     Route::get('/{campus_id}/unit_heads/{designation_id}', [ReportController::class, 'unit_heads_designated']);
-    Route::get('/{campus_id}/unit_heads', [ReportController::class, 'unit_heads_campus']);
+    Route::get('/{campus_id}/unit_heads', [ReportController::class, 'unit_heads_campus'])->name('reports.unit_heads.index');
 });
 
 Route::prefix('/comments')->group(function () {
@@ -96,9 +96,9 @@ Route::prefix('/campus')->group(function () {
 })->middleware(['auth']);
 
 Route::prefix('/submissionBins')->group(function () {
-    Route::get('/{id}', [SubmissionBinController::class, 'all']);
-    Route::get('/{text}/search', [SubmissionBinController::class, 'search']);
-    Route::delete('/{id}', [SubmissionBinController::class, 'delete']);
+    Route::get('/{id}', [SubmissionBinController::class, 'all'])->name('submission-bins.index');
+    Route::get('/{text}/search', [SubmissionBinController::class, 'search'])->name('submission-bins.search');
+    Route::delete('/{id}', [SubmissionBinController::class, 'delete'])->name('submission-bins.delete');
 })->middleware(['auth']);
 
 Route::prefix('/calendar')->group(function () {

@@ -10,6 +10,7 @@ const AddFileButton = ({ files, setFiles, submissionBinId, userId, handleViewFil
 
     const fileElemRef = useRef();
     const [isUploading, setIsUploading] = useState(false)
+
     const onAddBtnClicked = () => {
         fileElemRef.current.click();
     }
@@ -51,7 +52,7 @@ const AddFileButton = ({ files, setFiles, submissionBinId, userId, handleViewFil
         formData.append('submission_bin_id', submissionBinId);
         formData.append('user_id', userId);
         setIsUploading(true)
-        const res = await axios.post('/upload-report', formData, { headers: MultipartHeader });
+        const res = await axios.post(route('report.upload'), formData, { headers: MultipartHeader });
         console.log('res: ', res)
         file.id = res.data?.attachment?.id;
 
@@ -77,7 +78,7 @@ const AddFileButton = ({ files, setFiles, submissionBinId, userId, handleViewFil
             setFiles(filesTemp);
 
             // delete file
-            axios.delete(`/report/${file.id}/attachment`)
+            axios.delete(route('report.attachment.delete', file.id))
                 .then(res => {
                     console.log(res)
                     let filesTemp = files.filter((f, index) => f.id !== file.id)
@@ -138,7 +139,7 @@ const AddFileButton = ({ files, setFiles, submissionBinId, userId, handleViewFil
             {
                 !disableAddingFile && (
                     <Button disabled={isUploading} variant='outline-light' className='border shadow-sm rounded-1 col-12 text-dark' onClick={onAddBtnClicked}>
-                        <small><i className='bx bx-plus '></i> Add Work</small>
+                        <small><i className='bx bx-plus '></i>Add Work</small>
                     </Button>
                 )
             }

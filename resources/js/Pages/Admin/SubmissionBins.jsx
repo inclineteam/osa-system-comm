@@ -25,7 +25,7 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports = [] }) => {
 
     const fetchSubmissionBins = () => {
         setFetching(true)
-        axios.get(`/submissionBins/${lastRowId}`)
+        axios.get(route('submission-bins.index', lastRowId))
             .then((res) => {
                 let bins = res.data.submissionBins;
                 setLastRowId(bins[bins.length - 1].id);
@@ -33,7 +33,7 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports = [] }) => {
                     setFetching(false)
                     setSubmissionBins(prev => [...prev, ...bins])
                     setHasRows(res.data.hasRows)
-                    console.log(res)
+                    console.log('meow:', res)
                 }, 1500)
             })
     }
@@ -96,7 +96,7 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports = [] }) => {
         if (searchText.length > 0) {
             setSearching(true)
             setProcessing(true)
-            axios.get(`/submissionBins/${searchText}/search`)
+            axios.get(route('submission-bins.search', searchText))
                 .then((res) => {
                     setProcessing(false)
                     console.log('search:', res)
@@ -172,6 +172,7 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports = [] }) => {
                             {
                                 submissionBins && submissionBins.map((item, index) => (
                                     <Card className='border-0 mb-1 shadow-sm' key={index}>
+                                        {console.log(item)}
                                         <Card.Header className='bg-white'>
                                             <CustomToggle eventKey={index}>
                                                 <div className="row items-center ">

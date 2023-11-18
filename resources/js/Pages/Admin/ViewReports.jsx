@@ -29,13 +29,13 @@ const ViewReports = ({ submissionBin, campuses }) => {
         var reports = {};
 
         if (auth.role === 'admin') {
-            reports = await axios.get(`/reports/${selectedCampus.id}/${submissionBin.id}/${selectedUnitHead.id}/all`);
+            reports = await axios.get(route('reports.all.index', [selectedCampus.id, submissionBin.id ,selectedUnitHead.id]));
         } else {
             // if superadmin only get reports that were approved
-            reports = await axios.get(`/reports/${selectedCampus.id}/${submissionBin.id}/${selectedUnitHead.id}/approved`);
+            reports = await axios.get(route('reports.approved.index', [selectedCampus.id, submissionBin.id, selectedUnitHead.id]));
         }
         console.log('reports: ', reports)
-        let unitHeads = await axios.get(`/reports/${selectedCampus.id}/unit_heads`);
+        let unitHeads = await axios.get(route('reports.unit_heads.index', selectedCampus.id));
 
         setReports(reports?.data?.reports || [])
         setUnitHeads(unitHeads.data.unitHeads)
@@ -45,7 +45,7 @@ const ViewReports = ({ submissionBin, campuses }) => {
     useEffect(() => {
         const getUnitHeads = async () => {
             setFetchingUnitHeads(true)
-            let unitHeads = await axios.get(`/reports/${selectedCampus.id}/unit_heads`);
+            let unitHeads = await axios.get(route('reports.unit_heads.index', selectedCampus.id));
             setUnitHeads(unitHeads.data.unitHeads)
             if (unitHeads.data.unitHeads.length > 0 && selectedUnitHead == null) {
                 setSelectedUnitHead(unitHeads.data.unitHeads[0])
