@@ -87,7 +87,7 @@ Route::prefix('/reports')->group(function () {
 
 Route::prefix('/comments')->group(function () {
     Route::post('/add', [ReportCommentController::class, 'add']);
-    Route::get('/{unit_head_id}/{submission_bin_id}/get', [ReportCommentController::class, 'get']);
+    Route::get('/{unit_head_id}/{submission_bin_id}/get', [ReportCommentController::class, 'get'])->name('comments.unit_head.sub_bin_id.index');
 });
 
 Route::prefix('/campus')->group(function () {

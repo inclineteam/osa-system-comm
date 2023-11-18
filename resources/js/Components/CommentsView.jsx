@@ -41,7 +41,7 @@ const CommentsView = ({ user, submissionBin, unitHead, className = "",report }) 
     const [submittingComment, setSubmittingComment] = useState(false)
 
     const fetchComments = (commentsData) => {
-        axios.get(`/comments/${unitHead.id}/${submissionBin.id}/get`)
+        axios.get(route('comments.unit_head.sub_bin_id.index',[unitHead.id, submissionBin.id]))
             .then((res) => {
                 setIsFetchingComments(false)
                 if (JSON.stringify(commentsData) !== JSON.stringify(res.data.comments)) {
