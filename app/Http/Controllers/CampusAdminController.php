@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserEventsHistory;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -31,6 +32,14 @@ class CampusAdminController extends Controller
 
         $campus_admin->addRole('admin');
 
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Create Campus Admin',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Created campus admin with name: ' . $campus_admin->name()
+        ]);
+
         return redirect()->intended(route('admin.admins'))->with('success', 'Successfully added!');
     }
 
@@ -38,7 +47,7 @@ class CampusAdminController extends Controller
     {
         $id = $request->user()->id;
         $request->validate([
-            'email' => ['required','string','regex:/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/', Rule::unique('users','email')->ignore($request->id)],
+            'email' => ['required', 'string', 'regex:/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/', Rule::unique('users', 'email')->ignore($request->id)],
             'firstname' => 'required|string',
             'lastname' => 'required|string',
             'campus_id' => 'required',
@@ -55,6 +64,14 @@ class CampusAdminController extends Controller
         $campus_admin->campus_id = $request->campus_id;
 
         $campus_admin->save();
+
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Edit Campus Admin',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Edited campus admin with name: ' . $campus_admin->name()
+        ]);
 
         return redirect()->intended(route('admin.admins'))->with('success', 'Successfully saved changes!');
     }

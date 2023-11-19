@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
+use App\Models\UserEventsHistory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -36,6 +37,15 @@ class ProfileController extends Controller
             }
 
             $user->save();
+
+            UserEventsHistory::create([
+                'user_name' => $request->user()->name(),
+                'event_name' => 'Update Profile',
+                'campus_name' => $request->user()->campus->name,
+                'office_name' => $request->user()->designation->name,
+                'description' => 'Updated profile'
+            ]);
+
             return redirect()->intended(route('profile.edit'))->with('success', 'Successfully saved changes!');
         }
 
@@ -52,6 +62,15 @@ class ProfileController extends Controller
             $hashed = Hash::make($request->password);
             $user->password = $hashed;
             $user->save();
+
+            UserEventsHistory::create([
+                'user_name' => $request->user()->name(),
+                'event_name' => 'Change Password',
+                'campus_name' => $request->user()->campus->name,
+                'office_name' => $request->user()->designation->name,
+                'description' => 'Changed password'
+            ]);
+
             return redirect()->intended(route('profile.edit'))->with('success', 'Successfully saved changes!');
         }
 

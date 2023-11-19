@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
+use App\Models\UserEventsHistory;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -14,6 +15,15 @@ class AnnouncementController extends Controller
         $announcement = Announcement::where('id', $request->id)->firstOrFail();
         $announcement->delete();
 
+        // create event history
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Delete Announcement',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Deleted announcement with title: ' . $announcement->title
+        ]);
+
         return response()->json(['message' => 'Successfully deleted!']);
     }
 
@@ -22,6 +32,15 @@ class AnnouncementController extends Controller
         // check if has announcements
         $count = Announcement::all(['id'])->count();
         $order = 0;
+
+        // create event history
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Create Announcement',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Created announcement with title: ' . $request->title
+        ]);
 
         if ($count > 0) {
             // get maximum order value
@@ -48,6 +67,15 @@ class AnnouncementController extends Controller
         $announcement->image = $request->image;
 
         $announcement->save();
+
+        // create event history
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Update Announcement',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Updated announcement with title: ' . $request->title
+        ]);
 
         return redirect()->intended(route('admin.announcements'))->with('success', "Successfully updated accouncement!");
     }

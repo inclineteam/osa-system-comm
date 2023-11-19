@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Report;
 use App\Models\ReportAttachment;
 use App\Models\User;
+use App\Models\UserEventsHistory;
 use App\Notifications\NewReportSubmitted;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -61,6 +62,14 @@ class ReportController extends Controller
             'report_id' => $report->id
         ]);
 
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Add Report',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Added report with title: ' . $report->title
+        ]);
+
         return response()->json(['fileUrl' => $fileUrl, 'attachment' => $attachment]);
     }
     /* api */
@@ -71,6 +80,14 @@ class ReportController extends Controller
         if ($attachment) {
             $attachment->delete();
         }
+
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Remove Report Attachment',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Removed report attachment with id: ' . $attachment_id
+        ]);
 
         return response()->json(['success' => true]);
     }
@@ -102,6 +119,14 @@ class ReportController extends Controller
                     $admin->notify(new NewReportSubmitted($report));
                 }
 
+                UserEventsHistory::create([
+                    'user_name' => $request->user()->name(),
+                    'event_name' => 'Submit Report',
+                    'campus_name' => $request->user()->campus->name,
+                    'office_name' => $request->user()->designation->name,
+                    'description' => 'Submitted report with title: ' . $report->title
+                ]);
+
                 return redirect()->back()->with("success", 'Successfully submitted!');
             }
         }
@@ -116,6 +141,13 @@ class ReportController extends Controller
         if ($report) {
             $report->is_submitted = false;
             if ($report->save()) {
+                UserEventsHistory::create([
+                    'user_name' => $request->user()->name(),
+                    'event_name' => 'Unsubmit Report',
+                    'campus_name' => $request->user()->campus->name,
+                    'office_name' => $request->user()->designation->name,
+                    'description' => 'Unsubmitted report with title: ' . $report->title
+                ]);
                 return redirect()->back();
             }
         }

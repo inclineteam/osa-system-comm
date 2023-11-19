@@ -6,6 +6,7 @@ use App\Models\Announcement;
 use App\Models\Report;
 use App\Models\SubmissionBin;
 use App\Models\User;
+use App\Models\UserEventsHistory;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -36,13 +37,21 @@ class UnitHeadController extends Controller
 
         $user->addRole('unit_head');
 
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Create Unit Head',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Created unit head ' . $user->name()
+        ]);
+
         return redirect()->intended(route("admin.unit_heads.records"))->with('success', 'Successfully added!');
     }
 
     public function edit(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'string','regex:/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/', Rule::unique('users', 'email')->ignore($request->id)],
+            'email' => ['required', 'string', 'regex:/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/', Rule::unique('users', 'email')->ignore($request->id)],
             'firstname' => 'required|string',
             'lastname' => 'required|string',
             'campus_id' => 'required',
@@ -61,6 +70,14 @@ class UnitHeadController extends Controller
 
         $unitHead->save();
 
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Edit Unit Head',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Edited unit head ' . $unitHead->name()
+        ]);
+
         return redirect()->intended(route('admin.unit_heads.records'))->with('success', 'Successfully saved changes!');
     }
 
@@ -75,7 +92,7 @@ class UnitHeadController extends Controller
 
     public function submission_bin(Request $request, $id)
     {
-        $submissionBin = SubmissionBin::where('id',$id)->firstOrFail();
+        $submissionBin = SubmissionBin::where('id', $id)->firstOrFail();
         $data['submissionBin'] = $submissionBin;
         $data['report'] = Report::with(['attachments'])->where('submission_bin_id', $submissionBin->id)->where('user_id', $request->user()->id)->first();
 
@@ -95,6 +112,14 @@ class UnitHeadController extends Controller
             $unitHead = User::find($id);
             $unitHead->delete();
         }
+
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Delete Unit Head',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Deleted unit head/s'
+        ]);
 
         return response()->json(['success' => true]);
     }

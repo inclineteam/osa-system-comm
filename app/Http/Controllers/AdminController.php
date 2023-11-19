@@ -15,6 +15,7 @@ use App\Models\SubmissionBin;
 use App\Models\SuperAdmin;
 use App\Models\UnitHead;
 use App\Models\User;
+use App\Models\UserEventsHistory;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
@@ -271,7 +272,7 @@ class AdminController extends Controller
         $ids = $request->id;
 
         foreach ($ids as $key => $id) {
-            $admin = User::where('id',$id)->whereHasRole(['admin'])->first();
+            $admin = User::where('id', $id)->whereHasRole(['admin'])->first();
             $admin->delete();
         }
 

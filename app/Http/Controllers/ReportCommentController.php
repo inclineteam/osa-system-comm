@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\NewCommentAdded;
 use App\Models\ReportComment;
 use App\Models\User;
+use App\Models\UserEventsHistory;
 use App\Notifications\NewComment;
 use Illuminate\Http\Request;
 
@@ -27,6 +28,14 @@ class ReportCommentController extends Controller
             'comment' => $request->comment,
             'report_id' => $request->report_id,
             'is_removed' => false,
+        ]);
+
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Add Comment',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Added comment with id: ' . $comment->id
         ]);
 
         // NewCommentAdded::dispatch($comment);

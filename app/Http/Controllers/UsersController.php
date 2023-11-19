@@ -29,21 +29,22 @@ class UsersController extends Controller
         if (!$user) {
             return redirect()->back()->with('error', 'Sorry that google account is not registered on our system.');
         } else {
-            if($request->has('access_token')){
+            if ($request->has('access_token')) {
                 $user->google_access_token = $request->access_token;
             }
-            if(!$user->image) {
+            if (!$user->image) {
                 $user->image = $request->image;
             }
             $user->save();
 
             // Auth::guard('api')->login($user, true);
             Auth::login($user, true);
-            return redirect()->intended(route('admin.dashboard'))->with('success','You successfully signed in!');
+            return redirect()->intended(route('admin.dashboard'))->with('success', 'You successfully signed in!');
         }
     }
 
-    public function profile(){
+    public function profile()
+    {
         return Inertia::render('Profile');
     }
 }

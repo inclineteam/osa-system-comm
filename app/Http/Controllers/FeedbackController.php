@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Feedback;
+use App\Models\UserEventsHistory;
 use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
 {
     //
 
-    public function create(Request $request){
+    public function create(Request $request)
+    {
         $feedback = Feedback::create([
             'reaction' => $request->reaction,
             'type' => $request->type,
@@ -17,6 +19,14 @@ class FeedbackController extends Controller
             'user_id' => $request->user()->id,
         ]);
 
-        return redirect()->back()->with('success','Successfully submitted your feedback, Thank you for giving your time!');
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Create Feedback',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Created feedback with type: ' . $request->type
+        ]);
+
+        return redirect()->back()->with('success', 'Successfully submitted your feedback, Thank you for giving your time!');
     }
 }

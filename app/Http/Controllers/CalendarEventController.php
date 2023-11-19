@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CalendarEvent;
+use App\Models\UserEventsHistory;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -32,14 +33,31 @@ class CalendarEventController extends Controller
             return response()->json(['event' => $newEvent]);
         }
 
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Create Calendar Event',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Created calendar event with title: ' . $request->title
+        ]);
+
         return redirect()->back()->with('success', 'Successfully created!');
     }
 
-    public function destroy(Request $request){
+    public function destroy(Request $request)
+    {
         $event = CalendarEvent::find($request->id);
 
         $event->delete();
 
-        return response()->json(['success'=>true]);
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Delete Calendar Event',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Deleted calendar event with title: ' . $event->title
+        ]);
+
+        return response()->json(['success' => true]);
     }
 }

@@ -8,6 +8,7 @@ use App\Models\CalendarEvent;
 use App\Models\Report;
 use App\Models\SubmissionBin;
 use App\Models\User;
+use App\Models\UserEventsHistory;
 use App\Notifications\NewSubmissionBin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -24,6 +25,14 @@ class SubmissionBinController extends Controller
             'deadline_time' => $request->deadline_time,
         ]);
         $bin->save();
+
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Create Submission Bin',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Created submission bin ' . $bin->title
+        ]);
 
         if ($bin->deadline_date) {
             $calendarEvent = new CalendarEvent([
@@ -59,6 +68,14 @@ class SubmissionBinController extends Controller
         $submission_bin->deadline_date = $request->deadline_date;
         $submission_bin->deadline_time = $request->deadline_time;
         $submission_bin->save();
+
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Edit Submission Bin',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Edited submission bin ' . $submission_bin->title
+        ]);
         return redirect()->intended(route('admin.submission_bins'))->with('succes', 'Successfully saved changes!');
     }
 
@@ -66,6 +83,14 @@ class SubmissionBinController extends Controller
     {
         $submission_bin = SubmissionBin::where('id', $request->id)->firstOrFail();
         $submission_bin->delete();
+
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Delete Submission Bin',
+            'campus_name' => $request->user()->campus->name,
+            'office_name' => $request->user()->designation->name,
+            'description' => 'Deleted submission bin ' . $submission_bin->title
+        ]);
 
         return redirect(route('admin.submission_bins'))->with('success', 'Successfully deleted!');
         // return response()->json(['success' => true]);
