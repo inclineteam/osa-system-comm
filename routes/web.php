@@ -99,6 +99,15 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
         Route::get('/reports/{campus_id}/{designation_id}/view/filtered', [AdminController::class, 'viewFilteredReports'])->name('admin.reports.view.filtered');
         Route::get('/reports/unit-head/{report_id}/view', [AdminController::class, 'viewReport'])->name('admin.report.open');
     });
+    // user_events_history
+    Route::get('/user-events', function () {
+        // get all user events
+        $userEvents = UserEventsHistory::all();
+
+        return Inertia::render('UserEventsHistory', [
+            'userEvents' => $userEvents
+        ]);
+    });
 });
 
 Route::prefix('/notifications')->middleware(['auth'])->group(function () {
@@ -180,19 +189,6 @@ Route::prefix('/users')->group(function () {
 
 Route::prefix('/super-admin')->group(function () {
     Route::post('/register', [SuperAdminController::class, 'register'])->name('super_admin.register');
-});
-
-// user_events_history
-Route::get('/user-events', function () {
-    // get all user events
-    $userEvents = UserEventsHistory::all();
-
-    Inertia::render(
-        'UserEventsHistory',
-        [
-            'userEvents' => $userEvents
-        ]
-    );
 });
 
 
