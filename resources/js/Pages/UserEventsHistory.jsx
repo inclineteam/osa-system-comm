@@ -47,6 +47,15 @@ export default function UserEventsHistory({ auth, userEvents }) {
                 {latestReport.data.status}
               </td>
             </tr> */}
+            {userEvents.map((userEvent) => (
+              <tr className="[&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-4 [&>td]:py-2.5">
+                <td>{userEvent.user_name}</td>
+                <td>{userEvent.event_name}</td>
+                <td>{userEvent.campus_name}</td>
+                <td>{userEvent.office_name}</td>
+                <td>{userEvent.description}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

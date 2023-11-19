@@ -16,8 +16,8 @@ return new class extends Migration
             // user, campus, office, event, description,
             $table->string('user_name');
             $table->string('event_name');
-            $table->string('campus_name');
-            $table->string('office_name');
+            $table->string('campus_name')->nullable();
+            $table->string('office_name')->nullable();
             $table->string('description');
             $table->timestamps();
         });

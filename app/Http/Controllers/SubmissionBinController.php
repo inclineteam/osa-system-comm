@@ -29,8 +29,8 @@ class SubmissionBinController extends Controller
         UserEventsHistory::create([
             'user_name' => $request->user()->name(),
             'event_name' => 'Create Submission Bin',
-            'campus_name' => $request->user()->campus->name,
-            'office_name' => $request->user()->designation->name,
+            'campus_name' => $request->user()->campus?->name,
+            'office_name' => $request->user()->designation?->name,
             'description' => 'Created submission bin ' . $bin->title
         ]);
 
@@ -72,8 +72,8 @@ class SubmissionBinController extends Controller
         UserEventsHistory::create([
             'user_name' => $request->user()->name(),
             'event_name' => 'Edit Submission Bin',
-            'campus_name' => $request->user()->campus->name,
-            'office_name' => $request->user()->designation->name,
+            'campus_name' => $request->user()->campus?->name,
+            'office_name' => $request->user()->designation?->name,
             'description' => 'Edited submission bin ' . $submission_bin->title
         ]);
         return redirect()->intended(route('admin.submission_bins'))->with('succes', 'Successfully saved changes!');
@@ -87,8 +87,8 @@ class SubmissionBinController extends Controller
         UserEventsHistory::create([
             'user_name' => $request->user()->name(),
             'event_name' => 'Delete Submission Bin',
-            'campus_name' => $request->user()->campus->name,
-            'office_name' => $request->user()->designation->name,
+            'campus_name' => $request->user()->campus?->name,
+            'office_name' => $request->user()->designation?->name,
             'description' => 'Deleted submission bin ' . $submission_bin->title
         ]);
 

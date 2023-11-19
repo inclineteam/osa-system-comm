@@ -40,8 +40,8 @@ class UnitHeadController extends Controller
         UserEventsHistory::create([
             'user_name' => $request->user()->name(),
             'event_name' => 'Create Unit Head',
-            'campus_name' => $request->user()->campus->name,
-            'office_name' => $request->user()->designation->name,
+            'campus_name' => $request->user()->campus?->name,
+            'office_name' => $request->user()->designation?->name,
             'description' => 'Created unit head ' . $user->name()
         ]);
 
@@ -73,8 +73,8 @@ class UnitHeadController extends Controller
         UserEventsHistory::create([
             'user_name' => $request->user()->name(),
             'event_name' => 'Edit Unit Head',
-            'campus_name' => $request->user()->campus->name,
-            'office_name' => $request->user()->designation->name,
+            'campus_name' => $request->user()->campus?->name,
+            'office_name' => $request->user()->designation?->name,
             'description' => 'Edited unit head ' . $unitHead->name()
         ]);
 
@@ -116,8 +116,8 @@ class UnitHeadController extends Controller
         UserEventsHistory::create([
             'user_name' => $request->user()->name(),
             'event_name' => 'Delete Unit Head',
-            'campus_name' => $request->user()->campus->name,
-            'office_name' => $request->user()->designation->name,
+            'campus_name' => $request->user()->campus?->name,
+            'office_name' => $request->user()->designation?->name,
             'description' => 'Deleted unit head/s'
         ]);
 

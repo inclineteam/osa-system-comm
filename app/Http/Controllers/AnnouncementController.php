@@ -19,8 +19,8 @@ class AnnouncementController extends Controller
         UserEventsHistory::create([
             'user_name' => $request->user()->name(),
             'event_name' => 'Delete Announcement',
-            'campus_name' => $request->user()->campus->name,
-            'office_name' => $request->user()->designation->name,
+            'campus_name' => $request->user()->campus?->name,
+            'office_name' => $request->user()->designation?->name,
             'description' => 'Deleted announcement with title: ' . $announcement->title
         ]);
 
@@ -33,15 +33,6 @@ class AnnouncementController extends Controller
         $count = Announcement::all(['id'])->count();
         $order = 0;
 
-        // create event history
-        UserEventsHistory::create([
-            'user_name' => $request->user()->name(),
-            'event_name' => 'Create Announcement',
-            'campus_name' => $request->user()->campus->name,
-            'office_name' => $request->user()->designation->name,
-            'description' => 'Created announcement with title: ' . $request->title
-        ]);
-
         if ($count > 0) {
             // get maximum order value
             $maxOrder = Announcement::all(['order'])->max(fn ($row) => $row->order);
@@ -53,6 +44,15 @@ class AnnouncementController extends Controller
             'content' => $request->content,
             'image' => $request->image,
             'order' => $order
+        ]);
+
+        // create event history
+        UserEventsHistory::create([
+            'user_name' => $request->user()->name(),
+            'event_name' => 'Create Announcement',
+            'campus_name' => $request->user()->campus?->name,
+            'office_name' => $request->user()->designation?->name,
+            'description' => 'Created announcement with title: ' . $request->title
         ]);
 
         return redirect()->intended(route('admin.announcements'))->with('success', "Successfully added new accouncement!");
@@ -72,8 +72,8 @@ class AnnouncementController extends Controller
         UserEventsHistory::create([
             'user_name' => $request->user()->name(),
             'event_name' => 'Update Announcement',
-            'campus_name' => $request->user()->campus->name,
-            'office_name' => $request->user()->designation->name,
+            'campus_name' => $request->user()->campus?->name,
+            'office_name' => $request->user()->designation?->name,
             'description' => 'Updated announcement with title: ' . $request->title
         ]);
 

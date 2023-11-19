@@ -38,8 +38,8 @@ class ReportAttachmentController extends Controller
             UserEventsHistory::create([
                 'user_name' => $request->user()->name(),
                 'event_name' => 'Approve Report',
-                'campus_name' => $request->user()->campus->name,
-                'office_name' => $request->user()->designation->name,
+                'campus_name' => $request->user()->campus?->name,
+                'office_name' => $request->user()->designation?->name,
                 'description' => 'Approved report with title: ' . $report->title
             ]);
         }
@@ -50,8 +50,8 @@ class ReportAttachmentController extends Controller
             UserEventsHistory::create([
                 'user_name' => $request->user()->name(),
                 'event_name' => 'Update Report Status',
-                'campus_name' => $request->user()->campus->name,
-                'office_name' => $request->user()->designation->name,
+                'campus_name' => $request->user()->campus?->name,
+                'office_name' => $request->user()->designation?->name,
                 'description' => 'Updated report status with title: ' . $report->title
             ]);
 

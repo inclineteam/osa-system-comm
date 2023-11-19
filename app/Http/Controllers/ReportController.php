@@ -65,8 +65,8 @@ class ReportController extends Controller
         UserEventsHistory::create([
             'user_name' => $request->user()->name(),
             'event_name' => 'Add Report',
-            'campus_name' => $request->user()->campus->name,
-            'office_name' => $request->user()->designation->name,
+            'campus_name' => $request->user()->campus?->name,
+            'office_name' => $request->user()->designation?->name,
             'description' => 'Added report with title: ' . $report->title
         ]);
 
@@ -84,8 +84,8 @@ class ReportController extends Controller
         UserEventsHistory::create([
             'user_name' => $request->user()->name(),
             'event_name' => 'Remove Report Attachment',
-            'campus_name' => $request->user()->campus->name,
-            'office_name' => $request->user()->designation->name,
+            'campus_name' => $request->user()->campus?->name,
+            'office_name' => $request->user()->designation?->name,
             'description' => 'Removed report attachment with id: ' . $attachment_id
         ]);
 
@@ -122,8 +122,8 @@ class ReportController extends Controller
                 UserEventsHistory::create([
                     'user_name' => $request->user()->name(),
                     'event_name' => 'Submit Report',
-                    'campus_name' => $request->user()->campus->name,
-                    'office_name' => $request->user()->designation->name,
+                    'campus_name' => $request->user()->campus?->name,
+                    'office_name' => $request->user()->designation?->name,
                     'description' => 'Submitted report with title: ' . $report->title
                 ]);
 
@@ -144,8 +144,8 @@ class ReportController extends Controller
                 UserEventsHistory::create([
                     'user_name' => $request->user()->name(),
                     'event_name' => 'Unsubmit Report',
-                    'campus_name' => $request->user()->campus->name,
-                    'office_name' => $request->user()->designation->name,
+                    'campus_name' => $request->user()->campus?->name,
+                    'office_name' => $request->user()->designation?->name,
                     'description' => 'Unsubmitted report with title: ' . $report->title
                 ]);
                 return redirect()->back();

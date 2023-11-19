@@ -36,8 +36,8 @@ class CalendarEventController extends Controller
         UserEventsHistory::create([
             'user_name' => $request->user()->name(),
             'event_name' => 'Create Calendar Event',
-            'campus_name' => $request->user()->campus->name,
-            'office_name' => $request->user()->designation->name,
+            'campus_name' => $request->user()->campus?->name,
+            'office_name' => $request->user()->designation?->name,
             'description' => 'Created calendar event with title: ' . $request->title
         ]);
 
@@ -53,8 +53,8 @@ class CalendarEventController extends Controller
         UserEventsHistory::create([
             'user_name' => $request->user()->name(),
             'event_name' => 'Delete Calendar Event',
-            'campus_name' => $request->user()->campus->name,
-            'office_name' => $request->user()->designation->name,
+            'campus_name' => $request->user()->campus?->name,
+            'office_name' => $request->user()->designation?->name,
             'description' => 'Deleted calendar event with title: ' . $event->title
         ]);
 
