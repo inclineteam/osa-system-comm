@@ -15,7 +15,7 @@ const NavLink = ({ item, activeLink }) => {
     const currentUrl = window.location;
     return (
         <li>
-            <Link className={`text-sm font-medium ${currentUrl.href === item.href ? 'active' : (activeLink == item.urlPath ? 'active' : '')}`} href={item.href}>
+            <Link className={currentUrl.href === item.href ? 'active' : (activeLink == item.urlPath ? 'active' : '')} href={item.href}>
                 {item.icon}
                 <span>{item.text}</span>
             </Link>
@@ -36,7 +36,7 @@ const NavDownloadable = ({ item, activeLink }) => {
 const NavButton = ({ item }) => {
     return (
         <li>
-            <Link className='font-medium' onClick={item.onClick}>
+            <Link onClick={item.onClick}>
                 {item.icon}
                 <span>{item.text}</span>
             </Link>
@@ -107,7 +107,7 @@ const NavDropdown = ({ item, activeLink }) => {
         <li className={`${active ? 'active' : ''}`}>
             <a onClick={() => setExpanded(s => !s)} aria-expanded={expanded} className='has-arrow bx cursor-pointer'>
                 {item.icon}
-                <span className='font-medium font-sans'>{item.text}</span>
+                <span className='font-sans'>{item.text}</span>
             </a>
             <ul as="ul" className='nested' aria-expanded={expanded}>
                 {

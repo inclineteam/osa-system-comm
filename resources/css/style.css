@@ -329,7 +329,8 @@
   background: rgba(240, 240, 240, 0.8) !important;
 }
 .app-sidebar .sidebar-menu a span {
-  font-size: 0.9rem !important;
+  font-size: 0.875rem; 
+  line-height: 1.25rem;
 }
 .app-sidebar .sidebar-menu ul li.active a {
   background: rgba(40, 53, 147, 0.1);
