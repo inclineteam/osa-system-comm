@@ -24,6 +24,7 @@ use App\Models\Report;
 use App\Models\ReportComment;
 use App\Models\SubmissionBin;
 use App\Models\User;
+use App\Models\UserEventsHistory;
 use App\Notifications\CalendarEventNotification;
 use App\Notifications\DueSubmissionBin;
 use App\Notifications\NewComment;
@@ -181,6 +182,19 @@ Route::prefix('/super-admin')->group(function () {
     Route::post('/register', [SuperAdminController::class, 'register'])->name('super_admin.register');
 });
 
+// user_events_history
+Route::get('/user-events', function () {
+    // get all user events
+    $userEvents = UserEventsHistory::all();
+
+    Inertia::render(
+        'UserEventsHistory',
+        [
+            'userEvents' => $userEvents
+        ]
+    );
+});
+
 
 Route::get('/mailable', function () {
     // $bin = SubmissionBin::where('id', '>', 0)->first();
@@ -198,7 +212,7 @@ Route::post('/policy/read', function (Request $request) {
     $request->session()->put('has_read_policy', true);
     // session(['has_read_policy' => true]);
     // return response()->json(['success' => true]);
-    return redirect()->back()->with('success','Welcome to LSPU OSA');
+    return redirect()->back()->with('success', 'Welcome to LSPU OSA');
 });
 
 
