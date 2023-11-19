@@ -7,6 +7,8 @@ import axios from 'axios'
 import { AreaChart, Bar, BarChart, XAxis, YAxis, CartesianGrid, Tooltip, Area, ResponsiveContainer } from 'recharts'
 import CalendarCard from './CalendarCard'
 import AnnouncementsCard from './AnnouncementsCard'
+import dayjs from 'dayjs'
+import { Link } from '@inertiajs/react'
 
 const SuperAdminDashboard = () => {
     const [campuses, setCampuses] = useState([]);
@@ -132,24 +134,30 @@ const SuperAdminDashboard = () => {
                                 {
                                     latestReport.loading ? <div className='py-6 text-center'>Loading... Please wait</div> : <table className='w-full'>
                                         <thead className=''>
-                                            <tr className='[&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-4 [&>th]:py-2 border-b [&>th]:text-sm [&>th]:font-bold'>
+                                            <tr className='[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-4 [&>th]:py-2 border-b [&>th]:text-sm [&>th]:font-bold'>
                                                 <th>User</th>
                                                 <th>Campus</th>
                                                 <th>Office</th>
+                                                <th>Date Submitted</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
 
                                         <tbody>
-                                            <tr className='[&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-4 [&>td]:py-2.5'>
+                                            <tr className='[&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-4 [&>td]:py-2.5'>
                                                 <td>{latestReport.data.unit_head.lastname}, {latestReport.data.unit_head.firstname} {latestReport.data.unit_head.middlename}</td>
                                                 <td>{latestReport.data.unit_head.campus.name}</td>
                                                 <td>{latestReport.data.unit_head.designation.name}</td>
+                                                <td>{dayjs(latestReport.data.date_submitted).format('MMM. D, YYYY')}</td>
                                                 <td className='flex items-center'><div className={`inline-block mr-2 w-2 h-2 rounded-full ${statusColors[latestReport.data.status]}`}></div>{latestReport.data.status}</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 }
+                            </div>
+
+                            <div className="flex justify-end">
+                                {!latestReport.loading && <Link className='px-3 py-2 border border-slate-200 rounded-md hover:bg-slate-200 w-max text-sm font-semibold text-indigo-500 mt-4 block' href={route('admin.report.open', latestReport.data.id)}>View full report</Link>}
                             </div>
                         </div>
                     </Row>
