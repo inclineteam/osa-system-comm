@@ -29,3 +29,11 @@
 .fc .fc-daygrid-day.fc-day-today {
 	@apply bg-gradient-to-br from-yellow-500/20 to-cyan-500/20 rounded-xl
 }
+
+tspan {
+	@apply text-sm font-medium
+}
+
+.recharts-text.recharts-cartesian-axis-tick-value tspan {
+	@apply mt-2 block
+}

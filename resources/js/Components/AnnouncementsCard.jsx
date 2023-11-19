@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { Badge, Button, Card, Col, Image, ListGroup, ListGroupItem, Placeholder, Row } from 'react-bootstrap'
 import ReactTimeAgo from 'react-time-ago';
 
-const AnnouncementsCard = ({ className = "",link=null }) => {
+const AnnouncementsCard = ({ className = "", link = null }) => {
     const [announcements, setAnnouncements] = useState([]);
     const [fetching, setFetching] = useState(true);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -97,11 +97,10 @@ const AnnouncementsCard = ({ className = "",link=null }) => {
     }
 
     return (
-        <Card className={`border-0 rounded-xl shadow-sm p-3 ${className}`}>
-            <Card.Body>
-                <div className="mt-0 mb-4 fw-bold position-relative">
+        <Card className={`border-0 rounded-xl shadow-sm p-4 ${className}`}>
+            <Card.Body className='p-0'>
+                <div className="mt-0 mb-2 fw-bold position-relative">
                     Announcements
-                    <div className="w-[10px] h-[10px] rounded-cirlce"></div>
                 </div>
                 {
                     fetching ? (
@@ -152,7 +151,9 @@ const AnnouncementsCard = ({ className = "",link=null }) => {
                                 </Link>
                             </>
                         ) : (
-                            <p className='text-sm text-secondary'>Nothing to show.</p>
+                            <div className="border-[2px] border-slate-200 !border-dashed rounded-md py-8">
+                                <p className='text-sm text-slate-500 mb-0 text-center'>Nothing to show.</p>
+                            </div>
                         )
                     )}
             </Card.Body>

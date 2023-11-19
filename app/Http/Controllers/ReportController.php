@@ -22,6 +22,7 @@ class ReportController extends Controller
 
         return response()->json($data);
     }
+
     /* API */
     public function getApproved(Request $request)
     {
@@ -148,5 +149,11 @@ class ReportController extends Controller
         } else {
             return redirect()->route('admin.report.open', ['report_id' => $report->id]);
         }
+    }
+
+    public function latest(Request $request)
+    {
+        $latestReport = Report::latest('created_at')->first();
+        return response()->json(['latestReport' => $latestReport]);
     }
 }

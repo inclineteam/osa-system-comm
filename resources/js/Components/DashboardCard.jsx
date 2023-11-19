@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card } from 'react-bootstrap'
 
-const DashboardCard = ({ label = "Card", subLabel = "", icon, variant = "primary", value = "100",className }) => {
+const DashboardCard = ({ label = "Card", subLabel = "", icon, variant = "primary", value = "100", className }) => {
     return (
         <Card className={`dashboard-card shadow-sm ${className}`}>
             <Card.Body className='p-4 flex justify-between'>
@@ -10,9 +10,9 @@ const DashboardCard = ({ label = "Card", subLabel = "", icon, variant = "primary
                         {/* <i className="fi fi-rr-boxes leading-none"></i>  */}
                         {icon}
                     </div>
-                    <p className=" mb-2 font-medium text-black-50 fs-6">{label}</p>
+                    <p className="mb-2 font-medium text-slate-500 text-sm ">{label}</p>
                     {subLabel && (
-                        <p className="mt-0 mb-0 fw-bold text-slate-800 fs-6">{subLabel}</p>
+                        <p className="mt-0 mb-0 text-sm fw-bold text-slate-800 fs-6">{subLabel}</p>
                     )}
                 </div>
                 <div className=''>
