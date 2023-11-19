@@ -189,9 +189,8 @@ const SuperAdminDashboard = () => {
                         </td>
                         <td className="flex items-center">
                           <div
-                            className={`inline-block mr-2 w-2 h-2 rounded-full ${
-                              statusColors[latestReport.data.status]
-                            }`}
+                            className={`inline-block mr-2 w-2 h-2 rounded-full ${statusColors[latestReport.data.status]
+                              }`}
                           ></div>
                           {latestReport.data.status}
                         </td>

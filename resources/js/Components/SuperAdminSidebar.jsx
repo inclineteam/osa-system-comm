@@ -114,6 +114,13 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
         },
         {
             type: NavType.LINK,
+            text: 'User Events History',
+            icon: <i className="fi fi-rr-time-forward"></i>,
+            href: route('admin.user_events_history'),
+            urlPath: 'user_events_history',
+        },
+        {
+            type: NavType.LINK,
             text: 'Reminders',
             icon: <i className="fi fi-rr-note"></i>,
             href: route('admin.reminders'),
@@ -177,7 +184,7 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
             icon: <i className='fi fi-rs-document'></i>,
             opened: false,
             navList: downloadableNav,
-            key:'downloadable'
+            key: 'downloadable'
         },
         {
             type: NavType.LINK,

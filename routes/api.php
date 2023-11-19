@@ -72,7 +72,7 @@ Route::delete('/announcements/{id}', [AnnouncementController::class, 'delete'])-
 Route::patch('/announcements/order', [AnnouncementController::class, 'order']);
 Route::get('/announcements', [AnnouncementController::class, 'getAll'])->name('announcements.index');
 Route::get('/announcements/dashboard', [AnnouncementController::class, 'dashboard'])->name('announcements.dashboard');
-Route::post('/unit-heads/designations', [AdminController::class, 'unit_heads_by_designation']);
+Route::post('/unit-heads/designations', [AdminController::class, 'unit_heads_by_designation'])->name('unit_heads.designations');
 Route::get('/admins', [AdminController::class, 'getAdmins'])->name('admins');
 Route::get('/admins/{campus_id}', [AdminController::class, 'getAdminsByCampus']);
 

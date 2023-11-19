@@ -107,7 +107,7 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
         return Inertia::render('UserEventsHistory', [
             'userEvents' => $userEvents
         ]);
-    });
+    })->name('admin.user_events_history');
 });
 
 Route::prefix('/notifications')->middleware(['auth'])->group(function () {

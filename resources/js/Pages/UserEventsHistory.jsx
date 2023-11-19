@@ -15,7 +15,31 @@ export default function UserEventsHistory({ auth, userEvents }) {
   return (
     <PanelLayout userAuth={auth} defaultActiveLink="User Events History">
       <div className="content-wrapper">
-        <table className="w-full">
+        <div className="p-4 border-b border-slate-300 rounded-lg shadow-sm bg-white">
+          <h1 className="text-xl font-bold mb-2 leading-none">
+            User events history
+          </h1>
+          <p className="leading-none mb-4 text-slate-500 text-sm">
+            See all the actions made within the system.
+          </p>
+
+          <div className="border rounded-lg border-slate-200">
+            {userEvents.map(userEvent => (
+              <div key={userEvent.id} className='border-b last:border-0 border-slate-200 p-3 pb-4'>
+                <div className="mb-2 text-xs font-semibold px-2 text-slate-500 py-0.5 rounded-md border border-slate-200 w-max">{userEvent.event_name}</div>
+                <div>
+                  <div className="flex space-x-1 text-sm">
+                    <p className="font-semibold mb-0">
+                      {userEvent.user_name === `${auth.user.firstname} ${auth.user.lastname}` ? 'You' : userEvent.user_name}
+                    </p>
+                    <p className="lowercase mb-0">{userEvent.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* <table className="w-full">
           <thead className="">
             <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-4 [&>th]:py-2 border-b [&>th]:text-sm [&>th]:font-bold">
               <th>User</th>
@@ -27,7 +51,7 @@ export default function UserEventsHistory({ auth, userEvents }) {
           </thead>
 
           <tbody>
-            {/* <tr className="[&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-4 [&>td]:py-2.5">
+             <tr className="[&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-4 [&>td]:py-2.5">
               <td>
                 {latestReport.data.unit_head.lastname},{" "}
                 {latestReport.data.unit_head.firstname}{" "}
@@ -46,18 +70,18 @@ export default function UserEventsHistory({ auth, userEvents }) {
                 ></div>
                 {latestReport.data.status}
               </td>
-            </tr> */}
+            </tr> 
+          </tbody>
             {userEvents.map((userEvent) => (
               <tr className="[&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-4 [&>td]:py-2.5">
-                <td>{userEvent.user_name}</td>
+                <td>{userEvent.user_name === `${auth.user.firstname} ${auth.user.lastname}` ? 'You' : userEvent.user_name}</td>
                 <td>{userEvent.event_name}</td>
                 <td>{userEvent.campus_name}</td>
                 <td>{userEvent.office_name}</td>
                 <td>{userEvent.description}</td>
               </tr>
             ))}
-          </tbody>
-        </table>
+        </table> */}
       </div>
     </PanelLayout>
   );

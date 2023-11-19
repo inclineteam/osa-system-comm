@@ -21,7 +21,7 @@ class AnnouncementController extends Controller
             'event_name' => 'Delete Announcement',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Deleted announcement with title: ' . $announcement->title
+            'description' => 'Deleted announcement titled ' . "$announcement->title"
         ]);
 
         return response()->json(['message' => 'Successfully deleted!']);

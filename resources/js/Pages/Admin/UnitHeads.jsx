@@ -24,7 +24,7 @@ const UnitHeads = ({ campuses, classifications }) => {
 
     useEffect(() => {
         const fetchUnitHeads = () => {
-            axios.post('/unit-heads/designations', {
+            axios.post(route('unit_heads.designations'), {
                 campus_id: selectedCampus.id,
                 classification_id: classifications[selectedClassificationIndex].id
             })

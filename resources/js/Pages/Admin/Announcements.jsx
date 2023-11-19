@@ -161,45 +161,43 @@ const Announcements = ({ auth, announcements: announcementList }) => {
             />
             <div className="">
                 <div className="content-wrapper">
-                    <Card className="border-0 shadow-sm mt-3 p-lg-3 p-2">
-                        <Card.Header className="bg-white bg-opacity-80 pb-3">
-                            <div className="lg:flex justify-content-between items-center">
+                    <Card className="border-0 shadow-sm mt-3 p-4">
+                        <Card.Header className="p-0 border-0 bg-white bg-opacity-80">
+                            <div className="lg:flex justify-content-between items-start">
                                 <div className="my-1">
-                                    <p className="text-dark my-0 fw-bold fs-5 flex items-center gap-2">
-                                        Posted Announcements
-                                        <i className="fi fi-rr-bullhorn text-primary"></i>
-                                    </p>
-                                    <p className="my-0 text-secondary">
-                                        <small>Edit / Remove</small>
+                                    <h1 className="text-xl font-bold mb-2 leading-none">
+                                        Posted announcements
+                                    </h1>
+                                    <p className="leading-none mb-4 text-slate-500 text-sm">
+                                        Create, remove, and check details about the announcements.
                                     </p>
                                 </div>
                                 <Link
                                     href={route("admin.create_announcement")}
-                                    className="btn btn-light-primary rounded-1 my-1 font-semibold"
+                                    className="bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
                                 >
-                                    <i className="bx bx-plus"></i> Create new
+                                    <i className="bx bx-plus"></i> <span className="tracking-wide">Create new</span>
                                 </Link>
                             </div>
                         </Card.Header>
-                        <Card.Body className=" position-relative ">
-                            <p
-                                className={`text-end text-sm text-secondary mt-0 mb-1 ${
-                                    saving ? "visible" : "invisible"
-                                }`}
-                            >
-                                Saving changes...
-                            </p>
+                        <Card.Body className="p-0 position-relative ">
+                            {saving && (
+                                <p
+                                    className={`text-center text-sm text-slate-500 mt-0 mb-2`}
+                                >
+                                    Saving changes...
+                                </p>
+                            )}
                             <DragDropContext onDragEnd={handleOnDragEnd}>
                                 <Droppable droppableId="announcements">
                                     {(provided) => (
                                         <ListGroup
                                             variant="flushed"
-                                            className={`list-group-flush`}
                                             {...provided.droppableProps}
                                             ref={provided.innerRef}
                                         >
                                             {reOrdered &&
-                                            reOrdered.length > 0 ? (
+                                                reOrdered.length > 0 ? (
                                                 reOrdered &&
                                                 reOrdered.map((item, index) => (
                                                     <Draggable
@@ -213,11 +211,10 @@ const Announcements = ({ auth, announcements: announcementList }) => {
                                                             snapshot
                                                         ) => (
                                                             <ListGroupItem
-                                                                className={`hover:bg-gray-100 ${
-                                                                    snapshot.isDragging
-                                                                        ? "dragging"
-                                                                        : ""
-                                                                }`}
+                                                                className={`mb-2 hover:bg-slate-100 rounded-md p-4 border border-slate-200 ${snapshot.isDragging
+                                                                    ? "dragging"
+                                                                    : ""
+                                                                    }`}
                                                                 ref={
                                                                     provided.innerRef
                                                                 }
@@ -226,7 +223,7 @@ const Announcements = ({ auth, announcements: announcementList }) => {
                                                             >
                                                                 <Row
                                                                     key={index}
-                                                                    className="mt-1 align-items-center gy-3"
+                                                                    className="items-start"
                                                                 >
                                                                     <Col
                                                                         lg={6}
@@ -247,7 +244,7 @@ const Announcements = ({ auth, announcements: announcementList }) => {
                                                                                 )}
                                                                             </small>
                                                                         </p>
-                                                                        <p className=" text-secondary">
+                                                                        <p className="mb-0 text-secondary">
                                                                             {item.content.substr(
                                                                                 0,
                                                                                 250
@@ -259,7 +256,7 @@ const Announcements = ({ auth, announcements: announcementList }) => {
                                                                         {item.image !==
                                                                             "" &&
                                                                             item.image !==
-                                                                                null && (
+                                                                            null && (
                                                                                 <div className="col-lg-4 col-md-7 col-10 h-[150px] overflow-hidden p-3 border hover:shadow-inner position-relative">
                                                                                     <div className="cursor-pointer bg-gray-400 opacity-30 position-absolute w-full h-full top-0 left-0 hover:opacity-10 hover:shadow transition-all"></div>
                                                                                     <Image
