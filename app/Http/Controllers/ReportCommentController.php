@@ -35,7 +35,7 @@ class ReportCommentController extends Controller
             'event_name' => 'Add Comment',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Added comment with id: ' . $comment->id
+            'description' => 'added comment with id ' . $comment->id
         ]);
 
         // NewCommentAdded::dispatch($comment);

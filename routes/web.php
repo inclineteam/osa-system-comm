@@ -102,7 +102,7 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
     // user_events_history
     Route::get('/user-events', function () {
         // get all user events
-        $userEvents = UserEventsHistory::all();
+        $userEvents = UserEventsHistory::orderBy('created_at', 'desc')->get();
 
         return Inertia::render('UserEventsHistory', [
             'userEvents' => $userEvents

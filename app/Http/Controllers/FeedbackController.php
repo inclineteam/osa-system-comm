@@ -24,7 +24,7 @@ class FeedbackController extends Controller
             'event_name' => 'Create Feedback',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Created feedback with type: ' . $request->type
+            'description' => 'wrote a feedback ' . $feedback->comment
         ]);
 
         return redirect()->back()->with('success', 'Successfully submitted your feedback, Thank you for giving your time!');

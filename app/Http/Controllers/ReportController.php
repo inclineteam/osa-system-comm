@@ -67,7 +67,7 @@ class ReportController extends Controller
             'event_name' => 'Add Report',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Added report with title: ' . $report->title
+            'description' => 'added report titled ' . "$report->title"
         ]);
 
         return response()->json(['fileUrl' => $fileUrl, 'attachment' => $attachment]);
@@ -86,7 +86,7 @@ class ReportController extends Controller
             'event_name' => 'Remove Report Attachment',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Removed report attachment with id: ' . $attachment_id
+            'description' => 'removed report attachment with id ' . $attachment_id
         ]);
 
         return response()->json(['success' => true]);
@@ -124,7 +124,7 @@ class ReportController extends Controller
                     'event_name' => 'Submit Report',
                     'campus_name' => $request->user()->campus?->name,
                     'office_name' => $request->user()->designation?->name,
-                    'description' => 'Submitted report with title: ' . $report->title
+                    'description' => 'submitted report with title ' . "$report->title"
                 ]);
 
                 return redirect()->back()->with("success", 'Successfully submitted!');
@@ -146,7 +146,7 @@ class ReportController extends Controller
                     'event_name' => 'Unsubmit Report',
                     'campus_name' => $request->user()->campus?->name,
                     'office_name' => $request->user()->designation?->name,
-                    'description' => 'Unsubmitted report with title: ' . $report->title
+                    'description' => 'unsubmitted report with title ' . $report->title
                 ]);
                 return redirect()->back();
             }

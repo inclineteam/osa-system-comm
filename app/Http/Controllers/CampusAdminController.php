@@ -37,7 +37,7 @@ class CampusAdminController extends Controller
             'event_name' => 'Create Campus Admin',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Created campus admin with name: ' . $campus_admin->name()
+            'description' => 'created campus admin ' . $campus_admin->name()
         ]);
 
         return redirect()->intended(route('admin.admins'))->with('success', 'Successfully added!');
@@ -70,7 +70,7 @@ class CampusAdminController extends Controller
             'event_name' => 'Edit Campus Admin',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Edited campus admin with name: ' . $campus_admin->name()
+            'description' => 'edited campus admin ' . $campus_admin->name()
         ]);
 
         return redirect()->intended(route('admin.admins'))->with('success', 'Successfully saved changes!');

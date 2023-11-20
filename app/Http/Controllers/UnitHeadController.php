@@ -42,7 +42,7 @@ class UnitHeadController extends Controller
             'event_name' => 'Create Unit Head',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Created unit head ' . $user->name()
+            'description' => 'created unit head ' . $user->name()
         ]);
 
         return redirect()->intended(route("admin.unit_heads.records"))->with('success', 'Successfully added!');
@@ -75,7 +75,7 @@ class UnitHeadController extends Controller
             'event_name' => 'Edit Unit Head',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Edited unit head ' . $unitHead->name()
+            'description' => 'edited unit head ' . $unitHead->name()
         ]);
 
         return redirect()->intended(route('admin.unit_heads.records'))->with('success', 'Successfully saved changes!');
@@ -115,10 +115,10 @@ class UnitHeadController extends Controller
 
         UserEventsHistory::create([
             'user_name' => $request->user()->name(),
-            'event_name' => 'Delete Unit Head',
+            'event_name' => 'Delete Unit Heads',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Deleted unit head/s'
+            'description' => 'deleted unit head/s'
         ]);
 
         return response()->json(['success' => true]);

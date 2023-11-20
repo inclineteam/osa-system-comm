@@ -158,7 +158,11 @@ const SuperAdminDashboard = () => {
                 See details about the user and status of the latest submitted
                 report.
               </p>
-              <div class="overflow-hidden border rounded-md border-slate-200">
+              <div
+                class={`overflow-hidden rounded-md border-slate-200 ${
+                  !latestReport.data ? "border-2 border-dashed" : "border"
+                }`}
+              >
                 {latestReport.loading ? (
                   <div className="py-6 text-center">Loading... Please wait</div>
                 ) : latestReport.data != null ? (
@@ -189,8 +193,9 @@ const SuperAdminDashboard = () => {
                         </td>
                         <td className="flex items-center">
                           <div
-                            className={`inline-block mr-2 w-2 h-2 rounded-full ${statusColors[latestReport.data.status]
-                              }`}
+                            className={`inline-block mr-2 w-2 h-2 rounded-full ${
+                              statusColors[latestReport.data.status]
+                            }`}
                           ></div>
                           {latestReport.data.status}
                         </td>
@@ -198,7 +203,7 @@ const SuperAdminDashboard = () => {
                     </tbody>
                   </table>
                 ) : (
-                  <div className="py-6 text-center">
+                  <div className="text-slate-500 text-sm py-6 text-center">
                     No reports submitted yet.
                   </div>
                 )}

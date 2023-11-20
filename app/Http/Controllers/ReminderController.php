@@ -22,7 +22,7 @@ class ReminderController extends Controller
             'event_name' => 'Create Reminder',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Created reminder with title: ' . $request->title
+            'description' => 'created a reminder with title ' . "$request->title"
         ]);
 
         return redirect()->intended(route('admin.reminders'))->with('success', 'Successfully added reminder!');

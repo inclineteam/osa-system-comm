@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import { Alert, Card, Col, Row } from "react-bootstrap";
 
 export default function UserEventsHistory({ auth, userEvents }) {
-  console.log(userEvents);
   return (
     <PanelLayout userAuth={auth} defaultActiveLink="User Events History">
       <div className="content-wrapper">
@@ -23,21 +22,42 @@ export default function UserEventsHistory({ auth, userEvents }) {
             See all the actions made within the system.
           </p>
 
-          <div className="border rounded-lg border-slate-200">
-            {userEvents.map(userEvent => (
-              <div key={userEvent.id} className='border-b last:border-0 border-slate-200 p-3 pb-4'>
-                <div className="mb-2 text-xs font-semibold px-2 text-slate-500 py-0.5 rounded-md border border-slate-200 w-max">{userEvent.event_name}</div>
-                <div>
-                  <div className="flex space-x-1 text-sm">
-                    <p className="font-semibold mb-0">
-                      {userEvent.user_name === `${auth.user.firstname} ${auth.user.lastname}` ? 'You' : userEvent.user_name}
-                    </p>
-                    <p className="lowercase mb-0">{userEvent.description}</p>
+          {userEvents.length > 0 ? (
+            <div className="border rounded-lg border-slate-200">
+              {userEvents.map((userEvent) => (
+                <div
+                  key={userEvent.id}
+                  className="border-b last:border-0 border-slate-200 p-3 pb-4"
+                >
+                  <div className="flex gap-2">
+                    <div className="mb-2 text-xs font-semibold px-2 text-slate-500 py-0.5 rounded-md border-[1px] border-slate-200 w-max">
+                      {userEvent.event_name}
+                    </div>
+                    {userEvent === userEvents[0] ? (
+                      <div className="text-indigo-500 mb-2 text-xs font-semibold px-2 py-0.5 rounded-md border-[1px] border-indigo-300 w-max">
+                        Latest
+                      </div>
+                    ) : null}
+                  </div>
+                  <div>
+                    <div className="flex space-x-1 text-sm">
+                      <p className="font-semibold mb-0">
+                        {userEvent.user_name ===
+                        `${auth.user.firstname} ${auth.user.lastname}`
+                          ? "You"
+                          : userEvent.user_name}
+                      </p>
+                      <p className="mb-0">{userEvent.description}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-sm py-10 text-center rounded-lg text-slate-500 border-2 border-dashed border-slate-200">
+              There's no user events
+            </div>
+          )}
         </div>
         {/* <table className="w-full">
           <thead className="">

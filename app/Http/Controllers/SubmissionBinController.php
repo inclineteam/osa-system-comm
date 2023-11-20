@@ -31,7 +31,7 @@ class SubmissionBinController extends Controller
             'event_name' => 'Create Submission Bin',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Created submission bin ' . $bin->title
+            'description' => 'created a submission bin named ' . "$bin->title"
         ]);
 
         if ($bin->deadline_date) {
@@ -74,7 +74,7 @@ class SubmissionBinController extends Controller
             'event_name' => 'Edit Submission Bin',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Edited submission bin ' . $submission_bin->title
+            'description' => 'edited a submission bin named ' . "$submission_bin->title"
         ]);
         return redirect()->intended(route('admin.submission_bins'))->with('succes', 'Successfully saved changes!');
     }
@@ -89,7 +89,7 @@ class SubmissionBinController extends Controller
             'event_name' => 'Delete Submission Bin',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Deleted submission bin ' . $submission_bin->title
+            'description' => 'deleted a submission bin named ' . "$submission_bin->title"
         ]);
 
         return redirect(route('admin.submission_bins'))->with('success', 'Successfully deleted!');

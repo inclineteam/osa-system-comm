@@ -38,7 +38,7 @@ class CalendarEventController extends Controller
             'event_name' => 'Create Calendar Event',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Created calendar event with title: ' . $request->title
+            'description' => 'created a calendar event with title ' . $request->title
         ]);
 
         return redirect()->back()->with('success', 'Successfully created!');
@@ -55,7 +55,7 @@ class CalendarEventController extends Controller
             'event_name' => 'Delete Calendar Event',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Deleted calendar event with title: ' . $event->title
+            'description' => 'deleted a calendar event with title ' . $event->title
         ]);
 
         return response()->json(['success' => true]);

@@ -43,7 +43,7 @@ class ProfileController extends Controller
                 'event_name' => 'Update Profile',
                 'campus_name' => $request->user()->campus?->name,
                 'office_name' => $request->user()->designation?->name,
-                'description' => 'Updated profile'
+                'description' => 'updated profile'
             ]);
 
             return redirect()->intended(route('profile.edit'))->with('success', 'Successfully saved changes!');
@@ -68,7 +68,7 @@ class ProfileController extends Controller
                 'event_name' => 'Change Password',
                 'campus_name' => $request->user()->campus?->name,
                 'office_name' => $request->user()->designation?->name,
-                'description' => 'Changed password'
+                'description' => 'changed password'
             ]);
 
             return redirect()->intended(route('profile.edit'))->with('success', 'Successfully saved changes!');

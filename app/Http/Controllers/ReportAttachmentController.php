@@ -40,7 +40,7 @@ class ReportAttachmentController extends Controller
                 'event_name' => 'Approve Report',
                 'campus_name' => $request->user()->campus?->name,
                 'office_name' => $request->user()->designation?->name,
-                'description' => 'Approved report with title: ' . $report->title
+                'description' => 'approved report with title ' . "$report->title"
             ]);
         }
         if ($success) {
@@ -52,7 +52,7 @@ class ReportAttachmentController extends Controller
                 'event_name' => 'Update Report Status',
                 'campus_name' => $request->user()->campus?->name,
                 'office_name' => $request->user()->designation?->name,
-                'description' => 'Updated report status with title: ' . $report->title
+                'description' => 'updated report status with title ' . "$report->title"
             ]);
 
             return redirect()->back()->with('success', 'Successfully updated status!');
