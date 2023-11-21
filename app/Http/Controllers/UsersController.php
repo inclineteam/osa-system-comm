@@ -37,6 +37,7 @@ class UsersController extends Controller
             }
             $user->save();
 
+            
             // Auth::guard('api')->login($user, true);
             Auth::login($user, true);
             return redirect()->intended(route('admin.dashboard'))->with('success', 'You successfully signed in!');

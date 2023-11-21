@@ -44,7 +44,7 @@ class AdminController extends Controller
     /* sign out user */
     public function signout()
     {
-        Auth::guard('web')->logout();
+        auth()->logout();
         return redirect()->intended('/');
     }
 

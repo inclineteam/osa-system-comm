@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\UserEventsHistory;
 use App\Notifications\NewComment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReportCommentController extends Controller
 {
@@ -21,6 +22,8 @@ class ReportCommentController extends Controller
     /* API */
     public function add(Request $request)
     {
+        $user = User::where('id', $request->user_id)->first();
+
         $comment = ReportComment::create([
             'user_id' => $request->user_id,
             'unit_head_id' => $request->unit_head_id,
@@ -30,12 +33,13 @@ class ReportCommentController extends Controller
             'is_removed' => false,
         ]);
 
+
         UserEventsHistory::create([
-            'user_name' => $request->user()->name(),
+            'user_name' => $user->name(),
             'event_name' => 'Add Comment',
-            'campus_name' => $request->user()->campus?->name,
-            'office_name' => $request->user()->designation?->name,
-            'description' => 'added comment with id ' . $comment->id
+            'campus_name' => $user->campus?->name,
+            'office_name' => $user->designation?->name,
+            'description' => 'added comment ' . "$comment->comment"
         ]);
 
         // NewCommentAdded::dispatch($comment);

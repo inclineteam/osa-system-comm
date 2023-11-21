@@ -19,13 +19,6 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
 
   const menu = [
     {
-      type: NavType.LINK,
-      text: "Dashboard",
-      icon: <i class="fi fi-rr-chart-line-up"></i>,
-      href: route("admin.dashboard"),
-      urlPath: "dashboard",
-    },
-    {
       type: NavType.DROPDOWN,
       text: "PLAN",
       icon: <i class="fi fi-rr-document-signed"></i>,
