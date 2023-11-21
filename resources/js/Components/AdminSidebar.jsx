@@ -1,190 +1,320 @@
-import React, { useEffect, useState } from 'react'
-import { Nav } from 'react-bootstrap'
-import SidebarComponent, { NavType } from './SidebarComponent'
-import { Link, usePage } from '@inertiajs/react'
-import axios from 'axios'
-import FeedBackModal from './FeedBackModal'
-import { useNavMenuLoadedState, useNavMenuState } from '@/States/States'
-import NavDownloadable from './NavDownloadable'
+import React, { useEffect, useState } from "react";
+import { Nav } from "react-bootstrap";
+import SidebarComponent, { NavType } from "./SidebarComponent";
+import { Link, usePage } from "@inertiajs/react";
+import axios from "axios";
+import FeedBackModal from "./FeedBackModal";
+import { useNavMenuLoadedState, useNavMenuState } from "@/States/States";
+import NavDownloadable from "./NavDownloadable";
+import NavViewable from "./NavViewable";
+import ModalComponent from "./ModalComponent";
+import DocViewer from "react-doc-viewer";
+import { DocViewerRenderers } from "react-doc-viewer";
 
 const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
-    const url = window.location.href;
-    const [classifications, setClassifications] = useState([])
-    const { navList, setNavList } = useNavMenuState()
-    const { isLoaded, setIsLoaded } = useNavMenuLoadedState()
-    const { auth } = usePage().props;
-    const menu = [
+  const url = window.location.href;
+  const [classifications, setClassifications] = useState([]);
+  const { navList, setNavList } = useNavMenuState();
+  const { isLoaded, setIsLoaded } = useNavMenuLoadedState();
+  const { auth } = usePage().props;
+  const [showFileModal, setShowFileModal] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const menu = [
+    {
+      type: NavType.LINK,
+      text: "Dashboard",
+      icon: <i class="fi fi-rr-chart-line-up"></i>,
+      href: route("admin.dashboard"),
+      urlPath: "dashboard",
+    },
+    {
+      type: NavType.DROPDOWN,
+      text: "PLAN",
+      icon: <i class="fi fi-rr-document-signed"></i>,
+      key: "plan",
+      opened: false,
+      navList: [
+        ...NavViewable(setShowFileModal, setSelectedFile),
         {
-            type: NavType.LINK,
-            text: 'Dashboard',
-            icon: <i className="fi fi-rr-apps"></i>,
-            href: route('admin.dashboard'),
-            urlPath: 'dashboard',
+          type: NavType.DROPDOWN,
+          text: (
+            <span>
+              Downloadable <small>(ISO 9001_2015)</small>
+            </span>
+          ),
+          icon: <i className="fi fi-rs-document"></i>,
+          opened: false,
+          navList: NavDownloadable(),
+          key: "downloadable",
         },
         {
-            type: NavType.DROPDOWN,
-            text: 'Document Tracking',
-            icon: <i className='fi fi-rs-search-alt'></i>,
-            key: 'document-tracking',
-            opened: false,
-            active: false,
-            navList: [
-                {
-                    type: NavType.LINK,
-                    text: 'Submission Bin',
-                    icon: <i className='fi fi-rr-box'></i>,
-                    href: route('admin.submission_bins')
-                },
-                {
-                    type: NavType.DROPDOWN,
-                    text: 'Reports',
-                    icon: <i className='fi fi-rr-document'></i>,
-                    key: 'reports',
-                    active: false,
-                    opened: false,
-                    navList: []
-                }
-            ]
+          type: NavType.LINK,
+          text: "Calendar",
+          icon: <i className="fi fi-rr-calendar"></i>,
+          href: route("calendar"),
+          urlPath: "calendar",
         },
         {
-            type: NavType.LINK,
-            text: 'Announcements',
-            icon: <i className="fi fi-rr-bullhorn"></i>,
-            href: route('unit_head.announcements'),
-            urlPath: 'announcements',
+          type: NavType.LINK,
+          text: "Announcements",
+          icon: <i className="fi fi-rr-bullhorn"></i>,
+          href: route("admin.announcements"),
+          urlPath: "announcements",
         },
         {
-            type: NavType.BUTTON,
-            text: 'Suggestion',
-            icon: <i className="fi fi-rr-comment-alt"></i>,
-            onClick: (e) => {
-                e.preventDefault()
-                setShowFeedbackModal(true)
+          type: NavType.LINK,
+          text: "Reminders",
+          icon: <i className="fi fi-rr-note"></i>,
+          href: route("admin.reminders"),
+          urlPath: "reminders",
+        },
+      ],
+    },
+    {
+      type: NavType.DROPDOWN,
+      text: "DO",
+      icon: <i class="fi fi-rr-calendar-lines-pen"></i>,
+      key: "do",
+      opened: false,
+      navList: [
+        {
+          type: NavType.LINK,
+          text: "Unit Heads Profiles",
+          href: route("admin.unit_heads.profiles"),
+          urlPath: "unit_heads_profiles",
+        },
+        {
+          type: NavType.LINK,
+          text: "Add Campus Admin",
+          href: route("admin.admins.create"),
+          urlPath: "add_campus_admin",
+        },
+        {
+          type: NavType.LINK,
+          text: "Add Unit Head",
+          href: route("admin.unit_heads.create"),
+          urlPath: "add_unit_head",
+        },
+      ],
+    },
+    {
+      type: NavType.DROPDOWN,
+      text: "CHECK",
+      icon: <i class="fi fi-rr-memo-circle-check"></i>,
+      key: "check",
+      opened: false,
+      navList: [
+        {
+          type: NavType.DROPDOWN,
+          text: "Tracking",
+          key: "tracking",
+          opened: false,
+          navList: [
+            // TODO: change to its correct url
+            {
+              type: NavType.LINK,
+              text: "For Review",
+              href: route("admin.feedbacks"),
+              urlPath: "reports_checklist",
             },
+            // TODO: change to its correct url
+            {
+              type: NavType.LINK,
+              text: "For Request",
+              href: route("admin.feedbacks"),
+              urlPath: "generated_reports_annually",
+            },
+            // TODO: change to its correct url
+            {
+              type: NavType.LINK,
+              text: "For Rejected",
+              href: route("admin.feedbacks"),
+              urlPath: "generated_reports_annually",
+            },
+          ],
         },
         {
-            type: NavType.DROPDOWN,
-            text: 'Unit Heads',
-            icon: <i className="fi fi-rr-users-alt"></i>,
-            key: 'unit-heads',
-            active: false,
-            navList: [
-                {
-                    type: NavType.LINK,
-                    text: 'Profile',
-                    href: route('admin.unit_heads.profiles'),
-                    urlPath: 'unit-heads/profile'
-                },
-                {
-                    type: NavType.LINK,
-                    text: 'Info and Account',
-                    href: route('admin.unit_heads.records'),
-                    urlPath: 'unit-heads/records'
-                },
-            ]
+          type: NavType.DROPDOWN,
+          text: "Monitoring",
+          key: "monitoring",
+          opened: false,
+          navList: [
+            {
+              type: NavType.LINK,
+              text: "User Events History",
+              href: route("admin.user_events_history"),
+              urlPath: "user_events_history",
+            },
+            // TODO: change to notification history link
+            {
+              type: NavType.LINK,
+              text: "Notification history",
+              href: route("admin.feedbacks"),
+              urlPath: "notification_history",
+            },
+            {
+              type: NavType.BUTTON,
+              text: "Feedback",
+              onClick: (e) => {
+                e.preventDefault();
+                setShowFeedbackModal(true);
+              },
+            },
+          ],
         },
         {
-            type: NavType.DROPDOWN,
-            text: (
-                <span>
-                    Downloadable <small>(ISO 9001_2015)</small>
-                </span>
-            ),
-            icon: <i className='fi fi-rs-document'></i>,
-            opened: false,
-            navList: NavDownloadable(),
-            key:'downloadable'
+          type: NavType.DROPDOWN,
+          text: "Retrieval",
+          key: "retrieval",
+          opened: false,
+          navList: [
+            // TODO: change to its correct url
+            {
+              type: NavType.LINK,
+              text: "Unit heads reports checklist",
+              href: route("admin.feedbacks"),
+              urlPath: "reports_checklist",
+            },
+            // TODO: change to its correct url
+            {
+              type: NavType.LINK,
+              text: "Generated reports annually",
+              href: route("admin.feedbacks"),
+              urlPath: "generated_reports_annually",
+            },
+          ],
         },
-    ];
+      ],
+    },
+  ];
 
-    useEffect(() => {
-        const fetchClassifications = () => {
-            axios.get(route('api.classifications.all'))
-                .then((res) => {
-                    console.log(res)
-                    setClassifications(res.data)
-                    initMenu(res.data);
-                    setIsLoaded(true)
-                })
-                .catch((error) => console.log('error getting classifications ', error))
-        }
-        if (!isLoaded) fetchClassifications()
-    }, [])
+  useEffect(() => {
+    const fetchClassifications = () => {
+      axios
+        .get(route("api.classifications.all"))
+        .then((res) => {
+          console.log(res);
+          setClassifications(res.data);
+          initMenu(res.data);
+          setIsLoaded(true);
+        })
+        .catch((error) => console.log("error getting classifications ", error));
+    };
+    if (!isLoaded) fetchClassifications();
+  }, []);
 
-    // load document tracking nav from classifications
-    const initMenu = (data) => {
-        let classifications = data.classifications;
-        let campusMenu = [];
-        let classificationMenu = []
-        const campus = auth.user.campus;
-        // classifications
-        for (let classification of classifications) {
-            // designations
-            let designationMenu = [];
-            for (let designation of classification.designations) {
-                let designationNav = {
-                    type: NavType.LINK,
-                    text: designation.name,
-                    key: designation.name,
-                    urlPath: `submission_bin.reports.${campus.id}.${designation.id}`,
-                    href: route('admin.reports.view.filtered', { campus_id: campus.id, designation_id: designation.id })
-                }
-                // append designation nav
-                designationMenu.push(designationNav)
-            }
+  // load document tracking nav from classifications
+  const initMenu = (data) => {
+    let classifications = data.classifications;
+    let campusMenu = [];
+    let classificationMenu = [];
+    const campus = auth.user.campus;
+    // classifications
+    for (let classification of classifications) {
+      // designations
+      let designationMenu = [];
+      for (let designation of classification.designations) {
+        let designationNav = {
+          type: NavType.LINK,
+          text: designation.name,
+          key: designation.name,
+          urlPath: `submission_bin.reports.${campus.id}.${designation.id}`,
+          href: route("admin.reports.view.filtered", {
+            campus_id: campus.id,
+            designation_id: designation.id,
+          }),
+        };
+        // append designation nav
+        designationMenu.push(designationNav);
+      }
 
-            let classificationNav = {
-                type: NavType.DROPDOWN,
-                text: classification.name,
-                key: classification.id,
-                active: false,
-                navList: designationMenu,
-                icon: <i className='fi fi-rr-brackets-square'></i>
-            }
-            // append classification nav
-            classificationMenu.push(classificationNav)
-        }
-
-        // nav menu
-        var navMenu = {
-            type: NavType.DROPDOWN,
-            text: 'Document Tracking',
-            icon: <i className='fi fi-rs-search-alt'></i>,
-            key: 'document-tracking',
-            active: false,
-            opened: false,
-            navList: [
-                {
-                    type: NavType.LINK,
-                    text: 'Submission Bins',
-                    icon: <i className='fi fi-rr-boxes'></i>,
-                    href: route('admin.submission_bins'),
-                    urlPath: 'submission-bins',
-                },
-                {
-                    type: NavType.DROPDOWN,
-                    text: 'Reports',
-                    icon: <i className='fi fi-rr-document'></i>,
-                    key: 'reports',
-                    active: false,
-                    opened: false,
-                    navList: classificationMenu
-                }
-            ]
-        }
-
-        let temp = [...menu];
-        temp[1] = navMenu;
-        setNavList(temp)
-        console.log('updated navbar')
+      let classificationNav = {
+        type: NavType.DROPDOWN,
+        text: classification.name,
+        key: classification.id,
+        active: false,
+        navList: designationMenu,
+        icon: <i className="fi fi-rr-brackets-square"></i>,
+      };
+      // append classification nav
+      classificationMenu.push(classificationNav);
     }
 
+    // nav menu
+    var navMenu = {
+      type: NavType.DROPDOWN,
+      text: "Document Tracking",
+      icon: <i className="fi fi-rs-search-alt"></i>,
+      key: "document-tracking",
+      active: false,
+      opened: false,
+      navList: [
+        {
+          type: NavType.LINK,
+          text: "Submission Bins",
+          icon: <i className="fi fi-rr-boxes"></i>,
+          href: route("admin.submission_bins"),
+          urlPath: "submission-bins",
+        },
+        {
+          type: NavType.DROPDOWN,
+          text: "Reports",
+          icon: <i className="fi fi-rr-document"></i>,
+          key: "reports",
+          active: false,
+          opened: false,
+          navList: classificationMenu,
+        },
+      ],
+    };
 
-    return (
-        <>
-            <SidebarComponent isActive={isActive} activeLink={activeLink} />
-        </>
-    )
-}
+    let temp = [...menu];
+    // temp[1] = navMenu;
+    setNavList(temp);
+    console.log("updated navbar");
+  };
 
-export default AdminSidebar
+  return (
+    <>
+      <ModalComponent
+        className={"rounded-0 bg-transparent"}
+        bodyClassname="p-0 overflow-hidden"
+        show={showFileModal}
+        handleClose={() => {
+          setShowFileModal((s) => !s);
+        }}
+        closeButton
+        title={selectedFile?.name}
+        size="fullscreen"
+      >
+        <hr className="my-1" />
+        {selectedFile && (
+          <DocViewer
+            style={{ maxHeight: "100% !important", height: "100%" }}
+            pluginRenderers={DocViewerRenderers}
+            documents={[{ uri: selectedFile.uri }]}
+            config={{
+              zoom: 0.5,
+              header: {
+                disableHeader: true,
+              },
+            }}
+            theme={{
+              primary: "#5296d8",
+              secondary: "#ffffff",
+              tertiary: "#5296d899",
+              text_primary: "#ffffff",
+              text_secondary: "#5296d8",
+              text_tertiary: "#00000099",
+              disableThemeScrollbar: false,
+            }}
+          />
+        )}
+      </ModalComponent>
+      <SidebarComponent isActive={isActive} activeLink={activeLink} />
+    </>
+  );
+};
+
+export default AdminSidebar;

@@ -45,7 +45,12 @@ const NavDownloadable = ({ item, activeLink }) => {
 const NavButton = ({ item }) => {
   return (
     <li>
-      <Link onClick={item.onClick}>
+      <Link
+        onClick={(e) => {
+          e.preventDefault();
+          item.onClick();
+        }}
+      >
         {item.icon}
         <span>{item.text}</span>
       </Link>

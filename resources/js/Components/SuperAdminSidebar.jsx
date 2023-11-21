@@ -5,7 +5,10 @@ import { Link } from "@inertiajs/react";
 import axios from "axios";
 import { useNavMenuLoadedState, useNavMenuState } from "@/States/States";
 import Downloadables from "@/constants/downloadables.json";
+import Viewables from "@/constants/viewables.json";
 import FileIcon from "./FileIcon";
+import NavDownloadable from "./NavDownloadable";
+import NavViewable from "./NavViewable";
 // import listReactFiles from 'list-react-files'
 
 const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
@@ -13,72 +16,15 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
   const [classifications, setClassifications] = useState([]);
   const { navList, setNavList } = useNavMenuState();
   const { isLoaded, setIsLoaded } = useNavMenuLoadedState();
-  const downloadableNav = [];
-
-  const folders = Object.keys(Downloadables);
-
-  for (let folder of folders) {
-    var navLinks = [];
-    for (let downloadable of Downloadables[folder]) {
-      if (typeof downloadable == "string") {
-        let navLink = {
-          type: NavType.DOWNLOADABLE,
-          text: <small>{downloadable}</small>,
-          icon: (
-            <FileIcon
-              size="xs"
-              file={{
-                name: `${downloadable}`,
-                uri: `/downloadables/${folder.toUpperCase()}/${downloadable}`,
-              }}
-            />
-          ),
-          downloadable: `/downloadables/${folder.toUpperCase()}/${downloadable}`,
-        };
-        navLinks.push(navLink);
-      } else {
-        // if object
-        let subFolders = Object.keys(downloadable);
-        var subNavLinks = [];
-        for (let subFolder of subFolders) {
-          for (let subDownloadable of downloadable[subFolder]) {
-            let subNavLink = {
-              type: NavType.DOWNLOADABLE,
-              text: <small>{subDownloadable}</small>,
-              icon: (
-                <FileIcon
-                  size="xs"
-                  file={{
-                    name: `${subDownloadable}`,
-                    uri: `/downloadables/${folder.toUpperCase()}/${subFolder}/${subDownloadable}`,
-                  }}
-                />
-              ),
-              downloadable: `/downloadables/${folder.toUpperCase()}/${subFolder}/${subDownloadable}`,
-            };
-            subNavLinks.push(subNavLink);
-          }
-          let navLink = {
-            type: NavType.DROPDOWN,
-            text: <small>{subFolder}</small>,
-            icon: <i className="fi fi-rr-folder"></i>,
-            navList: subNavLinks,
-          };
-          navLinks.push(navLink);
-        }
-      }
-    }
-    let navDropdown = {
-      type: NavType.DROPDOWN,
-      text: folder,
-      icon: <i className="fi fi-rr-folder"></i>,
-      opened: false,
-      navList: navLinks,
-    };
-    downloadableNav.push(navDropdown);
-  }
 
   const menu = [
+    {
+      type: NavType.LINK,
+      text: "Dashboard",
+      icon: <i class="fi fi-rr-chart-line-up"></i>,
+      href: route("admin.dashboard"),
+      urlPath: "dashboard",
+    },
     {
       type: NavType.DROPDOWN,
       text: "PLAN",
@@ -86,127 +32,126 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
       key: "plan",
       opened: false,
       navList: [
+        ...NavViewable(),
         {
           type: NavType.DROPDOWN,
-          text: "Reports",
-          icon: <i className="fi fi-rr-document"></i>,
-          key: "reports",
+          text: (
+            <span>
+              Downloadable <small>(ISO 9001_2015)</small>
+            </span>
+          ),
+          icon: <i className="fi fi-rs-document"></i>,
           opened: false,
-          navList: [],
+          navList: NavDownloadable(),
+          key: "downloadable",
+        },
+        {
+          type: NavType.LINK,
+          text: "Calendar",
+          icon: <i className="fi fi-rr-calendar"></i>,
+          href: route("calendar"),
+          urlPath: "calendar",
+        },
+        {
+          type: NavType.LINK,
+          text: "Announcements",
+          icon: <i className="fi fi-rr-bullhorn"></i>,
+          href: route("admin.announcements"),
+          urlPath: "announcements",
+        },
+        {
+          type: NavType.LINK,
+          text: "Reminders",
+          icon: <i className="fi fi-rr-note"></i>,
+          href: route("admin.reminders"),
+          urlPath: "reminders",
         },
       ],
     },
-    // {
-    //   type: NavType.LINK,
-    //   text: "Dashboard",
-    //   icon: <i className="fi fi-rr-apps"></i>,
-    //   href: route("admin.dashboard"),
-    //   urlPath: "dashboard",
-    // },
     {
       type: NavType.DROPDOWN,
-      text: "Document Tracking",
-      icon: <i className="fi fi-rs-search-alt"></i>,
-      key: "document-tracking",
+      text: "DO",
+      icon: <i class="fi fi-rr-calendar-lines-pen"></i>,
+      key: "do",
       opened: false,
       navList: [
         {
           type: NavType.LINK,
-          text: "Submission Bins",
-          icon: <i className="fi fi-rr-boxes"></i>,
-          href: route("admin.submission_bins"),
-          urlPath: "submission-bins",
-        },
-        {
-          type: NavType.DROPDOWN,
-          text: "Reports",
-          icon: <i className="fi fi-rr-document"></i>,
-          key: "reports",
-          opened: false,
-          navList: [],
-        },
-      ],
-    },
-    {
-      type: NavType.LINK,
-      text: "Announcements",
-      icon: <i className="fi fi-rr-bullhorn"></i>,
-      href: route("admin.announcements"),
-      urlPath: "announcements",
-    },
-    {
-      type: NavType.LINK,
-      text: "User Events History",
-      icon: <i className="fi fi-rr-time-forward"></i>,
-      href: route("admin.user_events_history"),
-      urlPath: "user_events_history",
-    },
-    {
-      type: NavType.LINK,
-      text: "Reminders",
-      icon: <i className="fi fi-rr-note"></i>,
-      href: route("admin.reminders"),
-      urlPath: "reminders",
-    },
-    {
-      type: NavType.LINK,
-      text: "Feedbacks",
-      icon: <i className="fi fi-rr-comment-alt"></i>,
-      href: route("admin.feedbacks"),
-      urlPath: "feedback",
-    },
-    {
-      type: NavType.LINK,
-      text: "Campus Admins",
-      icon: <i className="fi fi-rr-user"></i>,
-      href: route("admin.admins"),
-      urlPath: "admins",
-    },
-    {
-      type: NavType.DROPDOWN,
-      text: "Unit Heads",
-      icon: <i className="fi fi-rr-users-alt"></i>,
-      key: "unit-heads",
-      navList: [
-        {
-          type: NavType.LINK,
-          text: "Profile",
+          text: "Unit Heads Profiles",
           href: route("admin.unit_heads.profiles"),
-          urlPath: "unit-heads/profile",
+          urlPath: "unit_heads_profiles",
         },
         {
           type: NavType.LINK,
-          text: "Info and Account",
-          href: route("admin.unit_heads.records"),
-          urlPath: "unit-heads/records",
+          text: "Add Campus Admin",
+          href: route("admin.admins.create"),
+          urlPath: "add_campus_admin",
+        },
+        {
+          type: NavType.LINK,
+          text: "Add Unit Head",
+          href: route("admin.unit_heads.create"),
+          urlPath: "add_unit_head",
         },
       ],
     },
-    // {
-    //     type: NavType.LINK,
-    //     text: 'Unit Heads',
-    //     icon: <i className='fi fi-rr-user'></i>,
-    //     href: route('admin.unit_heads.records'),
-    //     urlPath: 'unit-heads/records'
-    // },
-    {
-      type: NavType.LINK,
-      text: "Calendar",
-      icon: <i className="fi fi-rr-calendar"></i>,
-      href: route("calendar"),
-      urlPath: "calendar",
-    },
     {
       type: NavType.DROPDOWN,
-      text: (
-        <span>
-          Downloadable <small>(ISO 9001_2015)</small>
-        </span>
-      ),
-      icon: <i className="fi fi-rs-document"></i>,
+      text: "CHECK",
+      icon: <i class="fi fi-rr-memo-circle-check"></i>,
+      key: "check",
       opened: false,
-      navList: downloadableNav,
-      key: "downloadable",
+      navList: [
+        {
+          type: NavType.DROPDOWN,
+          text: "Monitoring",
+          key: "monitoring",
+          opened: false,
+          navList: [
+            {
+              type: NavType.LINK,
+              text: "User Events History",
+              href: route("admin.user_events_history"),
+              urlPath: "user_events_history",
+            },
+            // TODO: change to notification history link
+            {
+              type: NavType.LINK,
+              text: "Notification history",
+              href: route("admin.feedbacks"),
+              urlPath: "notification_history",
+            },
+            {
+              type: NavType.LINK,
+              text: "Feedbacks",
+              href: route("admin.feedbacks"),
+              urlPath: "feedback",
+            },
+          ],
+        },
+        {
+          type: NavType.DROPDOWN,
+          text: "Retrieval",
+          key: "retrieval",
+          opened: false,
+          navList: [
+            // TODO: change to its correct url
+            {
+              type: NavType.LINK,
+              text: "Unit heads reports checklist",
+              href: route("admin.feedbacks"),
+              urlPath: "reports_checklist",
+            },
+            // TODO: change to its correct url
+            {
+              type: NavType.LINK,
+              text: "Generated reports annually",
+              href: route("admin.feedbacks"),
+              urlPath: "generated_reports_annually",
+            },
+          ],
+        },
+      ],
     },
     {
       type: NavType.LINK,
@@ -281,36 +226,7 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
       campusMenu.push(campusNav);
     }
 
-    // nav menu
-    var navMenu = {
-      type: NavType.DROPDOWN,
-      text: "Document Tracking",
-      icon: <i className="fi fi-rs-search-alt"></i>,
-      key: "document-tracking",
-      active: false,
-      opened: false,
-      navList: [
-        {
-          type: NavType.LINK,
-          text: "Submission Bins",
-          icon: <i className="fi fi-rr-boxes"></i>,
-          href: route("admin.submission_bins"),
-          urlPath: "submission-bins",
-        },
-        {
-          type: NavType.DROPDOWN,
-          text: "Reports",
-          icon: <i className="fi fi-rr-document"></i>,
-          key: "reports",
-          active: false,
-          opened: false,
-          navList: campusMenu,
-        },
-      ],
-    };
-
     let temp = [...menu];
-    temp[1] = navMenu;
     setNavList(temp);
     console.log("updated navbar");
   };

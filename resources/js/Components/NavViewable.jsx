@@ -1,30 +1,33 @@
-import React from "react";
-import Downloadables from "@/constants/downloadables.json";
+import Viewables from "@/constants/viewables.json";
 import { NavType } from "./SidebarComponent";
 import FileIcon from "./FileIcon";
 
-const NavDownloadable = () => {
-  const downloadableNav = [];
+const NavViewable = (setShowFileModal, setSelectedFile) => {
+  const viewableNav = [];
 
-  const folders = Object.keys(Downloadables);
+  const planFolders = Object.keys(Viewables);
 
-  for (let folder of folders) {
+  for (let planFolder of planFolders) {
     var navLinks = [];
-    for (let downloadable of Downloadables[folder]) {
+    for (let downloadable of Viewables[planFolder]) {
       if (typeof downloadable == "string") {
+        let uri = `/plans/${planFolder}/${downloadable}`;
         let navLink = {
-          type: NavType.DOWNLOADABLE,
+          type: NavType.BUTTON,
           text: <small>{downloadable}</small>,
           icon: (
             <FileIcon
               size="xs"
               file={{
                 name: `${downloadable}`,
-                uri: `/downloadables/${folder.toUpperCase()}/${downloadable}`,
+                uri,
               }}
             />
           ),
-          downloadable: `/downloadables/${folder.toUpperCase()}/${downloadable}`,
+          onClick: () => {
+            setShowFileModal(true);
+            setSelectedFile({ uri, name: planFolder });
+          },
         };
         navLinks.push(navLink);
       } else {
@@ -41,11 +44,11 @@ const NavDownloadable = () => {
                   size="xs"
                   file={{
                     name: `${subDownloadable}`,
-                    uri: `/downloadables/${folder.toUpperCase()}/${subFolder}/${subDownloadable}`,
+                    uri: `/plans/${planFolder.toUpperCase()}/${subFolder}/${subDownloadable}`,
                   }}
                 />
               ),
-              downloadable: `/downloadables/${folder.toUpperCase()}/${subFolder}/${subDownloadable}`,
+              downloadable: `/plans/${planFolder.toUpperCase()}/${subFolder}/${subDownloadable}`,
             };
             subNavLinks.push(subNavLink);
           }
@@ -54,7 +57,6 @@ const NavDownloadable = () => {
             text: <small>{subFolder}</small>,
             icon: <i className="fi fi-rr-folder"></i>,
             navList: subNavLinks,
-            key: "downloadable",
           };
           navLinks.push(navLink);
         }
@@ -62,16 +64,15 @@ const NavDownloadable = () => {
     }
     let navDropdown = {
       type: NavType.DROPDOWN,
-      text: folder,
+      text: planFolder,
       icon: <i className="fi fi-rr-folder"></i>,
       opened: false,
       navList: navLinks,
-      key: "downloadable",
     };
-    downloadableNav.push(navDropdown);
+    viewableNav.push(navDropdown);
   }
 
-  return downloadableNav;
+  return viewableNav;
 };
 
-export default NavDownloadable;
+export default NavViewable;

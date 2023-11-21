@@ -34,7 +34,7 @@ class ReportController extends Controller
 
         return response()->json($data);
     }
-
+    
     public function addReport(Request $request)
     {
         $bin_id = $request->submission_bin_id;
@@ -61,6 +61,7 @@ class ReportController extends Controller
             'name' => $fileName,
             'report_id' => $report->id
         ]);
+
 
         UserEventsHistory::create([
             'user_name' => $request->user()->name(),
