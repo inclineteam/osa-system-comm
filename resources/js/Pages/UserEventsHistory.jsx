@@ -18,7 +18,7 @@ export default function UserEventsHistory({ auth, userEvents }) {
               {userEvents.map((userEvent) => (
                 <div
                   key={userEvent.id}
-                  className="border-b last:border-0 border-slate-200 p-3 pb-4"
+                  className="border-b last:border-0 border-slate-200 p-3"
                 >
                   <div className="flex gap-2">
                     <div className="mb-2 text-xs font-semibold px-2 text-slate-500 py-0.5 rounded-md border-[1px] border-slate-200 w-max">
@@ -42,8 +42,8 @@ export default function UserEventsHistory({ auth, userEvents }) {
                     </div>
                   </div>
 
-                  <div className="mt-4 text-xs text-slate-500">
-                    {dayjs(userEvent.created_at).format("MMM D")}
+                  <div className="mt-2.5 text-xs text-slate-500">
+                    {dayjs(userEvent.created_at).format("MMM D, h:m A")}
                   </div>
                 </div>
               ))}

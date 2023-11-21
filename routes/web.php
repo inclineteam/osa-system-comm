@@ -108,6 +108,14 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
             'userEvents' => $userEvents
         ]);
     })->name('admin.user_events_history');
+
+    // user_events_history
+    Route::get('/notifications-history', function (Request $request) {
+        // get all user events
+        $userNotifications = $request->user()->notifications()->get();
+
+        return Inertia::render('NotificationsHistory', ['userNotifications' => $userNotifications]);
+    })->name('admin.notifications_history')->middleware(['role:super_admin|admin']);
 });
 
 Route::prefix('/notifications')->middleware(['auth'])->group(function () {

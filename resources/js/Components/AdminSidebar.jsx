@@ -143,7 +143,7 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
             {
               type: NavType.LINK,
               text: "Notification history",
-              href: route("admin.feedbacks"),
+              href: route("admin.notifications_history"),
               urlPath: "notification_history",
             },
             {
