@@ -84,7 +84,7 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
     Route::get('/unit-heads/create', [AdminController::class, 'create_unit_head'])->name('admin.unit_heads.create')->middleware(['role:super_admin|admin']);
     Route::get('/unit-heads/{id}/edit', [AdminController::class, 'edit_unit_head'])->name('admin.unit_heads.edit')->middleware(['role:super_admin|admin']);
     Route::get('/campus-admins', [AdminController::class, 'admins'])->name('admin.admins')->middleware(['role:super_admin']);
-    Route::get('/admins/create', [AdminController::class, 'createAdmin'])->name('admin.admins.create')->middleware(['role:super_admin']);
+    Route::get('/admins/create', [AdminController::class, 'createAdmin'])->name('admin.admins.create')->middleware(['role:super_admin|admin']);
     Route::get('/calendar', [CalendarEventController::class, 'index'])->name('calendar')->middleware(['role:super_admin|admin']);
     Route::get('/campus-admins/{id}/edit', [AdminController::class, 'editCampusAdmin'])->name('admin.campus_admin.edit')->middleware(['role:super_admin']);
     Route::get('/feedbacks', [AdminController::class, 'feedbacks'])->name('admin.feedbacks')->middleware(['role:super_admin']);

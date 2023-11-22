@@ -44,8 +44,15 @@ export default function NotificationsHistory({ auth, userNotifications }) {
                     <span>{item.data.title}</span>
                   </small>
 
-                  <div className="mt-2.5 text-xs text-slate-500">
-                    {dayjs(item.created_at).format("MMM D, h:m A")}
+                  <div className="mt-2.5 flex items-center">
+                    {!item.read_at ? (
+                      <div className="mr-2 text-indigo-500 text-xs px-1 font-semibold rounded-md border-[1px] border-indigo-300 w-max">
+                        Unread
+                      </div>
+                    ) : null}
+                    <div className="text-xs text-slate-500">
+                      {dayjs(item.created_at).format("MMM D, h:m A")}
+                    </div>
                   </div>
                 </Link>
               ))}

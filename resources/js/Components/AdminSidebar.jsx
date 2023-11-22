@@ -108,8 +108,8 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
             {
               type: NavType.LINK,
               text: "For Review",
-              href: route("admin.feedbacks"),
-              urlPath: "reports_checklist",
+              href: route("admin.submission_bins"),
+              urlPath: "for_review",
             },
             // TODO: change to its correct url
             {
