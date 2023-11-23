@@ -70,8 +70,8 @@ Route::prefix('/admin')->group(function () {
     Route::post('/create', [AdminController::class, 'create'])->name('admin.create')->middleware('guest');
 });
 
-Route::get('/reminders', [AdminController::class, 'reminders'])->name('admin.reminders');
 Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
+    Route::get('/reminders', [AdminController::class, 'reminders'])->name('admin.reminders');
     Route::get('/calendar', [CalendarEventController::class, 'index'])->name('calendar')->middleware(['auth']);
     Route::get('/signout', [AdminController::class, 'signout'])->name('admin.signout');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');

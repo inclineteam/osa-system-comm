@@ -56,6 +56,7 @@ const NavViewable = (setShowFileModal, setSelectedFile) => {
             type: NavType.DROPDOWN,
             text: <small>{subFolder}</small>,
             icon: <i className="fi fi-rr-folder"></i>,
+            opened: false,
             navList: subNavLinks,
           };
           navLinks.push(navLink);

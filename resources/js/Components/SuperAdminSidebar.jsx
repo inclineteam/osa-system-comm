@@ -86,6 +86,12 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
           href: route("admin.unit_heads.create"),
           urlPath: "add_unit_head",
         },
+        {
+          type: NavType.LINK,
+          text: "Create Submission Bin",
+          href: route("admin.create_submission_bin"),
+          urlPath: "create_submission_bin",
+        },
       ],
     },
     {

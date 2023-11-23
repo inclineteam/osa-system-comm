@@ -112,4 +112,10 @@ class SubmissionBinController extends Controller
         $data['submissionBins'] = SubmissionBin::where('title', 'like', '%' . $searchText . '%')->get();
         return response()->json($data);
     }
+
+    public function getLatest()
+    {
+        $data['latestSubmissionBin'] = SubmissionBin::latest()->first();
+        return response()->json($data);
+    }
 }

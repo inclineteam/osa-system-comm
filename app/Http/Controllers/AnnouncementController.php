@@ -97,15 +97,23 @@ class AnnouncementController extends Controller
     }
 
     /* API */
-    public function getAll(Request $request)
+    public function getAll()
     {
         $data['announcements'] = Announcement::all();
         return response()->json($data);
     }
+
     /* API */
-    public function dashboard(Request $request)
+    public function dashboard()
     {
         $data['announcements'] = Announcement::orderByDesc('order')->limit(2)->get();
+        return response()->json($data);
+    }
+
+    /* API */
+    public function getLatest()
+    {
+        $data['latestAnnouncement'] = Announcement::latest('created_at')->first();
         return response()->json($data);
     }
 }

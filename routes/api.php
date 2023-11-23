@@ -98,6 +98,7 @@ Route::prefix('/campus')->group(function () {
 })->middleware(['auth']);
 
 Route::prefix('/submissionBins')->group(function () {
+    Route::get('/latest', [SubmissionBinController::class, 'getLatest'])->name('submission-bins.latest');
     Route::get('/{id}', [SubmissionBinController::class, 'all'])->name('submission-bins.index');
     Route::get('/{text}/search', [SubmissionBinController::class, 'search'])->name('submission-bins.search');
     Route::delete('/{id}', [SubmissionBinController::class, 'delete'])->name('submission-bins.delete');
