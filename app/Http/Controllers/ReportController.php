@@ -10,6 +10,7 @@ use App\Notifications\NewReportSubmitted;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
+use Inertia\Inertia;
 
 class ReportController extends Controller
 {
@@ -188,5 +189,29 @@ class ReportController extends Controller
     {
         $latestReport = Report::latest('created_at')->first();
         return response()->json(['latestReport' => $latestReport]);
+    }
+
+    public function forReview(Request $request)
+    {
+        $reportsForReview = Report::where('status', 'Pending')->get();
+        return Inertia::render('Admin/ForReviewReports', [
+            'reportsForReview' => $reportsForReview
+        ]);
+    }
+
+    public function forRequested(Request $request)
+    {
+        $reportsForReview = Report::where('status', 'Pending')->get();
+        return Inertia::render('Admin/ForRequestReports', [
+            'reportsForReview' => $reportsForReview
+        ]);
+    }
+
+    public function forRejected(Request $request)
+    {
+        $reportsForReview = Report::where('status', 'Pending')->get();
+        return Inertia::render('Admin/ForRejectedReports', [
+            'reportsForReview' => $reportsForReview
+        ]);
     }
 }

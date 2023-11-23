@@ -104,26 +104,23 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
           key: "tracking",
           opened: false,
           navList: [
-            // TODO: change to its correct url
             {
               type: NavType.LINK,
               text: "For Review",
-              href: route("admin.submission_bins"),
+              href: route("admin.reports.for-review"),
               urlPath: "for_review",
             },
-            // TODO: change to its correct url
             {
               type: NavType.LINK,
               text: "For Request",
-              href: route("admin.feedbacks"),
-              urlPath: "generated_reports_annually",
+              href: route("admin.reports.for-requested"),
+              urlPath: "for_request",
             },
-            // TODO: change to its correct url
             {
               type: NavType.LINK,
               text: "For Rejected",
-              href: route("admin.feedbacks"),
-              urlPath: "generated_reports_annually",
+              href: route("admin.reports.for-rejected"),
+              urlPath: "for_rejected",
             },
           ],
         },
@@ -150,7 +147,6 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
               type: NavType.BUTTON,
               text: "Feedback",
               onClick: (e) => {
-                e.preventDefault();
                 setShowFeedbackModal(true);
               },
             },

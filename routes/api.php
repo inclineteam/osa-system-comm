@@ -68,9 +68,11 @@ Route::post('/upload-report', [ReportController::class, 'addReport'])->name('rep
 Route::delete('/report/{id}/attachment', [ReportController::class, 'removeAttachment'])->name('report.attachment.delete');
 
 Route::delete('/reminders/{id}', [ReminderController::class, 'delete'])->name('reminder.delete');
+Route::get('/reminders/latest', [ReminderController::class, 'getLatest'])->name('reminder.latest');
 Route::delete('/announcements/{id}', [AnnouncementController::class, 'delete'])->name('announcements.delete');
 Route::patch('/announcements/order', [AnnouncementController::class, 'order']);
 Route::get('/announcements', [AnnouncementController::class, 'getAll'])->name('announcements.index');
+Route::get('/announcements/latest', [AnnouncementController::class, 'getLatest'])->name('announcements.latest');
 Route::get('/announcements/dashboard', [AnnouncementController::class, 'dashboard'])->name('announcements.dashboard');
 Route::post('/unit-heads/designations', [AdminController::class, 'unit_heads_by_designation'])->name('unit_heads.designations');
 Route::get('/admins', [AdminController::class, 'getAdmins'])->name('admins');

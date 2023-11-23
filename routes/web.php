@@ -70,13 +70,14 @@ Route::prefix('/admin')->group(function () {
     Route::post('/create', [AdminController::class, 'create'])->name('admin.create')->middleware('guest');
 });
 
+Route::get('/reminders', [AdminController::class, 'reminders'])->name('admin.reminders');
 Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
+    Route::get('/calendar', [CalendarEventController::class, 'index'])->name('calendar')->middleware(['auth']);
     Route::get('/signout', [AdminController::class, 'signout'])->name('admin.signout');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/announcements', [AdminController::class, 'announcements'])->name('admin.announcements');
     Route::get('/announcements/create', [AdminController::class, 'create_announcement'])->name('admin.create_announcement')->middleware(['role:super_admin']);
     Route::get('/announcements/{id}/edit', [AdminController::class, 'edit_announcement'])->name('admin.edit_announcement')->middleware(['role:super_admin']);
-    Route::get('/reminders', [AdminController::class, 'reminders'])->name('admin.reminders');
     Route::get('/reminders/create', [AdminController::class, 'create_reminder'])->name('admin.create_reminder')->middleware(['role:super_admin']);
     Route::get('/reminders/{id}/edit', [AdminController::class, 'edit_reminder'])->name('admin.edit_reminder')->middleware(['role:super_admin']);
     Route::get('/unit-heads', [AdminController::class, 'unit_heads_profile'])->name('admin.unit_heads.profiles')->middleware(['role:super_admin|admin']);
@@ -85,7 +86,6 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
     Route::get('/unit-heads/{id}/edit', [AdminController::class, 'edit_unit_head'])->name('admin.unit_heads.edit')->middleware(['role:super_admin|admin']);
     Route::get('/campus-admins', [AdminController::class, 'admins'])->name('admin.admins')->middleware(['role:super_admin']);
     Route::get('/admins/create', [AdminController::class, 'createAdmin'])->name('admin.admins.create')->middleware(['role:super_admin|admin']);
-    Route::get('/calendar', [CalendarEventController::class, 'index'])->name('calendar')->middleware(['role:super_admin|admin']);
     Route::get('/campus-admins/{id}/edit', [AdminController::class, 'editCampusAdmin'])->name('admin.campus_admin.edit')->middleware(['role:super_admin']);
     Route::get('/feedbacks', [AdminController::class, 'feedbacks'])->name('admin.feedbacks')->middleware(['role:super_admin']);
     Route::get('/settings', [AdminController::class, 'settings'])->name('admin.settings')->middleware(['role:super_admin']);
@@ -98,6 +98,9 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
         Route::get('/reports/{submission_bin_id}/view', [AdminController::class, 'viewReports'])->name('admin.reports.view');
         Route::get('/reports/{campus_id}/{designation_id}/view/filtered', [AdminController::class, 'viewFilteredReports'])->name('admin.reports.view.filtered');
         Route::get('/reports/unit-head/{report_id}/view', [AdminController::class, 'viewReport'])->name('admin.report.open');
+        Route::get('/reports/for-review', [ReportController::class, 'forReview'])->name('admin.reports.for-review');
+        Route::get('/reports/for-rejected', [ReportController::class, 'forRejected'])->name('admin.reports.for-rejected');
+        Route::get('/reports/for-requested', [ReportController::class, 'forRequested'])->name('admin.reports.for-requested');
     });
     // user_events_history
     Route::get('/user-events', function () {

@@ -26,8 +26,8 @@ const UnitHeadSidebar = ({ isActive, setShowFeedbackModal, activeLink }) => {
     {
       type: NavType.LINK,
       text: "Calendar",
-      icon: <i className="fi fi-rr-box"></i>,
-      href: route("unit_head.reports"),
+      icon: <i class="fi fi-rr-calendar"></i>,
+      href: route("unit_head.calendar"),
       urlPath: "calendar",
     },
     {
@@ -40,8 +40,8 @@ const UnitHeadSidebar = ({ isActive, setShowFeedbackModal, activeLink }) => {
     {
       type: NavType.LINK,
       text: "Reminders",
-      icon: <i className="fi fi-rr-bullhorn"></i>,
-      href: route("unit_head.announcements"),
+      icon: <i class="fi fi-rr-edit"></i>,
+      href: route("admin.reminders"),
       urlPath: "reminders",
     },
     {

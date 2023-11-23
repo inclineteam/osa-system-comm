@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
+use App\Models\CalendarEvent;
 use App\Models\Report;
 use App\Models\SubmissionBin;
 use App\Models\User;
@@ -123,8 +124,12 @@ class UnitHeadController extends Controller
 
         return response()->json(['success' => true]);
     }
-    public function calendar()
+    public function calendar(Request $request)
     {
-        return Inertia::render('UnitHead/Calendar');
+        $data['events'] = CalendarEvent::all();
+        if ($request->expectsJson()) {
+            return response()->json($data);
+        }
+        return Inertia::render('UnitHead/Calendar', $data);
     }
 }

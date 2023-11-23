@@ -47,9 +47,15 @@ class ReminderController extends Controller
     }
 
     /* API */
-    public function all(Request $request)
+    public function all()
     {
         $data['reminders'] = Reminder::all();
+        return response()->json($data);
+    }
+
+    public function getLatest()
+    {
+        $data['latestReminder'] = Reminder::latest('created_at')->first();
         return response()->json($data);
     }
 }
