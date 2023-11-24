@@ -70,7 +70,7 @@ class ReportController extends Controller
             'event_name' => 'Add Report',
             'campus_name' => $user->campus?->name,
             'office_name' => $user->designation?->name,
-            'description' => 'added report titled ' . "$report->title"
+            'description' => 'added report with title ' . "$report->title"
         ]);
 
         return response()->json(['fileUrl' => $fileUrl, 'attachment' => $attachment]);
@@ -203,7 +203,7 @@ class ReportController extends Controller
 
     public function forRequested(Request $request)
     {
-        $reportsForRequested = Report::where('status', 'Pending')->get();
+        $reportsForRequested = Report::where('status', 'Approved')->get();
         return Inertia::render('Admin/ForRequestReports', [
             'reportsForRequested' => $reportsForRequested
         ]);
@@ -211,7 +211,7 @@ class ReportController extends Controller
 
     public function forRejected(Request $request)
     {
-        $reportsForRejected = Report::where('status', 'Pending')->get();
+        $reportsForRejected = Report::where('status', 'Rejected')->get();
         return Inertia::render('Admin/ForRejectedReports', [
             'reportsForRejected' => $reportsForRejected
         ]);
