@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Campus;
 use App\Models\Report;
 use App\Models\ReportAttachment;
 use App\Models\User;
@@ -39,14 +40,14 @@ class ReportController extends Controller
     public function addReport(Request $request)
     {
         $bin_id = $request->submission_bin_id;
-        $user_id = $request->user_id;
+        $user = User::where('id', $request->user_id)->first();
 
-        $report = Report::where('submission_bin_id', $bin_id)->where('user_id', $user_id)->first();
+        $report = Report::where('submission_bin_id', $bin_id)->where('user_id', $user->id)->first();
         // if no report created yet
         if (!$report) {
             // create report
             $report = Report::create([
-                'user_id' => $user_id,
+                'user_id' => $user->id,
                 'submission_bin_id' => $bin_id,
             ]);
         }
@@ -65,10 +66,10 @@ class ReportController extends Controller
 
 
         UserEventsHistory::create([
-            'user_name' => $request->user()->name(),
+            'user_name' => $user->name(),
             'event_name' => 'Add Report',
-            'campus_name' => $request->user()->campus?->name,
-            'office_name' => $request->user()->designation?->name,
+            'campus_name' => $user->campus?->name,
+            'office_name' => $user->designation?->name,
             'description' => 'added report titled ' . "$report->title"
         ]);
 
@@ -77,6 +78,7 @@ class ReportController extends Controller
     /* api */
     public function removeAttachment(Request $request)
     {
+        $user = User::where('id', $request->user_id)->first();
         $attachment_id = $request->id;
         $attachment = ReportAttachment::find($attachment_id);
         if ($attachment) {
@@ -84,10 +86,10 @@ class ReportController extends Controller
         }
 
         UserEventsHistory::create([
-            'user_name' => $request->user()->name(),
+            'user_name' => $user->name(),
             'event_name' => 'Remove Report Attachment',
-            'campus_name' => $request->user()->campus?->name,
-            'office_name' => $request->user()->designation?->name,
+            'campus_name' => $user->campus?->name,
+            'office_name' => $user->designation?->name,
             'description' => 'removed report attachment with id ' . $attachment_id
         ]);
 
@@ -163,13 +165,13 @@ class ReportController extends Controller
         $unit_heads = User::where('campus_id', $request->campus_id)->where('designation_id', $request->designation_id)->whereHasRole(['unit_head'])->get();
         return response()->json(['unitHeads' => $unit_heads]);
     }
-    /* API */
+
     public function unit_heads_designated(Request $request)
     {
         $unit_heads = User::where('campus_id', $request->campus_id)->whereHasRole(['unit_head'])->get();
         return response()->json(['unitHeads' => $unit_heads]);
     }
-    /* API */
+
     public function unit_heads_campus(Request $request)
     {
         $unit_heads = User::where('campus_id', $request->campus_id)->whereHasRole(['unit_head'])->get();
@@ -201,17 +203,24 @@ class ReportController extends Controller
 
     public function forRequested(Request $request)
     {
-        $reportsForReview = Report::where('status', 'Pending')->get();
+        $reportsForRequested = Report::where('status', 'Pending')->get();
         return Inertia::render('Admin/ForRequestReports', [
-            'reportsForReview' => $reportsForReview
+            'reportsForRequested' => $reportsForRequested
         ]);
     }
 
     public function forRejected(Request $request)
     {
-        $reportsForReview = Report::where('status', 'Pending')->get();
+        $reportsForRejected = Report::where('status', 'Pending')->get();
         return Inertia::render('Admin/ForRejectedReports', [
-            'reportsForReview' => $reportsForReview
+            'reportsForRejected' => $reportsForRejected
         ]);
+    }
+
+    public function getReportsPerCampus() 
+    {
+        $reports = Report::all();
+        $campus = Campus::all();
+        return response()->json(['campuses' => $campus, 'reports' => $reports]);
     }
 }

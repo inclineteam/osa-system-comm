@@ -109,21 +109,23 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
           navList: [
             {
               type: NavType.LINK,
-              text: "For Review",
-              href: route("admin.reports.for-review"),
-              urlPath: "for_review",
+              text: "User Events History",
+              href: route("admin.user_events_history"),
+              urlPath: "user_events_history",
             },
+            // TODO: change to notification history link
             {
               type: NavType.LINK,
-              text: "For Request",
-              href: route("admin.reports.for-requested"),
-              urlPath: "for_request",
+              text: "Notification history",
+              href: route("admin.notifications_history"),
+              urlPath: "notification_history",
             },
             {
-              type: NavType.LINK,
-              text: "For Rejected",
-              href: route("admin.reports.for-rejected"),
-              urlPath: "for_rejected",
+              type: NavType.BUTTON,
+              text: "Feedback",
+              onClick: (e) => {
+                setShowFeedbackModal(true);
+              },
             },
           ],
         },

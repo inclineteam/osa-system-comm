@@ -1012,3 +1012,19 @@ body::-webkit-scrollbar-thumb:hover {
     width: 100vw !important;
   }
 } /*# sourceMappingURL=style.css.map */
+
+.animate-fade-up {
+  animation: animateFadeUp 500ms forwards;
+}
+
+@keyframes animateFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}

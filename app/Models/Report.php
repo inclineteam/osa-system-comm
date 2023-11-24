@@ -34,6 +34,10 @@ class Report extends Model
         return $this->hasMany(ReportComment::class,'report_id','id');
     }
 
+    public function campus(){
+        return $this->belongsTo(Campus::class, 'report_campus_id', $this->unitHead()->campus->id);
+    }
+
     public function submission_bin():BelongsTo
     {
         return $this->belongsTo(SubmissionBin::class,'submission_bin_id','id');

@@ -52,7 +52,7 @@ class AnnouncementController extends Controller
             'event_name' => 'Create Announcement',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Created announcement with title: ' . $request->title
+            'description' => 'created announcement with title: ' . $request->title
         ]);
 
         return redirect()->intended(route('admin.announcements'))->with('success', "Successfully added new accouncement!");
@@ -74,7 +74,7 @@ class AnnouncementController extends Controller
             'event_name' => 'Update Announcement',
             'campus_name' => $request->user()->campus?->name,
             'office_name' => $request->user()->designation?->name,
-            'description' => 'Updated announcement with title: ' . $request->title
+            'description' => 'updated announcement titled ' . $request->title
         ]);
 
         return redirect()->intended(route('admin.announcements'))->with('success', "Successfully updated accouncement!");

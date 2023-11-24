@@ -85,6 +85,7 @@ Route::prefix('/reports')->group(function () {
     Route::get('/{campus_id}/{designation_id}/unit_heads', [ReportController::class, 'unit_heads'])->name('reports.designation.unit_heads.index');
     Route::get('/{campus_id}/unit_heads/{designation_id}', [ReportController::class, 'unit_heads_designated']);
     Route::get('/{campus_id}/unit_heads', [ReportController::class, 'unit_heads_campus'])->name('reports.unit_heads.index');
+    Route::get('/all/per-campus', [ReportController::class, 'getReportsPerCampus'])->name('reports.per_campus.index');
 });
 
 Route::prefix('/comments')->group(function () {

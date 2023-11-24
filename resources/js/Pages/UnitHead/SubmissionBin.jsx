@@ -120,7 +120,7 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
             </Card>
           </Col>
           <Col lg={4} className="">
-            <Card className="rounded-3 border-0 shadow-sm border-bottom border-2 border-primary">
+            <Card className="rounded-3 border-0 shadow-sm border-bottom  border-primary">
               <Card.Body>
                 <p className="my-1 text-primary">Your Report</p>
                 {report?.is_submitted ? (
@@ -143,12 +143,14 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
                       Missing
                     </p>
                   ) : (
-                    <p className="my-0 text-sm fw-bold">No submission yet.</p>
+                    <div className="mt-4 border-2 border-dashed border-slate-200 text-slate-500 text-center py-4 px-3">
+                      <p className="my-0 text-sm">No submission yet.</p>
+                    </div>
                   ))
                 )}
 
-                <div className="mt-3 mb-2 ">
-                  <div className="max-h-[245px] overflow-auto">
+                <div className="">
+                  <div className="p-2 max-h-[245px] overflow-auto">
                     <AddFileButton
                       removable={!report?.is_submitted}
                       disableAddingFile={report?.is_submitted}

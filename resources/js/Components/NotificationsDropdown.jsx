@@ -94,23 +94,21 @@ const NotificationsDropdown = () => {
             <div className="">
               <Nav className="flex-column max-h-[300px] overflow-y-auto custom-scroll">
                 {notifications.map((item, index) => (
-                  <>
-                    <Link
-                      href={route("notifications.open", { id: item.id })}
-                      key={item.id}
-                      className="group border-b last:border-0 position-relative block py-3 px-3"
+                  <Link
+                    href={route("notifications.open", { id: item.id })}
+                    key={item.id}
+                    className="group border-b last:border-0 position-relative block py-3 px-3"
+                  >
+                    <small
+                      className={`fw-bolder text-dark flex items-start gap-2`}
                     >
-                      <small
-                        className={`fw-bolder text-dark flex items-start gap-2`}
-                      >
-                        {<NotifIcon data={item.data} />}
-                        <span className="group-hover:underline">
-                          {item.data.title}
-                        </span>
-                      </small>
-                      <div className="w-2 h-2 rounded-circle bg-primary absolute top-5 start-0"></div>
-                    </Link>
-                  </>
+                      {<NotifIcon data={item.data} />}
+                      <span className="group-hover:underline">
+                        {item.data.title}
+                      </span>
+                    </small>
+                    <div className="w-2 h-2 rounded-circle bg-primary absolute top-5 start-0"></div>
+                  </Link>
                 ))}
                 {notifications.length == 0 && (
                   <NavItem className="text-black-50 my-2">
