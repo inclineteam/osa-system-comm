@@ -228,25 +228,20 @@ class ReportController extends Controller
     // summary
     public function summary(Request $request)
     {
-        $reports = Report::all();
         $campus = Campus::all();
-        $offices = Designation::all();
 
-        // {campus1 : {total: 0, offices : {office1 : 1, office2 : 2}}}}}}}
-        $data = [];
         foreach ($campus as $key => $campus) {
             $data[$campus->name] = [
                 'total' => 0,
                 'offices' => []
             ];
-            foreach ($offices as $key => $office) {
-                $data[$campus->name]['offices'][$office->name] = 0;
-            }
-        }
 
-        foreach ($reports as $key => $report) {
-            $data[$report->unitHead->campus->name]['total'] += 1;
-            $data[$report->unitHead->campus->name]['offices'][$report->unitHead->designation->name] += 1;
+            $reports = User::where('campus_id', $campus->id);
+
+            foreach ($reports as $key => $report) {
+                $data[$campus->name]['total'] += $report->reports->count();
+                $data[$campus->name]['offices'][$report->designation->name] = $report->reports->count();
+            }
         }
 
         return response()->json(['data' => $data]);
