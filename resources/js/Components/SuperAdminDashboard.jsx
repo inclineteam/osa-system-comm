@@ -19,6 +19,7 @@ import CalendarCard from "./CalendarCard";
 import AnnouncementsCard from "./AnnouncementsCard";
 import dayjs from "dayjs";
 import { Link } from "@inertiajs/react";
+import CustomTooltip from "./CustomTooltip";
 
 const SuperAdminDashboard = () => {
   const [campuses, setCampuses] = useState([]);
@@ -137,6 +138,7 @@ const SuperAdminDashboard = () => {
                       padding: "10px 20px",
                     }}
                     cursor={{ fill: "#71717a", fillOpacity: 0.1 }}
+                    content={<CustomTooltip />}
                   />
                   <Bar radius={[5, 5, 0, 0]} dataKey="total" fill="#8884d8" />
                   {

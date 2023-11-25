@@ -225,25 +225,33 @@ class ReportController extends Controller
         return response()->json(['campuses' => $campus, 'reports' => $reports]);
     }
 
-    // summary
     public function summary(Request $request)
     {
-        $campus = Campus::all();
-
-        foreach ($campus as $key => $campus) {
+        $campuses = Campus::all();
+    
+        foreach ($campuses as $key => $campus) {
             $data[$campus->name] = [
                 'total' => 0,
                 'offices' => []
             ];
-
-            $reports = User::where('campus_id', $campus->id);
-
+    
+            $reports = User::where('campus_id', $campus->id)->get();
+    
             foreach ($reports as $key => $report) {
                 $data[$campus->name]['total'] += $report->reports->count();
-                $data[$campus->name]['offices'][$report->designation->name] = $report->reports->count();
+    
+                // check if report has a designation
+                if ($report->designation) {
+                    // check if isset
+                    if (isset($data[$campus->name]['offices'][$report->designation->name])) {
+                        $data[$campus->name]['offices'][$report->designation->name] += $report->reports->count();
+                    } else {
+                        $data[$campus->name]['offices'][$report->designation->name] = $report->reports->count();
+                    }
+                }
             }
         }
-
+    
         return response()->json(['data' => $data]);
     }
 }
