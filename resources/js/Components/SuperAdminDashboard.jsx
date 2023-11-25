@@ -28,6 +28,13 @@ const SuperAdminDashboard = () => {
     data: null,
   });
 
+  const [allReports, setAllReports] = useState({
+    loading: true,
+    data: null,
+  });
+
+  const [chartData, setChartData] = useState([]);
+
   useEffect(() => {
     const fetchCampuses = () => {
       setFetchingCampus(true);
@@ -44,56 +51,44 @@ const SuperAdminDashboard = () => {
       });
     };
 
+    const fetchAllReports = () => {
+      axios.get(route("reports.summary.index")).then((res) => {
+        console.log("datasss 1231", res.data);
+        setAllReports({ loading: false, data: res.data.data });
+      });
+    };
+
     fetchCampuses();
+    fetchAllReports();
     fetchLatestReport();
   }, []);
 
-  console.log(latestReport);
+  console.log("all reports", allReports);
 
-  const data = [
-    {
-      name: "Page A",
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: "Page B",
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: "Page C",
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: "Page D",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: "Page E",
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: "Page F",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: "Page G",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-  ];
+  useEffect(() => {
+    if (allReports.data) {
+      // {siniluan : {total: 1, offices: {office1: 1, office2: 0}}}
+      const campusNames = Object.keys(allReports.data);
+      console.log("campus names", campusNames);
+
+      const data = [];
+
+      campusNames.forEach((campusName) => {
+        const campus = allReports.data[campusName];
+        const total = campus.total;
+        const offices = Object.keys(campus.offices);
+        const temp = { name: campusName, offices: {}, total: total };
+        offices.forEach((office) => {
+          temp.offices[office] = campus.offices[office];
+        });
+        data.push(temp);
+      });
+
+      setChartData(data);
+    }
+  }, [allReports]);
+
+  console.log("chart data", chartData);
 
   const statusColors = {
     Approved: "bg-emerald-600",
@@ -117,7 +112,7 @@ const SuperAdminDashboard = () => {
                 <BarChart
                   width={730}
                   height={250}
-                  data={data}
+                  data={chartData}
                   margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
                   className="w-full"
                 >
@@ -143,8 +138,17 @@ const SuperAdminDashboard = () => {
                     }}
                     cursor={{ fill: "#71717a", fillOpacity: 0.1 }}
                   />
-                  <Bar radius={[5, 5, 0, 0]} dataKey="pv" fill="#8884d8" />
-                  <Bar radius={[5, 5, 0, 0]} dataKey="uv" fill="#82ca9d" />
+                  <Bar radius={[5, 5, 0, 0]} dataKey="total" fill="#8884d8" />
+                  {
+                    /* <Bar radius={[5, 5, 0, 0]} dataKey="offices.office1" fill="#82ca9d" /> */
+                    Object.keys(chartData[0]?.offices ?? {}).map((office) => (
+                      <Bar
+                        radius={[5, 5, 0, 0]}
+                        dataKey={`offices.${office}`}
+                        fill="#82ca9d"
+                      />
+                    ))
+                  }
                 </BarChart>
               </ResponsiveContainer>
             </div>

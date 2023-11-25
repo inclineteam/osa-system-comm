@@ -16,8 +16,8 @@ class Designation extends Model
         'name'
     ];
 
-    public function classification(){
-        return $this->belongsTo(Classification::class,'classification_id','id');
+    public function classification()
+    {
+        return $this->belongsTo(Classification::class, 'classification_id', 'id');
     }
-
 }

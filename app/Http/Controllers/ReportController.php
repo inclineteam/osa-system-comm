@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Campus;
+use App\Models\Designation;
 use App\Models\Report;
 use App\Models\ReportAttachment;
 use App\Models\User;
@@ -36,7 +37,7 @@ class ReportController extends Controller
 
         return response()->json($data);
     }
-    
+
     public function addReport(Request $request)
     {
         $bin_id = $request->submission_bin_id;
@@ -217,10 +218,37 @@ class ReportController extends Controller
         ]);
     }
 
-    public function getReportsPerCampus() 
+    public function getReportsPerCampus()
     {
         $reports = Report::all();
         $campus = Campus::all();
         return response()->json(['campuses' => $campus, 'reports' => $reports]);
+    }
+
+    // summary
+    public function summary(Request $request)
+    {
+        $reports = Report::all();
+        $campus = Campus::all();
+        $offices = Designation::all();
+
+        // {campus1 : {total: 0, offices : {office1 : 1, office2 : 2}}}}}}}
+        $data = [];
+        foreach ($campus as $key => $campus) {
+            $data[$campus->name] = [
+                'total' => 0,
+                'offices' => []
+            ];
+            foreach ($offices as $key => $office) {
+                $data[$campus->name]['offices'][$office->name] = 0;
+            }
+        }
+
+        foreach ($reports as $key => $report) {
+            $data[$report->unitHead->campus->name]['total'] += 1;
+            $data[$report->unitHead->campus->name]['offices'][$report->unitHead->designation->name] += 1;
+        }
+
+        return response()->json(['data' => $data]);
     }
 }

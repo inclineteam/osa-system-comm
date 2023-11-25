@@ -131,6 +131,9 @@ Route::prefix('/reminders')->group(function () {
     Route::get('/', [ReminderController::class, 'all']);
 })->middleware(['auth']);
 
+// report data : {campus1 : {total: 0, offices : {office1 : 1, office2 : 2}}}}}}}
+Route::get('/reports/summary', [ReportController::class, 'summary'])->name('reports.summary.index');
+
 Route::get('/policy', [AppSettingsController::class, 'getPolicy'])->name('policy');
 
 // Route::post('/policy/read', function (Request $request) {
