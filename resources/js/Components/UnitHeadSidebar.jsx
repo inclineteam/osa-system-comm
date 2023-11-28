@@ -40,7 +40,7 @@ const UnitHeadSidebar = ({ isActive, setShowFeedbackModal, activeLink }) => {
     {
       type: NavType.LINK,
       text: "Reminders",
-      icon: <i class="fi fi-rr-edit"></i>,
+      icon: <i className="fi fi-rr-note"></i>,
       href: route("admin.reminders"),
       urlPath: "reminders",
     },

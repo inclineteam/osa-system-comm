@@ -196,10 +196,24 @@ class ReportController extends Controller
 
     public function forReview(Request $request)
     {
-        $reportsForReview = Report::where('status', 'Pending')->get();
-        return Inertia::render('Admin/ForReviewReports', [
-            'reportsForReview' => $reportsForReview
-        ]);
+        $campuses = Campus::all();
+        $reportsForReview = Report::where('status', 'Pending')->with(['unitHead', 'submission_bin'])->get();
+
+        foreach ($campuses as $key => $campus) {
+            $data['reportsForReview'][$campus->name] = [
+                'offices' => []
+            ];
+        }
+
+        foreach($reportsForReview as $key => $report) {
+            if (isset($data['reportsForReview'][$report->unitHead->campus->name]['offices'][$report->unitHead->designation->name])) {
+                $data['reportsForReview'][$report->unitHead->campus->name]['offices'][$report->unitHead->designation->name][] = $report;
+            } else {
+                $data['reportsForReview'][$report->unitHead->campus->name]['offices'][$report->unitHead->designation->name][] = $report;
+            }
+        }
+
+        return Inertia::render('Admin/ForReviewReports', $data);
     }
 
     public function forRequested(Request $request)

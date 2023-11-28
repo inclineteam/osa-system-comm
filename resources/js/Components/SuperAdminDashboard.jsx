@@ -104,7 +104,7 @@ const SuperAdminDashboard = () => {
           <Row className="px-2.5">
             <div className="p-4 border-b border-slate-300 rounded-lg shadow-sm bg-white mb-8">
               <h1 className="text-xl font-bold mb-2 leading-none">
-                Example chart
+                Total reports per campus
               </h1>
               <p className="leading-none mb-4 text-slate-500 text-sm">
                 This is an example chart to be used.
@@ -137,17 +137,17 @@ const SuperAdminDashboard = () => {
                       fontWeight: 600,
                       padding: "10px 20px",
                     }}
-                    cursor={{ fill: "#71717a", fillOpacity: 0.1 }}
+                    cursor={{ fill: "#a1a1aa", fillOpacity: 0.1 }}
                     content={<CustomTooltip />}
                   />
-                  <Bar radius={[5, 5, 0, 0]} dataKey="total" fill="#8884d8" />
+                  <Bar radius={[5, 5, 0, 0]} dataKey="total" fill="#60a5fa" />
                   {
                     /* <Bar radius={[5, 5, 0, 0]} dataKey="offices.office1" fill="#82ca9d" /> */
                     Object.keys(chartData[0]?.offices ?? {}).map((office) => (
                       <Bar
                         radius={[5, 5, 0, 0]}
                         dataKey={`offices.${office}`}
-                        fill="#82ca9d"
+                        fill="#2dd4bf"
                       />
                     ))
                   }

@@ -112,12 +112,6 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
             },
             {
               type: NavType.LINK,
-              text: "For Request",
-              href: route("admin.reports.for-requested"),
-              urlPath: "for_request",
-            },
-            {
-              type: NavType.LINK,
               text: "For Rejected",
               href: route("admin.reports.for-rejected"),
               urlPath: "for_rejected",

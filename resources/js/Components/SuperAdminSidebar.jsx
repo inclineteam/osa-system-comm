@@ -16,6 +16,8 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
   const [classifications, setClassifications] = useState([]);
   const { navList, setNavList } = useNavMenuState();
   const { isLoaded, setIsLoaded } = useNavMenuLoadedState();
+  const [showFileModal, setShowFileModal] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const menu = [
     {
@@ -25,7 +27,7 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
       key: "plan",
       opened: false,
       navList: [
-        ...NavViewable(),
+        ...NavViewable(setShowFileModal, setSelectedFile),
         {
           type: NavType.DROPDOWN,
           text: (
