@@ -17,16 +17,13 @@ class AnnualReportController extends Controller
 
         $campuses = Campus::all();
 
-        foreach ($campuses as $key => $campus) {
-            $data[$campus->name] = [
-                'total' => 0,
-                'offices' => []
-            ];
+        foreach ($campuses as $campus) {
+
+            $data[$campus->name] = [];
 
             $reports = User::where('campus_id', $campus->id)->get();
 
-            foreach ($reports as $key => $report) {
-
+            foreach ($reports as $report) {
                 // format $report->created_at to year
                 $reportYear = $report->created_at->format('Y');
 
@@ -35,19 +32,23 @@ class AnnualReportController extends Controller
                     continue;
                 }
 
-                // check if $report status is approved
-                if ($report->status == 'approved') {
-                    $data[$campus->name]['total'] += $report->reports->count();
+                // calculate quarter
+                $quarter = ceil($report->created_at->format('m') / 3);
 
-                    // check if report has a designation
-                    if ($report->designation) {
-                        // check if isset
-                        if (isset($data[$campus->name]['offices'][$report->designation->name])) {
-                            $data[$campus->name]['offices'][$report->designation->name] += $report->reports->count();
-                        } else {
-                            $data[$campus->name]['offices'][$report->designation->name] = $report->reports->count();
-                        }
-                    }
+                // initialize $data array
+                $data[$campus->name][$quarter] = [
+                    'total' => 0,
+                    'offices' => []
+                ];
+
+                $data[$campus->name][$quarter]['total'] += $report->reports->count();
+
+                // check if report has a designation
+                if ($report->designation) {
+                    // check if isset
+                    $data[$campus->name][$quarter]['offices'][$report->designation->name] =
+                        ($data[$campus->name][$quarter]['offices'][$report->designation->name] ?? 0) +
+                        $report->reports->count();
                 }
             }
         }
@@ -63,6 +64,7 @@ class AnnualReportController extends Controller
 
         return response()->json(['message' => 'Report generated successfully!']);
     }
+
 
     // get all reports
     public function getAllAnnualReports()
