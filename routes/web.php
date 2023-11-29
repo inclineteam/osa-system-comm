@@ -3,6 +3,7 @@
 use App\Events\NewCommentAdded;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\AnnualReportController;
 use App\Http\Controllers\AppSettingsController;
 use App\Http\Controllers\CalendarEventController;
 use App\Http\Controllers\CampusAdminController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\UnitHeadController;
 use App\Http\Controllers\UsersController;
 use App\Mail\CalendarEventMail;
 use App\Mail\NewReportMail;
+use App\Models\AnnualReport;
 use App\Models\CalendarEvent;
 use App\Models\Report;
 use App\Models\ReportComment;
@@ -72,6 +74,9 @@ Route::prefix('/admin')->group(function () {
 
 Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
     Route::get('/reminders', [AdminController::class, 'reminders'])->name('admin.reminders');
+    Route::get('/generated-reports-annually', [AnnualReportController::class, function() {
+        return Inertia::render('Admin/AnnualReports');
+    }])->name('admin.generated-reports');
     Route::get('/calendar', [CalendarEventController::class, 'index'])->name('calendar')->middleware(['auth']);
     Route::get('/signout', [AdminController::class, 'signout'])->name('admin.signout');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
