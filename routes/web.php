@@ -77,6 +77,9 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
     Route::get('/generated-reports-annually', [AnnualReportController::class, function() {
         return Inertia::render('Admin/AnnualReports');
     }])->name('admin.generated-reports');
+    Route::get('/generated-reports-annually/{id}', [AnnualReportController::class, function() {
+        return Inertia::render('Admin/SpecificAnnualReport');
+    }])->name('admin.generated-reports.specific');
     Route::get('/calendar', [CalendarEventController::class, 'index'])->name('calendar')->middleware(['auth']);
     Route::get('/signout', [AdminController::class, 'signout'])->name('admin.signout');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
