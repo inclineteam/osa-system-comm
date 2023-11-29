@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\AnnualReportController;
 use App\Http\Controllers\Api\ClassificationController;
 use App\Http\Controllers\AppSettingsController;
 use App\Http\Controllers\CalendarEventController;
@@ -133,6 +134,15 @@ Route::prefix('/reminders')->group(function () {
 
 // report data : {campus1 : {total: 0, offices : {office1 : 1, office2 : 2}}}}}}}
 Route::get('/reports/summary', [ReportController::class, 'summary'])->name('reports.summary.index');
+
+// api/admin/annual-reports
+Route::prefix('/admin/annual-reports')->group(function () {
+
+    Route::get('/', [AnnualReportController::class, 'getAllAnnualReports'])->name('admin.annual_reports.index');
+    Route::get('/{id}', [AnnualReportController::class, 'getAnnualReport'])->name('admin.annual_reports.show');
+    Route::post('/', [AnnualReportController::class, 'generateReport'])->name('admin.annual_reports.create');
+    Route::delete('/{id}', [AnnualReportController::class, 'deleteAnnualReport'])->name('admin.annual_reports.delete');
+});
 
 Route::get('/policy', [AppSettingsController::class, 'getPolicy'])->name('policy');
 
