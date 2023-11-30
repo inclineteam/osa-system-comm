@@ -21,13 +21,12 @@ return new class extends Migration
             $table->string('phone')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->string('image',500)->nullable();
+            $table->string('image', 500)->nullable();
             $table->unsignedBigInteger('designation_id')->nullable();
             $table->unsignedBigInteger('campus_id')->nullable();
             $table->string('employee_no')->nullable();
-            $table->string('google_access_token')->nullable();
+            $table->text('google_access_token')->nullable();
             $table->rememberToken();
-
         });
     }
 

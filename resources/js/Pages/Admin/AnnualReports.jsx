@@ -1,10 +1,26 @@
 import CustomYearInput from "@/Components/CustomYearInput";
 import PanelLayout, { LayoutType } from "@/Layouts/PanelLayout";
+import { useEffect } from "react";
+import { useState } from "react";
 import { Card } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function AnnualReport() {
+export default function AnnualReport({ auth }) {
+  const [selectedYear, setSelectedYear] = useState("");
+
+  const handleYearChange = (date) => {
+    setSelectedYear(date);
+  };
+
+  const handleSubmission = () => {
+    axios
+      .post(route("admin.annual_reports.create"), {
+        data: { year: selectedYear, user: auth.user.id },
+      })
+      .then((data) => console.log(data));
+  };
+
   return (
     <PanelLayout
       layout={LayoutType.SUPER_ADMIN}
@@ -12,7 +28,12 @@ export default function AnnualReport() {
     >
       <div className="content-wrapper">
         <div className="bg-white p-6">
-          <button className="transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md">
+          <button
+            onClick={() => {
+              handleSubmission();
+            }}
+            className="transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
+          >
             General annual report
           </button>
           <div className="flex bg-white flex-col">
@@ -20,8 +41,8 @@ export default function AnnualReport() {
               <p className="font-bold">Select Date</p>
             </div>
             <DatePicker
-              // selected={selectedYear}
-              // onChange={handleYearChange}
+              selected={selectedYear}
+              onChange={handleYearChange}
               dateFormat="yyyy"
               showYearPicker
               scrollableYearDropdown
