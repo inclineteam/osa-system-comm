@@ -1,9 +1,14 @@
-import PanelLayout from "@/Layouts/PanelLayout";
+import FileIcon from "@/Components/FileIcon";
+import PanelLayout, { LayoutType } from "@/Layouts/PanelLayout";
 import dayjs from "dayjs";
 
 export default function ForReviewReports({ auth, reportsForRejected }) {
   return (
-    <PanelLayout userAuth={auth} defaultActiveLink="User Events History">
+    <PanelLayout
+      layout={LayoutType.ADMIN}
+      pageTitle="Reports | For review"
+      defaultActiveLink="for_rejected"
+    >
       <div className="content-wrapper">
         <div className="p-4 border-b border-slate-300 rounded-lg shadow-sm bg-white">
           <h1 className="text-xl font-bold mb-2 leading-none">For rejected</h1>

@@ -268,4 +268,24 @@ class ReportController extends Controller
     
         return response()->json(['data' => $data]);
     }
+
+    public function rejectReport(Request $request) {
+        $report = Report::where('id', $request->report_id)->first(); 
+        
+        $report->status = 'Rejected';
+        if($report->save()) {
+            return redirect()->route('admin.reports.for-review')->setStatusCode(303)->with('success', 'Rejected report');
+        }
+
+    }
+
+    public function approveReport(Request $request) {
+        $report = Report::where('id', $request->report_id)->first(); 
+        
+        $report->status = 'Approved';
+        if($report->save()) {
+            return redirect()->back()->with("success", 'Approved report');
+        }
+
+    }
 }

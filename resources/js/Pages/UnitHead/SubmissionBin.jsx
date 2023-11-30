@@ -164,32 +164,34 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
                   </div>
                   {files &&
                     files.length > 0 &&
-                    (report?.is_submitted ? (
-                      <Button
+                    (!report?.is_submitted || report.status === "Rejected" ? (
+                      <Link
+                        as="button"
+                        type="button"
+                        method="patch"
+                        href={route("reports.submit", { id: submissionBin.id })}
+                        className="transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md w-full"
+                      >
+                        {report.status === "Rejected"
+                          ? "Resubmit Report"
+                          : "Submit Report"}
+                      </Link>
+                    ) : (
+                      <Link
                         disabled={
                           report.status != "Pending" &&
                           report.status != "Rejected"
                         }
-                        variant="secondary"
-                        as={Link}
+                        as="button"
+                        type="button"
                         method="patch"
                         href={route("reports.unsubmit", {
                           id: submissionBin.id,
                         })}
-                        className="col-12 rounded-1 mt-2"
+                        className="w-full transition bg-rose-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-rose-400 rounded-md"
                       >
-                        <small>Unsubmit</small>
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="primary"
-                        as={Link}
-                        method="patch"
-                        href={route("reports.submit", { id: submissionBin.id })}
-                        className="col-12 rounded-1 mt-2"
-                      >
-                        <small>Submit Report</small>
-                      </Button>
+                        Unsubmit
+                      </Link>
                     ))}
                 </div>
               </Card.Body>

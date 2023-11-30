@@ -106,9 +106,8 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
         Route::get('/reports/{submission_bin_id}/view', [AdminController::class, 'viewReports'])->name('admin.reports.view');
         Route::get('/reports/{campus_id}/{designation_id}/view/filtered', [AdminController::class, 'viewFilteredReports'])->name('admin.reports.view.filtered');
         Route::get('/reports/unit-head/{report_id}/view', [AdminController::class, 'viewReport'])->name('admin.report.open');
-        Route::get('/reports/for-review', [ReportController::class, 'forReview'])->name('admin.reports.for-review');
-        Route::get('/reports/for-rejected', [ReportController::class, 'forRejected'])->name('admin.reports.for-rejected');
-        Route::get('/reports/for-requested', [ReportController::class, 'forRequested'])->name('admin.reports.for-requested');
+        Route::get('/reports/for-review', [ReportController::class, 'forReview'])->name('admin.reports.for-review')->middleware('role:admin');
+        Route::get('/reports/for-rejected', [ReportController::class, 'forRejected'])->name('admin.reports.for-rejected')->middleware('role:admin');
     });
     // user_events_history
     Route::get('/user-events', function () {

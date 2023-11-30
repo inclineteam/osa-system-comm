@@ -1,5 +1,7 @@
 import FileIcon from "@/Components/FileIcon";
-import PanelLayout from "@/Layouts/PanelLayout";
+import PanelLayout, { LayoutType } from "@/Layouts/PanelLayout";
+import { Link, router } from "@inertiajs/react";
+import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { Accordion, Card } from "react-bootstrap";
@@ -8,7 +10,11 @@ export default function ForReviewReports({ auth, reportsForReview }) {
   const campuses = Object.keys(reportsForReview);
 
   return (
-    <PanelLayout userAuth={auth} pageTitle="Reports | For review">
+    <PanelLayout
+      layout={LayoutType.ADMIN}
+      pageTitle="Reports | For review"
+      defaultActiveLink="for_review"
+    >
       <div className="content-wrapper">
         <div className="p-4 border-b border-slate-300 rounded-lg shadow-sm bg-white">
           <h1 className="text-xl font-bold mb-2 leading-none">For review</h1>
@@ -125,10 +131,31 @@ export default function ForReviewReports({ auth, reportsForReview }) {
                                   <div className="flex items-center justify-between mt-6 space-x-2">
                                     <div></div>
                                     <div className="space-x-2">
-                                      <button className="transition bg-rose-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-rose-400 rounded-md">
+                                      <button
+                                        onClick={() => {
+                                          router.patch(
+                                            route("report.action.reject", {
+                                              report_id: report.id,
+                                            })
+                                          );
+                                        }}
+                                        className="transition bg-rose-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-rose-400 rounded-md"
+                                      >
                                         Reject
                                       </button>
-                                      <button className="transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md">
+                                      <button
+                                        onClick={() => {
+                                          router.patch(
+                                            route("report.action.approve", {
+                                              report_id: report.id,
+                                            })
+                                          );
+                                        }}
+                                        href={route("report.action.approve", {
+                                          report_id: report.id,
+                                        })}
+                                        className="transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
+                                      >
                                         Approve
                                       </button>
                                     </div>
