@@ -89,7 +89,7 @@ Route::prefix('/reports')->group(function () {
     Route::get('/all/per-campus', [ReportController::class, 'getReportsPerCampus'])->name('reports.per_campus.index');
 });
 
-Route::prefix('/report')->middleware(['auth', 'role:admin'])->group(function () {
+Route::prefix('/report')->group(function () {
     Route::patch('/{report_id}/reject', [ReportController::class, 'rejectReport'])->name('report.action.reject');
     Route::patch('/{report_id}/approve', [ReportController::class, 'approveReport'])->name('report.action.approve');
 });

@@ -274,7 +274,7 @@ class ReportController extends Controller
         
         $report->status = 'Rejected';
         if($report->save()) {
-            return redirect()->route('admin.reports.for-review')->setStatusCode(303)->with('success', 'Rejected report');
+            return response()->json(["message" => 'Rejected report']);
         }
 
     }
@@ -284,7 +284,7 @@ class ReportController extends Controller
         
         $report->status = 'Approved';
         if($report->save()) {
-            return redirect()->back()->with("success", 'Approved report');
+            return response()->json(["message" => 'Approved report']);
         }
 
     }

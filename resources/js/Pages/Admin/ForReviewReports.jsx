@@ -5,9 +5,37 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { Accordion, Card } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 export default function ForReviewReports({ auth, reportsForReview }) {
   const campuses = Object.keys(reportsForReview);
+
+  const approveReport = async (id) => {
+    const res = await axios.patch(
+      route("report.action.approve", {
+        report_id: id,
+      })
+    );
+    if (res.data.message) {
+      router.reload();
+      toast.success(res.data.message);
+    }
+    return;
+  };
+
+  const rejectReport = async (id) => {
+    const res = await axios.patch(
+      route("report.action.reject", {
+        report_id: id,
+      })
+    );
+
+    if (res.data.message) {
+      router.reload();
+      toast.success(res.data.message);
+    }
+    return;
+  };
 
   return (
     <PanelLayout
@@ -132,28 +160,13 @@ export default function ForReviewReports({ auth, reportsForReview }) {
                                     <div></div>
                                     <div className="space-x-2">
                                       <button
-                                        onClick={() => {
-                                          router.patch(
-                                            route("report.action.reject", {
-                                              report_id: report.id,
-                                            })
-                                          );
-                                        }}
+                                        onClick={() => rejectReport(report.id)}
                                         className="transition bg-rose-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-rose-400 rounded-md"
                                       >
                                         Reject
                                       </button>
                                       <button
-                                        onClick={() => {
-                                          router.patch(
-                                            route("report.action.approve", {
-                                              report_id: report.id,
-                                            })
-                                          );
-                                        }}
-                                        href={route("report.action.approve", {
-                                          report_id: report.id,
-                                        })}
+                                        onClick={() => approveReport(report.id)}
                                         className="transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
                                       >
                                         Approve
