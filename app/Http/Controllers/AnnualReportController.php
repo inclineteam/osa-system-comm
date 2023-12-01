@@ -82,6 +82,11 @@ class AnnualReportController extends Controller
         try {
             $reports = AnnualReport::all();
 
+            foreach ($reports as $report) {
+                $report->generated_by = $report->generatedBy;
+                $report->data = json_decode($report->data);
+            }
+
             return response()->json(['reports' => $reports]);
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Reports not found!']);
@@ -101,12 +106,13 @@ class AnnualReportController extends Controller
     }
 
     // delete report
-    public function delete($id)
+    public function deleteAnnualReport($id)
     {
         try {
-            $report = AnnualReport::find($id);
 
+            $report = AnnualReport::find($id);
             $report->delete();
+            $report->save();
 
             return response()->json(['message' => 'Report deleted successfully!']);
         } catch (\Throwable $th) {

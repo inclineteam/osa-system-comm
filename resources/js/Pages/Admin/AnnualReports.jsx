@@ -1,13 +1,26 @@
-import CustomYearInput from "@/Components/CustomYearInput";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import PanelLayout, { LayoutType } from "@/Layouts/PanelLayout";
-import { useEffect } from "react";
-import { useState } from "react";
 import { Card } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function AnnualReport({ auth }) {
   const [selectedYear, setSelectedYear] = useState("");
+  const [reports, setReports] = useState({ data: [], loading: true });
+
+  useEffect(() => {
+    axios
+      .get(route("admin.annual_reports.index"))
+      .then((response) => {
+        const responseData = response.data || {};
+        setReports({ data: responseData.reports || [], loading: false });
+      })
+      .catch((error) => {
+        console.error("Error fetching reports:", error);
+        setReports({ data: [], loading: false });
+      });
+  }, []);
 
   const handleYearChange = (date) => {
     setSelectedYear(date);
@@ -18,7 +31,8 @@ export default function AnnualReport({ auth }) {
       .post(route("admin.annual_reports.create"), {
         data: { year: selectedYear, user: auth.user.id },
       })
-      .then((data) => console.log(data));
+      .then((data) => console.log(data))
+      .catch((error) => console.error("Error submitting report:", error));
   };
 
   return (
@@ -29,9 +43,7 @@ export default function AnnualReport({ auth }) {
       <div className="content-wrapper">
         <div className="bg-white p-6">
           <button
-            onClick={() => {
-              handleSubmission();
-            }}
+            onClick={() => handleSubmission()}
             className="transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
           >
             General annual report
@@ -46,7 +58,7 @@ export default function AnnualReport({ auth }) {
               dateFormat="yyyy"
               showYearPicker
               scrollableYearDropdown
-              yearDropdownItemNumber={10} // Adjust the number of visible years in the dropdown
+              yearDropdownItemNumber={10}
             />
           </div>
 
@@ -61,12 +73,64 @@ export default function AnnualReport({ auth }) {
             </thead>
 
             <tbody>
-              <tr className="[&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-4 [&>td]:py-2.5">
-                <td>2023</td>
-                <td>John Aeron</td>
-                <td>Dummy</td>
-                <td className="flex items-center">Delete Show</td>
-              </tr>
+              {reports.loading ? (
+                <tr className="text-center">
+                  <td colSpan="4">Loading...</td>
+                </tr>
+              ) : reports.data.length === 0 ? (
+                <tr className="text-center">
+                  <td colSpan="4">No reports available.</td>
+                </tr>
+              ) : (
+                reports.data.map((report) => (
+                  <tr
+                    key={report.id}
+                    className="[&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-4 [&>td]:py-2.5"
+                  >
+                    <td>
+                      {new Date(report.created_at).toLocaleDateString("en-US", {
+                        year: "numeric",
+                      })}
+                    </td>
+                    <td>
+                      {report.generated_by.firstname}{" "}
+                      {report.generated_by.lastname}
+                    </td>
+                    <td>{report.generated_at}</td>
+                    <td className="flex items-center">
+                      <a
+                        href={route("admin.annual_reports.show", report.id)}
+                        className="transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
+                      >
+                        Show
+                      </a>
+                      <a
+                        onClick={() => {
+                          setReports({
+                            data: reports.data.filter(
+                              (data) => data.id !== report.id
+                            ),
+                            loading: true,
+                          });
+                          axios
+                            .delete(
+                              route("admin.annual_reports.delete", report.id)
+                            )
+                            .then((data) => {
+                              setReports({
+                                data: data.data.reports,
+                                loading: false,
+                              });
+                            });
+                        }}
+                        className="transition bg-red-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-red-400 rounded-md ml-2"
+                      >
+                        Delete
+                      </a>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

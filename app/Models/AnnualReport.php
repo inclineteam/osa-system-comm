@@ -14,4 +14,9 @@ class AnnualReport extends Model
         'generated_at',
         'data',
     ];
+
+    public function generatedBy()
+    {
+        return $this->belongsTo(User::class, 'generated_by');
+    }
 }

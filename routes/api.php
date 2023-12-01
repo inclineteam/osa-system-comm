@@ -142,7 +142,6 @@ Route::get('/reports/summary', [ReportController::class, 'summary'])->name('repo
 
 // api/admin/annual-reports
 Route::prefix('/admin/annual-reports')->group(function () {
-
     Route::get('/', [AnnualReportController::class, 'getAllAnnualReports'])->name('admin.annual_reports.index');
     Route::get('/{id}', [AnnualReportController::class, 'getAnnualReport'])->name('admin.annual_reports.show');
     Route::post('/', [AnnualReportController::class, 'generateReport'])->name('admin.annual_reports.create');
