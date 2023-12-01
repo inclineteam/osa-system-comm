@@ -48,16 +48,20 @@ const NotificationsDropdown = () => {
   );
 
   const markAsRead = () => {
-    axios.patch(route("notifications.read", auth.user.id)).then((res) => {
-      console.log(res);
-      if (res.data.success) {
-        let count = notifications.length;
-        toast.success(
-          count + (count > 1 ? " items were" : " item was") + " marked as read!"
-        );
-        setNotifications([]);
-      }
-    });
+    axios
+      .patch(route("notifications.read.general", auth.user.id))
+      .then((res) => {
+        console.log(res);
+        if (res.data.success) {
+          let count = notifications.length;
+          toast.success(
+            count +
+              (count > 1 ? " items were" : " item was") +
+              " marked as read!"
+          );
+          setNotifications([]);
+        }
+      });
   };
 
   return (
