@@ -9,6 +9,8 @@ import Viewables from "@/constants/viewables.json";
 import FileIcon from "./FileIcon";
 import NavDownloadable from "./NavDownloadable";
 import NavViewable from "./NavViewable";
+import ModalComponent from "./ModalComponent";
+import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 // import listReactFiles from 'list-react-files'
 
 const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
@@ -233,7 +235,46 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
     console.log("updated navbar");
   };
 
-  return <SidebarComponent isActive={isActive} activeLink={activeLink} />;
+  return (
+    <>
+      <ModalComponent
+        className={"rounded-0 bg-transparent"}
+        bodyClassname="p-0 overflow-hidden"
+        show={showFileModal}
+        handleClose={() => {
+          setShowFileModal((s) => !s);
+        }}
+        closeButton
+        title={selectedFile?.name}
+        size="fullscreen"
+      >
+        <hr className="my-1" />
+        {selectedFile && (
+          <DocViewer
+            style={{ maxHeight: "100% !important", height: "100%" }}
+            pluginRenderers={DocViewerRenderers}
+            documents={[{ uri: selectedFile.uri }]}
+            config={{
+              zoom: 0.5,
+              header: {
+                disableHeader: true,
+              },
+            }}
+            theme={{
+              primary: "#5296d8",
+              secondary: "#ffffff",
+              tertiary: "#5296d899",
+              text_primary: "#ffffff",
+              text_secondary: "#5296d8",
+              text_tertiary: "#00000099",
+              disableThemeScrollbar: false,
+            }}
+          />
+        )}
+      </ModalComponent>
+      <SidebarComponent isActive={isActive} activeLink={activeLink} />;
+    </>
+  );
 };
 
 export default SuperAdminSidebar;
