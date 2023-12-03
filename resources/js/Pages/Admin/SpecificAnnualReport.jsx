@@ -13,7 +13,10 @@ export default function AnnualReport({ report }) {
           {Object.entries(report.data).map(([location, data]) => (
             <div key={location} className="mb-10">
               <h4>{location}</h4>
-              <p>Total Overall Reports From All Offices - {data.total}</p>
+              <p>
+                Total Overall Reports From All Offices in All quarters -{" "}
+                {data.total}
+              </p>
               {/* check length of data.quarters */}
               {Object.entries(data.quarters).map(([quarter, quarterData]) => (
                 <div key={quarter}>
@@ -28,6 +31,7 @@ export default function AnnualReport({ report }) {
                       : quarter + "th"}{" "}
                     Quarter
                   </p>
+                  <p>Total Reports this quarter - {quarterData.total}</p>
                   {/* quarterData.offices */}
                   <table className="m-2">
                     <thead>
