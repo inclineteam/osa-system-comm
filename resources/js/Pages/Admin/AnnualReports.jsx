@@ -4,6 +4,7 @@ import PanelLayout, { LayoutType } from "@/Layouts/PanelLayout";
 import { Card } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { toast } from "react-toastify";
 
 export default function AnnualReport({ auth }) {
   const [selectedYear, setSelectedYear] = useState("");
@@ -27,11 +28,24 @@ export default function AnnualReport({ auth }) {
   };
 
   const handleSubmission = () => {
+    // check if selectedYear is empty
+    if (!selectedYear) {
+      toast.error("Please select a year.");
+      return;
+    }
+
     axios
       .post(route("admin.annual_reports.create"), {
-        data: { year: selectedYear, user: auth.user.id },
+        data: {
+          year: selectedYear.getFullYear(),
+          user: auth.user.id,
+        },
       })
-      .then((data) => console.log(data))
+      .then((data) => {
+        // reloadpage
+        toast.success("Report successfully generated.");
+        window.location.reload();
+      })
       .catch((error) => console.error("Error submitting report:", error));
   };
 
@@ -44,13 +58,13 @@ export default function AnnualReport({ auth }) {
         <div className="bg-white p-6">
           <button
             onClick={() => handleSubmission()}
-            className="transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
+            className="transition bg-indigo-600 mb-3 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
           >
             General annual report
           </button>
           <div className="flex bg-white flex-col">
             <div>
-              <p className="font-bold">Select Date</p>
+              <p className="font-bold">Select Year</p>
             </div>
             <DatePicker
               selected={selectedYear}
@@ -75,11 +89,15 @@ export default function AnnualReport({ auth }) {
             <tbody>
               {reports.loading ? (
                 <tr className="text-center">
-                  <td colSpan="4">Loading...</td>
+                  <td colSpan="4" className="p-3">
+                    Loading...
+                  </td>
                 </tr>
               ) : reports.data.length === 0 ? (
                 <tr className="text-center">
-                  <td colSpan="4">No reports available.</td>
+                  <td colSpan="4" className="p-3">
+                    No reports available.
+                  </td>
                 </tr>
               ) : (
                 reports.data.map((report) => (
@@ -99,7 +117,7 @@ export default function AnnualReport({ auth }) {
                     <td>{report.generated_at}</td>
                     <td className="flex items-center">
                       <a
-                        href={route("admin.annual_reports.show", report.id)}
+                        href={route("admin.annual_reports.specific", report.id)}
                         className="transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
                       >
                         Show
@@ -112,13 +130,17 @@ export default function AnnualReport({ auth }) {
                             ),
                             loading: true,
                           });
+
                           axios
                             .delete(
                               route("admin.annual_reports.delete", report.id)
                             )
-                            .then((data) => {
+                            .then(() => {
+                              toast.success("Report successfully deleted.");
                               setReports({
-                                data: data.data.reports,
+                                data: reports.data.filter(
+                                  (data) => data.id !== report.id
+                                ),
                                 loading: false,
                               });
                             });

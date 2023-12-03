@@ -74,10 +74,10 @@ Route::prefix('/admin')->group(function () {
 
 Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
     Route::get('/reminders', [AdminController::class, 'reminders'])->name('admin.reminders');
-    Route::get('/generated-reports-annually', [AnnualReportController::class, function() {
+    Route::get('/generated-reports-annually', [AnnualReportController::class, function () {
         return Inertia::render('Admin/AnnualReports');
     }])->name('admin.generated-reports');
-    Route::get('/generated-reports-annually/{id}', [AnnualReportController::class, function() {
+    Route::get('/generated-reports-annually/{id}', [AnnualReportController::class, function () {
         return Inertia::render('Admin/SpecificAnnualReport');
     }])->name('admin.generated-reports.specific');
     Route::get('/calendar', [CalendarEventController::class, 'index'])->name('calendar')->middleware(['auth']);
@@ -109,6 +109,8 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
         Route::get('/reports/for-review', [ReportController::class, 'forReview'])->name('admin.reports.for-review')->middleware('role:admin');
         Route::get('/reports/for-rejected', [ReportController::class, 'forRejected'])->name('admin.reports.for-rejected')->middleware('role:admin');
     });
+    // annual-reports
+    Route::get('/annual-reports/{id}', [AnnualReportController::class, 'index'])->name('admin.annual_reports.specific');
     // user_events_history
     Route::get('/user-events', function () {
         // get all user events

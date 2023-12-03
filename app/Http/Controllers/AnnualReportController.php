@@ -6,9 +6,27 @@ use App\Models\AnnualReport;
 use App\Models\Campus;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AnnualReportController extends Controller
 {
+    public function index($id)
+    {
+        $report = AnnualReport::find($id);
+
+        $report->data = json_decode($report->data);
+
+        // convert data to array
+        $report->data = (array) $report->data;
+
+        return Inertia::render(
+            'Admin/SpecificAnnualReport',
+            [
+                'report' => $report,
+            ]
+        );
+    }
+
     public function generateReport(Request $request)
     {
         try {
@@ -23,6 +41,7 @@ class AnnualReportController extends Controller
 
                 $data[$campus->name] = [
                     'total' => 0,
+                    'quarters' => []
                 ];
 
                 $reports = User::where('campus_id', $campus->id)->get();
@@ -40,12 +59,12 @@ class AnnualReportController extends Controller
                     $quarter = ceil($report->created_at->format('m') / 3);
 
                     // initialize $data array
-                    $data[$campus->name][$quarter] = [
+                    $data[$campus->name]["quarters"][$quarter] = [
                         'total' => 0,
                         'offices' => []
                     ];
 
-                    $data[$campus->name][$quarter]['total'] += $report->reports->count();
+                    $data[$campus->name]["quarters"][$quarter]['total'] += $report->reports->count();
 
                     // overall total
                     $data[$campus->name]['total'] += $report->reports->count();
@@ -53,8 +72,8 @@ class AnnualReportController extends Controller
                     // check if report has a designation
                     if ($report->designation) {
                         // check if isset
-                        $data[$campus->name][$quarter]['offices'][$report->designation->name] =
-                            ($data[$campus->name][$quarter]['offices'][$report->designation->name] ?? 0) +
+                        $data[$campus->name]["quarters"][$quarter]['offices'][$report->designation->name] =
+                            ($data[$campus->name]["quarters"][$quarter]['offices'][$report->designation->name] ?? 0) +
                             $report->reports->count();
                     }
                 }
@@ -62,7 +81,7 @@ class AnnualReportController extends Controller
 
             // get current logged in user
 
-            AnnualReport::create([
+            $annualReport = AnnualReport::create([
                 'generated_by' => $user->id,
                 'generated_at' => now(),
                 'data' => json_encode($data),
@@ -93,17 +112,17 @@ class AnnualReportController extends Controller
         }
     }
 
-    // get report
-    public function getAnnualReport($id)
-    {
-        try {
-            $report = AnnualReport::find($id);
+    // // get report
+    // public function getAnnualReport($id)
+    // {
+    //     try {
+    //         $report = AnnualReport::find($id);
 
-            return response()->json(['report' => $report]);
-        } catch (\Throwable $th) {
-            return response()->json(['message' => 'Report not found!']);
-        }
-    }
+    //         return response()->json(['report' => $report]);
+    //     } catch (\Throwable $th) {
+    //         return response()->json(['message' => 'Report not found!']);
+    //     }
+    // }
 
     // delete report
     public function deleteAnnualReport($id)
@@ -112,7 +131,6 @@ class AnnualReportController extends Controller
 
             $report = AnnualReport::find($id);
             $report->delete();
-            $report->save();
 
             return response()->json(['message' => 'Report deleted successfully!']);
         } catch (\Throwable $th) {
