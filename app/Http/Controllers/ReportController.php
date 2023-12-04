@@ -91,7 +91,7 @@ class ReportController extends Controller
             'event_name' => 'Remove Report Attachment',
             'campus_name' => $user->campus?->name,
             'office_name' => $user->designation?->name,
-            'description' => 'removed report attachment with id ' . $attachment_id
+            'description' => 'removed report attachment '
         ]);
 
         return response()->json(['success' => true]);
@@ -279,6 +279,13 @@ class ReportController extends Controller
 
         $report->status = 'Rejected';
         if ($report->save()) {
+            UserEventsHistory::create([
+                'user_name' => $request->user()->name(),
+                'event_name' => 'Reject Report',
+                'campus_name' => $request->user()->campus?->name,
+                'office_name' => $request->user()->designation?->name,
+                'description' => 'rejected a report '
+            ]);
             return response()->json(["message" => 'Rejected report']);
         }
     }
@@ -289,6 +296,13 @@ class ReportController extends Controller
 
         $report->status = 'Approved';
         if ($report->save()) {
+            UserEventsHistory::create([
+                'user_name' => $request->user()->name(),
+                'event_name' => 'Approve Report',
+                'campus_name' => $request->user()->campus?->name,
+                'office_name' => $request->user()->designation?->name,
+                'description' => 'approved a report '
+            ]);
             return response()->json(["message" => 'Approved report']);
         }
     }
