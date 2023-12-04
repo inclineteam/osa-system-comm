@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 
 export default function UserEventsHistory({ auth, userEvents }) {
   return (
-    <PanelLayout userAuth={auth} defaultActiveLink="User Events History">
+    <PanelLayout userAuth={auth} defaultActiveLink="user events history">
       <div className="content-wrapper">
         <div className="p-4 border-b border-slate-300 rounded-lg shadow-sm bg-white">
           <h1 className="text-xl font-bold mb-2 leading-none">
