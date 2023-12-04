@@ -31,7 +31,7 @@ class AnnualReportController extends Controller
     {
         try {
             // get report data
-
+            $data = [];
             $year = $request['data']['year'];
             $user = User::find($request['data']['user']);
 
@@ -59,12 +59,16 @@ class AnnualReportController extends Controller
                     $quarter = ceil($report->created_at->format('m') / 3);
 
                     // initialize $data array
-                    $data[$campus->name]["quarters"][$quarter] = [
-                        'total' => 0,
-                        'offices' => []
-                    ];
+                    // $data[$campus->name]["quarters"][$quarter] = [
+                    //     'total' => 0,
+                    //     'offices' => []
+                    // ];
 
-                    $data[$campus->name]["quarters"][$quarter]['total'] += $report->reports->count();
+                    if (isset($data[$campus->name]["quarters"][$quarter]['total'])) {
+                        $data[$campus->name]["quarters"][$quarter]['total'] += $report->reports->count();
+                    } else {
+                        $data[$campus->name]["quarters"][$quarter]['total'] = $report->reports->count();
+                    }
 
                     // overall total
                     $data[$campus->name]['total'] += $report->reports->count();
@@ -72,9 +76,16 @@ class AnnualReportController extends Controller
                     // check if report has a designation
                     if ($report->designation) {
                         // check if isset
-                        $data[$campus->name]["quarters"][$quarter]['offices'][$report->designation->name] =
-                            ($data[$campus->name]["quarters"][$quarter]['offices'][$report->designation->name] ?? 0) +
-                            $report->reports->count();
+                        if (isset($data[$campus->name]["quarters"][$quarter]['offices'])) {
+                            $data[$campus->name]["quarters"][$quarter]['offices'][$report->designation->name] =
+                                ($data[$campus->name]["quarters"][$quarter]['offices'][$report->designation->name] ?? 0) +
+                                $report->reports->count();
+                        } else {
+                            $data[$campus->name]["quarters"][$quarter]['offices'] = [];
+                            $data[$campus->name]["quarters"][$quarter]['offices'][$report->designation->name] =
+                                ($data[$campus->name]["quarters"][$quarter]['offices'][$report->designation->name] ?? 0) +
+                                $report->reports->count();
+                        }
                     }
                 }
             }

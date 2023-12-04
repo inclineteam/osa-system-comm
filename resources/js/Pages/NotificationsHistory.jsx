@@ -59,7 +59,7 @@ export default function NotificationsHistory({ auth, userNotifications }) {
             </div>
           ) : (
             <div className="text-sm py-10 text-center rounded-lg text-slate-500 border-2 border-dashed border-slate-200">
-              There's no user events
+              There's no notification to show
             </div>
           )}
         </div>

@@ -163,7 +163,7 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
             {
               type: NavType.LINK,
               text: "Generated reports annually",
-              href: route("admin.feedbacks"),
+              href: route("admin.generated-reports"),
               urlPath: "generated_reports_annually",
             },
           ],
