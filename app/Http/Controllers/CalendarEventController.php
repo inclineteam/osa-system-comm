@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CalendarEvent;
+use App\Models\User;
 use App\Models\UserEventsHistory;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -30,11 +31,12 @@ class CalendarEventController extends Controller
         $newEvent->save();
 
         if ($request->expectsJson()) {
+            $user = User::find($request->user_id);
             UserEventsHistory::create([
-                'user_name' => $request->user()->name(),
+                'user_name' => $user->name,
                 'event_name' => 'Create Calendar Event',
-                'campus_name' => $request->user()->campus?->name,
-                'office_name' => $request->user()->designation?->name,
+                'campus_name' => $user->campus?->name,
+                'office_name' => $user->designation?->name,
                 'description' => 'created a calendar event with title ' . $request->title
             ]);
             return response()->json(['event' => $newEvent]);
