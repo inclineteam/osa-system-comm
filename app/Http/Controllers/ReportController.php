@@ -56,7 +56,7 @@ class ReportController extends Controller
         $file = $request->file('file');
         $fileName = $file->getClientOriginalName();
         $file->move(public_path('reports'), $fileName);
-        $fileUrl = "/reports/" .  $fileName;
+        $fileUrl = "/reports/" . $fileName;
 
         // create report attachment
         $attachment = ReportAttachment::create([
@@ -197,23 +197,27 @@ class ReportController extends Controller
     public function forReview(Request $request)
     {
         $campuses = Campus::all();
-        $reportsForReview = Report::where('status', 'Pending')->with(['unitHead', 'submission_bin'])->get();
 
-        foreach ($campuses as $key => $campus) {
-            $data['reportsForReview'][$campus->name] = [
-                'offices' => []
-            ];
-        }
+        return Inertia::render('Admin/ForReviewReports', ['campuses' => $campuses]);
+    }
 
-        foreach ($reportsForReview as $key => $report) {
-            if (isset($data['reportsForReview'][$report->unitHead->campus->name]['offices'][$report->unitHead->designation->name])) {
-                $data['reportsForReview'][$report->unitHead->campus->name]['offices'][$report->unitHead->designation->name][] = $report;
-            } else {
-                $data['reportsForReview'][$report->unitHead->campus->name]['offices'][$report->unitHead->designation->name][] = $report;
+    public function campusForReview(Request $request)
+    {
+        $data = [];
+        $reports = Report::where('status', 'Pending')->with(['unitHead', 'submission_bin'])->get();
+        $data['campus'] = $request->campus;
+
+        foreach ($reports as $report) {
+            if ($request->campus === $report->unitHead->campus->name) {
+                $data['offices'][$report->unitHead->designation->name][] = $report;
             }
         }
 
-        return Inertia::render('Admin/ForReviewReports', $data);
+        if (!isset($data['offices'])) {
+            $data['offices'] = [];
+        }
+
+        return Inertia::render('Admin/CampusForReviewReports', $data);
     }
 
     public function forRequested(Request $request)
@@ -275,13 +279,6 @@ class ReportController extends Controller
 
         $report->status = 'Rejected';
         if ($report->save()) {
-            UserEventsHistory::create([
-                'user_name' => $request->user()->name(),
-                'event_name' => 'Reject Report',
-                'campus_name' => $request->user()->campus?->name,
-                'office_name' => $request->user()->designation?->name,
-                'description' => 'rejected a report '
-            ]);
             return response()->json(["message" => 'Rejected report']);
         }
     }
@@ -292,14 +289,14 @@ class ReportController extends Controller
 
         $report->status = 'Approved';
         if ($report->save()) {
-            UserEventsHistory::create([
-                'user_name' => $request->user()->name(),
-                'event_name' => 'Approve Report',
-                'campus_name' => $request->user()->campus?->name,
-                'office_name' => $request->user()->designation?->name,
-                'description' => 'approved a report '
-            ]);
             return response()->json(["message" => 'Approved report']);
         }
+    }
+
+    public function showChecklist()
+    {
+        $reports = Report::with(['unitHead', 'submission_bin'])->get();
+
+        return Inertia::render('Admin/UnitHeadReportsChecklist', ['reports' => $reports]);
     }
 }

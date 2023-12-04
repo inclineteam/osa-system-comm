@@ -3,23 +3,22 @@ import { Card, Col, Row } from "react-bootstrap";
 import { usePage } from "@inertiajs/react";
 import CalendarCard from "./CalendarCard";
 import AnnouncementsCard from "./AnnouncementsCard";
+import Chart from "./Chart";
 
 const AdminDashboard = ({}) => {
   const { auth } = usePage().props;
   return (
     <Row className="gy-3">
-      <Col lg={4}>
-        {/* <DashboardCard
-                        subLabel='Unit Heads'
-                        label={auth.user.campus.name}
-                        icon={<i className='fi fi-rr-user'></i>}
-                        value={0}
-                        variant='success'
-                    /> */}
-        <AnnouncementsCard className="" />
-      </Col>
       <Col>
-        <CalendarCard expandButton />
+        <Row>
+          <Chart />
+        </Row>
+        <Row>
+          <CalendarCard expandButton />
+        </Row>
+      </Col>
+      <Col lg={4}>
+        <AnnouncementsCard className="" />
       </Col>
     </Row>
   );

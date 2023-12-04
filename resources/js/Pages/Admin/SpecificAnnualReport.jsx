@@ -14,7 +14,7 @@ export default function AnnualReport({ report }) {
             <div key={location} className="mb-10">
               <h4>{location}</h4>
               <p>
-                Total Overall Reports From All Offices in All quarters -{" "}
+                Total overall reports from all offices in all quarters -{" "}
                 {data.total}
               </p>
               {/* check length of data.quarters */}
@@ -33,7 +33,7 @@ export default function AnnualReport({ report }) {
                   </p>
                   <p>Total Reports this quarter - {quarterData.total}</p>
                   {/* quarterData.offices */}
-                  <table className="m-2">
+                  <table className="m-2 w-full">
                     <thead>
                       <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-4 [&>th]:py-2 border-b [&>th]:text-sm [&>th]:font-bold">
                         <th>Office</th>

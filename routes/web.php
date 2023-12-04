@@ -74,12 +74,18 @@ Route::prefix('/admin')->group(function () {
 
 Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
     Route::get('/reminders', [AdminController::class, 'reminders'])->name('admin.reminders');
-    Route::get('/generated-reports-annually', [AnnualReportController::class, function () {
-        return Inertia::render('Admin/AnnualReports');
-    }])->name('admin.generated-reports');
-    Route::get('/generated-reports-annually/{id}', [AnnualReportController::class, function () {
-        return Inertia::render('Admin/SpecificAnnualReport');
-    }])->name('admin.generated-reports.specific');
+    Route::get('/generated-reports-annually', [
+        AnnualReportController::class,
+        function () {
+            return Inertia::render('Admin/AnnualReports');
+        }
+    ])->name('admin.generated-reports');
+    Route::get('/generated-reports-annually/{id}', [
+        AnnualReportController::class,
+        function () {
+            return Inertia::render('Admin/SpecificAnnualReport');
+        }
+    ])->name('admin.generated-reports.specific');
     Route::get('/calendar', [CalendarEventController::class, 'index'])->name('calendar')->middleware(['auth']);
     Route::get('/signout', [AdminController::class, 'signout'])->name('admin.signout');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
@@ -107,6 +113,8 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
         Route::get('/reports/{campus_id}/{designation_id}/view/filtered', [AdminController::class, 'viewFilteredReports'])->name('admin.reports.view.filtered');
         Route::get('/reports/unit-head/{report_id}/view', [AdminController::class, 'viewReport'])->name('admin.report.open');
         Route::get('/reports/for-review', [ReportController::class, 'forReview'])->name('admin.reports.for-review')->middleware('role:admin');
+        Route::get('/reports/checklist', [ReportController::class, 'showChecklist'])->name('admin.reports.checklist')->middleware('role:admin|super_admin');
+        Route::get('/reports/for-review/{campus}', [ReportController::class, 'campusForReview'])->name('admin.reports.for-review.campus')->middleware('role:admin');
         Route::get('/reports/for-rejected', [ReportController::class, 'forRejected'])->name('admin.reports.for-rejected')->middleware('role:admin');
     });
     // annual-reports

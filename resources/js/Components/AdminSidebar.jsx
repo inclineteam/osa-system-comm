@@ -108,13 +108,13 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
               type: NavType.LINK,
               text: "For Review",
               href: route("admin.reports.for-review"),
-              urlPath: "for_review",
+              urlPath: "for review",
             },
             {
               type: NavType.LINK,
               text: "For Rejected",
               href: route("admin.reports.for-rejected"),
-              urlPath: "for_rejected",
+              urlPath: "for rejected",
             },
           ],
         },
@@ -128,14 +128,14 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
               type: NavType.LINK,
               text: "User Events History",
               href: route("admin.user_events_history"),
-              urlPath: "user_events_history",
+              urlPath: "user events history",
             },
             // TODO: change to notification history link
             {
               type: NavType.LINK,
               text: "Notification history",
               href: route("admin.notifications_history"),
-              urlPath: "notification_history",
+              urlPath: "notification history",
             },
             {
               type: NavType.BUTTON,
@@ -156,15 +156,15 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
             {
               type: NavType.LINK,
               text: "Unit heads reports checklist",
-              href: route("admin.feedbacks"),
-              urlPath: "reports_checklist",
+              href: route("admin.reports.checklist"),
+              urlPath: "reports checklist",
             },
             // TODO: change to its correct url
             {
               type: NavType.LINK,
               text: "Generated reports annually",
               href: route("admin.generated-reports"),
-              urlPath: "generated_reports_annually",
+              urlPath: "generated reports annually",
             },
           ],
         },

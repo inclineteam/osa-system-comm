@@ -164,7 +164,8 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
                   </div>
                   {files &&
                     files.length > 0 &&
-                    (!report?.is_submitted || report.status === "Rejected" ? (
+                    (!report?.is_submitted ||
+                    (report?.status && report?.status === "Rejected") ? (
                       <Link
                         as="button"
                         type="button"
@@ -172,9 +173,14 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
                         href={route("reports.submit", { id: submissionBin.id })}
                         className="transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md w-full"
                       >
-                        {report.status === "Rejected"
+                        {!report?.status
+                          ? "Submit Report"
+                          : report?.status === "Rejected"
                           ? "Resubmit Report"
                           : "Submit Report"}
+                        {/* {!report.status || report.status === "Rejected"
+                          ? "Resubmit Report"
+                          : "Submit Report"} */}
                       </Link>
                     ) : (
                       <Link
