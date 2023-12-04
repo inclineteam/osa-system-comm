@@ -59,8 +59,6 @@ class CalendarEventController extends Controller
 
         $event->delete();
 
-        dd($request->all());
-
         $user = User::find($event->user_id);
 
         UserEventsHistory::create([
