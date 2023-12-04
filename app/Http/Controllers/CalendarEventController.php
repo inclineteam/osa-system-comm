@@ -59,12 +59,16 @@ class CalendarEventController extends Controller
 
         $event->delete();
 
+        dd($request->all());
+
+        $user = User::find($event->user_id);
+
         UserEventsHistory::create([
-            'user_name' => $request->user()->name(),
+            'user_name' => $user->name,
             'event_name' => 'Delete Calendar Event',
-            'campus_name' => $request->user()->campus?->name,
-            'office_name' => $request->user()->designation?->name,
-            'description' => 'deleted a calendar event with title ' . $event->title
+            'campus_name' => $user->campus?->name,
+            'office_name' => $user->designation?->name,
+            'description' => 'delete a calendar event with title ' . $event->title
         ]);
 
         return response()->json(['success' => true]);
