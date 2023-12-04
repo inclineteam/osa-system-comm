@@ -30,16 +30,23 @@ class CalendarEventController extends Controller
         $newEvent->save();
 
         if ($request->expectsJson()) {
+            UserEventsHistory::create([
+                'user_name' => $request->user()->name(),
+                'event_name' => 'Create Calendar Event',
+                'campus_name' => $request->user()->campus?->name,
+                'office_name' => $request->user()->designation?->name,
+                'description' => 'created a calendar event with title ' . $request->title
+            ]);
             return response()->json(['event' => $newEvent]);
         }
 
-        UserEventsHistory::create([
-            'user_name' => $request->user()->name(),
-            'event_name' => 'Create Calendar Event',
-            'campus_name' => $request->user()->campus?->name,
-            'office_name' => $request->user()->designation?->name,
-            'description' => 'created a calendar event with title ' . $request->title
-        ]);
+        // UserEventsHistory::create([
+        //     'user_name' => $request->user()->name(),
+        //     'event_name' => 'Create Calendar Event',
+        //     'campus_name' => $request->user()->campus?->name,
+        //     'office_name' => $request->user()->designation?->name,
+        //     'description' => 'created a calendar event with title ' . $request->title
+        // ]);
 
         return redirect()->back()->with('success', 'Successfully created!');
     }
