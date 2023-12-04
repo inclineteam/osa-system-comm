@@ -33,7 +33,7 @@ class CalendarEventController extends Controller
         if ($request->expectsJson()) {
             $user = User::find($request->user_id);
             UserEventsHistory::create([
-                'user_name' => $user->name,
+                'user_name' => $user->name(),
                 'event_name' => 'Create Calendar Event',
                 'campus_name' => $user->campus?->name,
                 'office_name' => $user->designation?->name,
@@ -62,7 +62,7 @@ class CalendarEventController extends Controller
         $user = User::find($event->user_id);
 
         UserEventsHistory::create([
-            'user_name' => $user->name,
+            'user_name' => $user->name(),
             'event_name' => 'Delete Calendar Event',
             'campus_name' => $user->campus?->name,
             'office_name' => $user->designation?->name,
