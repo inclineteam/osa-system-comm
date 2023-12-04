@@ -6,8 +6,8 @@ export default function ForReviewReports({ auth, reportsForRejected }) {
   return (
     <PanelLayout
       layout={LayoutType.ADMIN}
-      pageTitle="Reports | For review"
-      defaultActiveLink="for_rejected"
+      pageTitle="Reports | For rejected"
+      defaultActiveLink="for rejected"
     >
       <div className="content-wrapper">
         <div className="p-4 border-b border-slate-300 rounded-lg shadow-sm bg-white">

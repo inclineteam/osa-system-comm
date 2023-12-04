@@ -1,14 +1,7 @@
 import AdminDashboard from "@/Components/AdminDashboard";
-import ContentWrapper from "@/Components/ContentWrapper";
-import NavbarComponent from "@/Components/Navbar";
 import SuperAdminDashboard from "@/Components/SuperAdminDashboard";
 import UnitHeadDashboard from "@/Components/UnitHeadDashboard";
-import AppLayout from "@/Layouts/AppLayout";
-import PanelLayout, { LayoutType } from "@/Layouts/PanelLayout";
-import { useThemeState } from "@/States/States";
-import { Link, Head } from "@inertiajs/react";
-import { useEffect, useState } from "react";
-import { Alert, Card, Col, Row } from "react-bootstrap";
+import PanelLayout from "@/Layouts/PanelLayout";
 
 export default function Dashboard({ auth }) {
   return (

@@ -52,7 +52,7 @@ export default function AnnualReport({ auth }) {
   return (
     <PanelLayout
       layout={LayoutType.SUPER_ADMIN}
-      defaultActiveLink="generated_reports_annually"
+      defaultActiveLink="generated reports annually"
     >
       <div className="content-wrapper">
         <div className="bg-white p-6">
@@ -60,7 +60,7 @@ export default function AnnualReport({ auth }) {
             onClick={() => handleSubmission()}
             className="transition bg-indigo-600 mb-3 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
           >
-            General annual report
+            Generate annual report
           </button>
           <div className="flex bg-white flex-col">
             <div>
