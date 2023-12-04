@@ -71,7 +71,7 @@ class ReportController extends Controller
             'event_name' => 'Add Report',
             'campus_name' => $user->campus?->name,
             'office_name' => $user->designation?->name,
-            'description' => 'added report with title ' . "$report->title"
+            'description' => 'added a report '
         ]);
 
         return response()->json(['fileUrl' => $fileUrl, 'attachment' => $attachment]);
@@ -129,7 +129,7 @@ class ReportController extends Controller
                     'event_name' => 'Submit Report',
                     'campus_name' => $request->user()->campus?->name,
                     'office_name' => $request->user()->designation?->name,
-                    'description' => 'submitted report with title ' . "$report->title"
+                    'description' => 'submitted a report '
                 ]);
 
                 return redirect()->back()->with("success", 'Successfully submitted!');
@@ -151,7 +151,7 @@ class ReportController extends Controller
                     'event_name' => 'Unsubmit Report',
                     'campus_name' => $request->user()->campus?->name,
                     'office_name' => $request->user()->designation?->name,
-                    'description' => 'unsubmitted report with title ' . $report->title
+                    'description' => 'unsubmitted a report '
                 ]);
                 return redirect()->back();
             }
@@ -205,7 +205,7 @@ class ReportController extends Controller
             ];
         }
 
-        foreach($reportsForReview as $key => $report) {
+        foreach ($reportsForReview as $key => $report) {
             if (isset($data['reportsForReview'][$report->unitHead->campus->name]['offices'][$report->unitHead->designation->name])) {
                 $data['reportsForReview'][$report->unitHead->campus->name]['offices'][$report->unitHead->designation->name][] = $report;
             } else {
@@ -242,18 +242,18 @@ class ReportController extends Controller
     public function summary(Request $request)
     {
         $campuses = Campus::all();
-    
+
         foreach ($campuses as $key => $campus) {
             $data[$campus->name] = [
                 'total' => 0,
                 'offices' => []
             ];
-    
+
             $reports = User::where('campus_id', $campus->id)->get();
-    
+
             foreach ($reports as $key => $report) {
                 $data[$campus->name]['total'] += $report->reports->count();
-    
+
                 // check if report has a designation
                 if ($report->designation) {
                     // check if isset
@@ -265,27 +265,41 @@ class ReportController extends Controller
                 }
             }
         }
-    
+
         return response()->json(['data' => $data]);
     }
 
-    public function rejectReport(Request $request) {
-        $report = Report::where('id', $request->report_id)->first(); 
-        
+    public function rejectReport(Request $request)
+    {
+        $report = Report::where('id', $request->report_id)->first();
+
         $report->status = 'Rejected';
-        if($report->save()) {
+        if ($report->save()) {
+            UserEventsHistory::create([
+                'user_name' => $request->user()->name(),
+                'event_name' => 'Reject Report',
+                'campus_name' => $request->user()->campus?->name,
+                'office_name' => $request->user()->designation?->name,
+                'description' => 'rejected a report '
+            ]);
             return response()->json(["message" => 'Rejected report']);
         }
-
     }
 
-    public function approveReport(Request $request) {
-        $report = Report::where('id', $request->report_id)->first(); 
-        
+    public function approveReport(Request $request)
+    {
+        $report = Report::where('id', $request->report_id)->first();
+
         $report->status = 'Approved';
-        if($report->save()) {
+        if ($report->save()) {
+            UserEventsHistory::create([
+                'user_name' => $request->user()->name(),
+                'event_name' => 'Approve Report',
+                'campus_name' => $request->user()->campus?->name,
+                'office_name' => $request->user()->designation?->name,
+                'description' => 'approved a report '
+            ]);
             return response()->json(["message" => 'Approved report']);
         }
-
     }
 }

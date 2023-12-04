@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AnnualReport;
 use App\Models\Campus;
 use App\Models\User;
+use App\Models\UserEventsHistory;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -98,6 +99,14 @@ class AnnualReportController extends Controller
                 'data' => json_encode($data),
             ]);
 
+            UserEventsHistory::create([
+                'user_name' => $user->name(),
+                'event_name' => 'Generate Annual Report',
+                'campus_name' => $user->campus?->name,
+                'office_name' => $user->designation?->name,
+                'description' => 'Generated annual report for year ' . $year . '.',
+            ]);
+
             return response()->json(['message' => 'Report generated successfully!']);
         } catch (\Throwable $th) {
             dd($th);
@@ -123,25 +132,21 @@ class AnnualReportController extends Controller
         }
     }
 
-    // // get report
-    // public function getAnnualReport($id)
-    // {
-    //     try {
-    //         $report = AnnualReport::find($id);
-
-    //         return response()->json(['report' => $report]);
-    //     } catch (\Throwable $th) {
-    //         return response()->json(['message' => 'Report not found!']);
-    //     }
-    // }
-
     // delete report
-    public function deleteAnnualReport($id)
+    public function deleteAnnualReport(Request $request, $id)
     {
         try {
 
             $report = AnnualReport::find($id);
             $report->delete();
+
+            UserEventsHistory::create([
+                'user_name' => $request->user()->name(),
+                'event_name' => 'Delete Annual Report',
+                'campus_name' => $request->user()->campus?->name,
+                'office_name' => $request->user()->designation?->name,
+                'description' => 'Deleted annual report for year ' . $report->data->year . '.',
+            ]);
 
             return response()->json(['message' => 'Report deleted successfully!']);
         } catch (\Throwable $th) {
