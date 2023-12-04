@@ -101,13 +101,13 @@ const Reminders = ({ auth, reminders }) => {
                   <h1 className="text-xl font-bold mb-2 leading-none">
                     Posted reminders
                   </h1>
-                  <p className="leading-none mb-4 text-slate-500 text-sm">
+                  <p className="leading-none mb-4 text-slate-500">
                     Create, remove, edit, and check details about the reminders
                     you posted.
                   </p>
                 </div>
                 <Link
-                  href={route("admin.create_announcement")}
+                  href={route("admin.create_reminder")}
                   className="bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
                 >
                   <i className="bx bx-plus"></i>{" "}

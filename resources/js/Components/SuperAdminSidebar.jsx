@@ -125,11 +125,10 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
               urlPath: "notification history",
             },
             {
-              type: NavType.BUTTON,
+              type: NavType.LINK,
               text: "Feedback",
-              onClick: (e) => {
-                setShowFeedbackModal(true);
-              },
+              urlPath: "feedback",
+              href: route("admin.feedbacks"),
             },
           ],
         },
@@ -144,14 +143,14 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
               type: NavType.LINK,
               text: "Unit heads reports checklist",
               href: route("admin.reports.checklist"),
-              urlPath: "reports_checklist",
+              urlPath: "reports checklist",
             },
             // TODO: change to its correct url
             {
               type: NavType.LINK,
               text: "Generated reports annually",
               href: route("admin.generated-reports"),
-              urlPath: "generated_reports_annually",
+              urlPath: "generated reports annually",
             },
           ],
         },
