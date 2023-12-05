@@ -10,6 +10,12 @@ import dayjs from "dayjs";
 import { Link } from "@inertiajs/react";
 import Chart from "./Chart";
 
+export const statusColors = {
+  Approved: "bg-emerald-600",
+  Rejected: "bg-rose-600",
+  Pending: "bg-amber-600",
+};
+
 const SuperAdminDashboard = () => {
   const [campuses, setCampuses] = useState([]);
   const [fetchingCampus, setFetchingCampus] = useState(true);
@@ -37,12 +43,6 @@ const SuperAdminDashboard = () => {
     fetchCampuses();
     fetchLatestReport();
   }, []);
-
-  const statusColors = {
-    Approved: "bg-emerald-600",
-    Rejected: "bg-rose-600",
-    Pending: "bg-amber-600",
-  };
 
   return (
     <div>

@@ -14,7 +14,7 @@ export default function ForReviewReports({ campuses }) {
             For review reports
           </h1>
           <p className="border-b border-slate-200 pb-4 leading-none mb-4 text-slate-500">
-            Click on the campus to view all of its reports
+            Click on the campus to view all of its reports.
           </p>
           <div className="flex flex-wrap gap-4">
             {campuses.map((campus) => (
@@ -23,7 +23,7 @@ export default function ForReviewReports({ campuses }) {
                 href={route("admin.reports.for-review.campus", [
                   encodeURIComponent(campus.name),
                 ])}
-                className="hover:border-slate-400 transition uppercase rounded-md text-xl text-slate-800 text-center flex flex-col items-center justify-center p-6 border-[1px] border-slate-200"
+                className="hover:border-slate-400 w-full lg:flex-1 transition uppercase rounded-md text-xl text-slate-800 text-center flex flex-col items-center justify-center p-6 border-[1px] border-slate-200"
               >
                 <i class="fi fi-rr-cabin text-3xl mb-3 text-slate-500"></i>
                 <span>{campus.name}</span>

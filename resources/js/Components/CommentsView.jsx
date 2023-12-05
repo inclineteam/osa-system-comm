@@ -23,7 +23,7 @@ const AddCommentForm = ({
         rows={2}
         value={comment}
         required
-        className="form-control"
+        className="form-control !text-sm"
         onChange={(e) => setComment(e.target.value)}
       ></textarea>
       {submittingComment ? (

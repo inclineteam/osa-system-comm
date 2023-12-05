@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import CustomTooltip from "./CustomTooltip";
-import axios from "axios";
+import axios, { all } from "axios";
 
 const Chart = () => {
   const [allReports, setAllReports] = useState({
@@ -32,7 +32,6 @@ const Chart = () => {
     if (allReports.data) {
       // {siniluan : {total: 1, offices: {office1: 1, office2: 0}}}
       const campusNames = Object.keys(allReports.data);
-      console.log("campus names", campusNames);
 
       const data = [];
 
@@ -48,6 +47,7 @@ const Chart = () => {
       });
 
       setChartData(data);
+      setAllReports((prev) => ({ ...prev, loading: false }));
     }
   }, [allReports]);
 

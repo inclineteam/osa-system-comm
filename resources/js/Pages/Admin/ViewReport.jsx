@@ -22,19 +22,13 @@ import DocViewer, { DocViewerRenderers, PDFRenderer } from "react-doc-viewer";
 
 const ViewReport = ({ report }) => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const { prevPage, auth } = usePage().props;
+  const { auth } = usePage().props;
   const [showFileModal, setShowFileModal] = useState(false);
-  const [showStatusModal, setShowStatusModal] = useState(false);
   // const [status, setStatus] = useState(report.status)
 
   const { data, setData, patch } = useForm({
     status: report.status,
   });
-
-  const updateStatus = (e) => {
-    e.preventDefault();
-    patch(route("reports.status.update", { id: report.id }));
-  };
 
   const approveReport = async (id) => {
     const res = await axios.patch(
@@ -75,9 +69,13 @@ const ViewReport = ({ report }) => {
         <HeaderTitle
           text={report.submission_bin.title}
           backButton
-          backButtonLink={route("admin.reports.view", {
-            submission_bin_id: report.submission_bin.id,
-          })}
+          backButtonLink={
+            auth.role === "admin"
+              ? route("admin.reports.for-review.campus", [
+                  report.unit_head.campus.name,
+                ])
+              : route("admin.reports.checklist")
+          }
         />
       }
       defaultActiveLink="submission-bins"
@@ -127,12 +125,12 @@ const ViewReport = ({ report }) => {
         }
       />
       <div className="content-wrapper">
-        <Row className=" bg-transparent gy-2 gx-2">
+        <Row className="bg-transparent gy-2 gx-2">
           <Col>
-            <Card className="border-0 shadow-sm rounded-0 p-2 mb-2">
-              <Card.Body className="h-100">
-                <div className="flex justify-between items-center">
-                  <p className="text-sm fw-bolder my-0 col-4">Submitted By</p>
+            <Card className="border-0 shadow-sm rounded-xl p-2 mb-4">
+              <Card.Body className="border-0 h-100">
+                <div className="flex justify-between items-end">
+                  <p className="font-bold mb-0">Submitted By</p>
                   <div className="flex">
                     {auth.role === "admin" && report.status === "Pending" && (
                       <>
@@ -179,8 +177,7 @@ const ViewReport = ({ report }) => {
                     )}
                   </div>
                 </div>
-                <hr />
-                <div className="flex gap-x-4 w-100">
+                <div className="mt-3 flex gap-x-4 w-100">
                   <div>
                     {report.unit_head.image ? (
                       <Image
@@ -203,33 +200,38 @@ const ViewReport = ({ report }) => {
                         " " +
                         report.unit_head.lastname}
                     </p>
-                    <p className="my-0 text-secondary text-sm">
+                    <p className="leading-none my-0 text-slate-500">
                       <small>Unit Head</small>
                     </p>
                     {/* <hr className='my-1' /> */}
                     {/* <p className=' mt-2 mb-0 text-sm text-dark'>
                                             {report.unit_head.campus.name} Campus
                                         </p> */}
+
+                    <div className="mt-3 flex gap-3">
+                      <div className="w-max transition rounded-md text-slate-800 text-center flex flex-col items-center justify-center px-6 py-3 border-[1px] border-slate-200">
+                        <i class="fi fi-rr-cabin text-2xl mb-3 text-slate-500"></i>
+                        <span className="font-bold uppercase">
+                          {report.unit_head.campus.name}
+                        </span>
+                        <span className="text-sm text-slate-500">Campus</span>
+                      </div>
+
+                      <div className="w-max transition rounded-md text-slate-800 text-center flex flex-col items-center justify-center px-6 py-3 border-[1px] border-slate-200">
+                        <i className="text-slate-500 fi fi-rr-city text-2xl mb-3"></i>
+                        <span className="font-bold uppercase">
+                          {report.unit_head.designation.name}
+                        </span>
+                        <span className="text-sm text-slate-500">
+                          Designation
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                <ListGroup className="mt-2" variant="flush">
-                  <ListGroupItem className="px-0">
-                    <p className="my-1 text-dark text-sm">
-                      <span className="text-secondary">Campus:</span>{" "}
-                      <strong>{report.unit_head.campus.name} </strong>
-                    </p>
-                  </ListGroupItem>
-                  <ListGroupItem className="px-0">
-                    <p className="my-1 text-dark text-sm">
-                      <span className="text-secondary">Designation:</span>{" "}
-                      <strong>{report.unit_head.designation.name} </strong>
-                    </p>
-                  </ListGroupItem>
-                </ListGroup>
               </Card.Body>
             </Card>
-            <Card className="border-0 shadow-sm rounded-0 p-2 mb-2">
+            <Card className="border-0 shadow-sm rounded-xl p-2 mb-2">
               <Card.Body className="h-100">
                 <p className="text-sm text-danger fw-bold mb-1">Attachments</p>
                 {report.is_submitted ? (
@@ -271,7 +273,7 @@ const ViewReport = ({ report }) => {
                               setShowFileModal(true);
                             }}
                             className={`text-center rounded p-3 cursor-pointer ${
-                              selectedFile?.id === att.id ? "bg-light" : ""
+                              selectedFile?.id === att.id ? "bg-slate-100" : ""
                             }`}
                             title={att.name}
                           >
@@ -305,7 +307,9 @@ const ViewReport = ({ report }) => {
                                   setShowFileModal(true);
                                 }}
                                 className={`text-center rounded p-3 cursor-pointer ${
-                                  selectedFile?.id === att.id ? "bg-light" : ""
+                                  selectedFile?.id === att.id
+                                    ? "bg-slate-100"
+                                    : ""
                                 }`}
                                 title={att.name}
                               >
@@ -333,8 +337,8 @@ const ViewReport = ({ report }) => {
           <Col xl={3} md={4} className=" ">
             <Card className="border-0 shadow-sm  rounded-0">
               <Card.Body className="p-4 ">
-                <p className="text-sm fw-bold text-primary">Private Comments</p>
-                <hr />
+                <p className="fw-bold text-slate-800 mb-0">Private Comments</p>
+                <hr className="my-3 border-slate-400" />
                 <CommentsView
                   report={report}
                   user={auth.user}

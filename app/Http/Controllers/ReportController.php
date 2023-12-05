@@ -230,7 +230,7 @@ class ReportController extends Controller
 
     public function forRejected(Request $request)
     {
-        $reportsForRejected = Report::where('status', 'Rejected')->get();
+        $reportsForRejected = Report::where('status', 'Rejected')->with(['unitHead', 'submission_bin'])->get();
         return Inertia::render('Admin/ForRejectedReports', [
             'reportsForRejected' => $reportsForRejected
         ]);
@@ -307,10 +307,18 @@ class ReportController extends Controller
         }
     }
 
-    public function showChecklist()
+    public function showChecklist(Request $request)
     {
+        $data = [];
         $reports = Report::with(['unitHead', 'submission_bin'])->get();
+        foreach ($reports as $report) {
+            $data['offices'][$report->unitHead->designation->name][] = $report;
+        }
 
-        return Inertia::render('Admin/UnitHeadReportsChecklist', ['reports' => $reports]);
+        if (!isset($data['offices'])) {
+            $data['offices'] = [];
+        }
+
+        return Inertia::render('Admin/UnitHeadReportsChecklist', $data);
     }
 }

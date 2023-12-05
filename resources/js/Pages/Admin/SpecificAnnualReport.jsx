@@ -1,3 +1,4 @@
+import HeaderTitle from "@/Components/HeaderTitle";
 import PanelLayout, { LayoutType } from "@/Layouts/PanelLayout";
 import { useRef } from "react";
 import { Accordion } from "react-bootstrap";
@@ -13,17 +14,34 @@ export default function AnnualReport({ report }) {
   return (
     <PanelLayout
       layout={LayoutType.SUPER_ADMIN}
-      defaultActiveLink="generated_reports_annually"
+      pageTitle="Annual report"
+      headerTitle={
+        <HeaderTitle
+          text="Generated reports annually"
+          backButton
+          backButtonLink={route("admin.generated-reports")}
+        />
+      }
+      defaultActiveLink="generated reports annually"
     >
       <div className="content-wrapper">
         <div className=" bg-white p-6">
-          <div className="flex items-center justify-end">
+          <div className="border-b border-slate-200 pb-4 mb-4 flex items-center justify-between">
+            <div>
+              <h1 className="text-xl font-bold mb-2 leading-none">
+                Annual report
+              </h1>
+              <p className="leading-none mb-0 text-slate-500">
+                Check out the details regarding this annual report.
+              </p>
+            </div>
+
             <button
               onClick={print}
-              className="mb-4 bg-indigo-600 space-x-1 flex text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
+              className="bg-indigo-600 space-x-1 items-center flex text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
             >
-              <i class="fi fi-rr-print"></i>{" "}
-              <span className="tracking-wide">Print</span>
+              <i class="fi fi-rr-print mr-1"></i>{" "}
+              <span className="tracking-wide">Print annual report</span>
             </button>
           </div>
           <div className="" ref={ref}>
@@ -35,10 +53,15 @@ export default function AnnualReport({ report }) {
               >
                 <div className="p-4 border-b border-slate-200 bg-slate-50">
                   <div>
-                    <h4 className="text-lg font-semibold">{location}</h4>
+                    <h4 className="mb-0 text-lg font-semibold">{location}</h4>
                     <p className="mb-0">
-                      Total overall reports from all offices in all quarters -{" "}
-                      {data.total}
+                      <span className="text-slate-600 inline-block px-2 bg-slate-100 border border-slate-200 rounded-md text-2xl">
+                        <b>{data.total}</b>
+                      </span>{" "}
+                      total overall reports{" "}
+                      <span className="font-semibold text-slate-600">
+                        from all offices in all quarters
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -60,7 +83,13 @@ export default function AnnualReport({ report }) {
                             Quarter
                           </p>
                           <p className="mt-0">
-                            Total Reports this quarter - {quarterData.total}
+                            <span className="text-slate-600 inline-block px-2 bg-slate-100 border border-slate-200 rounded-md text-lg">
+                              <b>{quarterData.total}</b>
+                            </span>{" "}
+                            total reports{" "}
+                            <span className="font-semibold text-slate-600">
+                              this quarter
+                            </span>
                           </p>
                           {/* quarterData.offices */}
                           <div className="border border-slate-200 rounded-md overflow-hidden">
@@ -76,7 +105,7 @@ export default function AnnualReport({ report }) {
                                   ([office, officeData]) => (
                                     <tr
                                       key={office}
-                                      className="[&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-4 [&>td]:py-2.5"
+                                      className="border-b last:border-0 [&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-4 [&>td]:py-2.5"
                                     >
                                       <td>{office}</td>
                                       <td>{officeData}</td>
