@@ -7,6 +7,7 @@ use App\Mail\NewSubmissionBinNotif;
 use App\Models\CalendarEvent;
 use App\Models\Report;
 use App\Models\SubmissionBin;
+use App\Models\SubmissionBinAttachment;
 use App\Models\User;
 use App\Models\UserEventsHistory;
 use App\Notifications\NewSubmissionBin;
@@ -15,6 +16,22 @@ use Illuminate\Support\Facades\Mail;
 
 class SubmissionBinController extends Controller
 {
+    public function attachFiles(Request $request)
+    {
+        $file = $request->file('file');
+        $fileName = $file->getClientOriginalName();
+        $file->move(public_path('submission_bin_references'), $fileName);
+        $fileUrl = "/submission_bin_references/" . $fileName;
+        // create report attachment
+        SubmissionBinAttachment::create([
+            'uri' => $fileUrl,
+            'name' => $fileName,
+            'submission_bin_id' => $request->bin_id
+        ]);
+
+        return redirect()->intended(route('admin.submission_bins'))->with('success', 'Successfully created!');
+    }
+
     //
     public function create(Request $request)
     {
@@ -57,7 +74,27 @@ class SubmissionBinController extends Controller
             ]);
         }
 
-        return redirect()->intended(route('admin.submission_bins'))->with('success', 'Successfully created!');
+        return response()->json(['bin' => $bin]);
+    }
+
+    public function removeAttachment(Request $request)
+    {
+        $user = User::where('id', $request->user_id)->first();
+        $attachment_id = $request->id;
+        $attachment = SubmissionBinAttachment::find($attachment_id);
+        if ($attachment) {
+            $attachment->delete();
+        }
+
+        UserEventsHistory::create([
+            'user_name' => $user->name(),
+            'event_name' => 'Remove Report Attachment',
+            'campus_name' => $user->campus?->name,
+            'office_name' => $user->designation?->name,
+            'description' => 'removed report attachment '
+        ]);
+
+        return response()->json(['success' => true]);
     }
 
     public function edit(Request $request)

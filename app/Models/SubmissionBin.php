@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class SubmissionBin extends Model
 {
     use HasFactory;
-    protected $with = ['reports'];
+    protected $with = ['reports', 'attachments'];
 
     protected $fillable = [
         'status',
@@ -21,12 +21,18 @@ class SubmissionBin extends Model
         'has_deadline'
     ];
 
+    public function attachments(): HasMany
+    {
+        return $this->hasMany(SubmissionBinAttachment::class, 'submission_bin_id', 'id')->orderByDesc('id');
+    }
+
     public function reports(): HasMany
     {
-        return $this->hasMany(Report::class, 'submission_bin_id', 'id')->where('is_submitted',true);
+        return $this->hasMany(Report::class, 'submission_bin_id', 'id')->where('is_submitted', true);
     }
+
     public function approved_reports(): HasMany
     {
-        return $this->hasMany(Report::class, 'submission_bin_id', 'id')->where('is_submitted',true)->where('status','Approved');
+        return $this->hasMany(Report::class, 'submission_bin_id', 'id')->where('is_submitted', true)->where('status', 'Approved');
     }
 }

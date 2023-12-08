@@ -160,6 +160,7 @@ Route::get('/announcements', [UnitHeadController::class, 'announcements'])->name
 
 
 Route::prefix('/submission-bins')->middleware(['auth', 'role:super_admin'])->group(function () {
+    Route::post('/attach-files', [SubmissionBinController::class, 'attachFiles'])->name('submission_bins.attach-files');
     Route::post('/create', [SubmissionBinController::class, 'create'])->name('submission_bins.create');
     Route::delete('/{id}', [SubmissionBinController::class, 'delete'])->name('submission_bins.delete');
     Route::patch('/{id}', [SubmissionBinController::class, 'edit'])->name('submission_bins.update');

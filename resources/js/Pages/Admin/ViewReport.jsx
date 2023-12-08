@@ -34,6 +34,7 @@ const ViewReport = ({ report }) => {
     const res = await axios.patch(
       route("report.action.approve", {
         report_id: id,
+        user_id: auth.user.id,
       })
     );
     if (res.data.message) {
@@ -47,6 +48,7 @@ const ViewReport = ({ report }) => {
     const res = await axios.patch(
       route("report.action.reject", {
         report_id: id,
+        user_id: auth.user.id,
       })
     );
 
@@ -149,32 +151,33 @@ const ViewReport = ({ report }) => {
                       </>
                     )}
 
-                    {auth.role === "super_admin" && (
-                      <div className="text-end">
-                        {report.status === "Approved" ? (
-                          <>
-                            <p className={`text-success fw-bold my-0`}>
-                              <i className="bx bxs-check-circle me-2"></i>
+                    {auth.role === "super_admin" ||
+                      (auth.role === "admin" && (
+                        <div className="text-end">
+                          {report.status === "Approved" ? (
+                            <>
+                              <p className={`text-success fw-bold my-0`}>
+                                <i className="bx bxs-check-circle me-2"></i>
+                                {report.status}
+                              </p>
+                              <p
+                                className={`text-sm my-0 ${
+                                  report.remarks.toLowerCase() ==
+                                  "submitted on time"
+                                    ? "text-success"
+                                    : "text-danger"
+                                }`}
+                              >
+                                <small>{report.remarks}</small>
+                              </p>
+                            </>
+                          ) : (
+                            <p className={`text-rose-600 fw-bold my-0`}>
                               {report.status}
                             </p>
-                            <p
-                              className={`text-sm my-0 ${
-                                report.remarks.toLowerCase() ==
-                                "submitted on time"
-                                  ? "text-success"
-                                  : "text-danger"
-                              }`}
-                            >
-                              <small>{report.remarks}</small>
-                            </p>
-                          </>
-                        ) : (
-                          <p className={`text-secondary fw-bold my-0`}>
-                            {report.status}
-                          </p>
-                        )}
-                      </div>
-                    )}
+                          )}
+                        </div>
+                      ))}
                   </div>
                 </div>
                 <div className="mt-3 flex gap-x-4 w-100">

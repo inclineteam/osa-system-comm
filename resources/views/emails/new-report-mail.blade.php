@@ -2,7 +2,7 @@
 <div class="">
 <a href="{{$url_submission_bin}}" class="flex">
 <span>{{$report->submission_bin->title}}</span>
-<div><img src="{{asset('images/share-square-16.png')}}"/></div>
+<div><img style="margin-left: 10px;" src="{{asset('images/share-square-16.png')}}"/></div>
 </a>
 </div>
 <hr>

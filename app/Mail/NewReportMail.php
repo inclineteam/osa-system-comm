@@ -42,9 +42,9 @@ class NewReportMail extends Mailable
     {
         return new Content(
             markdown: 'emails.new-report-mail',
-            with:[
-                'url'=>url(route('admin.report.open',['report_id'=>$this->report->id])),
-                'url_submission_bin'=>url(route('admin.report.open',['report_id'=>$this->report->id])),
+            with: [
+                'url' => url(route('admin.report.open', ['report_id' => $this->report->id])),
+                'url_submission_bin' => url(route('admin.report.open', ['report_id' => $this->report->id])),
                 'logo' => AppSettings::first()->logo,
             ],
         );

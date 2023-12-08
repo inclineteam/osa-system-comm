@@ -1,6 +1,7 @@
 import AddFileButton from "@/Components/AddFileButton";
 import CardComponent from "@/Components/CardComponent";
 import CommentsView from "@/Components/CommentsView";
+import FileIcon from "@/Components/FileIcon";
 import { formatDate } from "@/Components/Helper";
 import ModalComponent from "@/Components/ModalComponent";
 import PanelLayout from "@/Layouts/PanelLayout";
@@ -18,7 +19,7 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
   const [isFetchingComments, setIsFetchingComments] = useState(true);
   const [comments, setComments] = useState([]);
 
-  console.log("report: ", report);
+  console.log("submissionBin: ", submissionBin);
 
   const [files, setFiles] = useState(
     report?.attachments.map((a, i) => ({ ...a, uploaded: true })) || []
@@ -75,13 +76,13 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
         <hr />
         <Card className="rounded-3 border-0 shadow-sm ">
           <Card.Body className="p-4">
-            <p className="flex items-center text-lg my-0">
+            <p className="flex items-center font-medium text-lg my-0">
               <i className="fi fi-rr-box me-2"></i>
               {submissionBin.title}
             </p>
             <div className="text-secondary">
               {submissionBin.deadline_date ? (
-                <p className="text-sm mt-3 mb-0 text-danger">
+                <p className="text-sm mt-2 mb-0 text-rose-600 font-medium">
                   Due{" "}
                   {format(new Date(submissionBin.deadline_date), "MMM d, Y")}
                 </p>
@@ -91,15 +92,34 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
             </div>
             <hr />
 
+            <div className="font-semibold mb-2">Instruction:</div>
+
             {submissionBin.instruction ? (
               <>
-                <p className="text-sm text-secondary my-1">
+                <p className="text-slate-600 my-1">
                   {submissionBin.instruction}
                 </p>
               </>
             ) : (
-              <p className="text-sm text-black-50 my-1">No instruction.</p>
+              <p className="text-slate-600 my-1">No instruction.</p>
             )}
+
+            <hr />
+            <div className="font-semibold mb-2">Attached reference/s:</div>
+            <div className="flex flex-wrap gap-2">
+              {submissionBin.attachments.map((attachment) => (
+                <a
+                  title={`Download this file`}
+                  target="_blank"
+                  download={true}
+                  href={attachment.uri}
+                  className="border-[1px] space-x-2 w-max flex border-slate-200 p-2 pr-4 hover:bg-slate-100 rounded-md text-indigo-600 font-semibold text-sm"
+                >
+                  <FileIcon file={attachment} size="xs" />
+                  <span>{attachment.name}</span>
+                </a>
+              ))}
+            </div>
           </Card.Body>
         </Card>
         {/* report comments */}
