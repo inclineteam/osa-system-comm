@@ -7,6 +7,7 @@ import axios from "axios";
 import React from "react";
 import { useState } from "react";
 import { Button, Card, Container, Form } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const CreateSubmissionBin = ({ auth }) => {
   const { post, processing, data, setData } = useForm({
@@ -15,7 +16,7 @@ const CreateSubmissionBin = ({ auth }) => {
     deadline_date: "",
     deadline_time: "",
   });
-
+  const [submitting, setSubmitting] = useState(false);
   const [showFileModal, setShowFileModal] = useState(false);
   const [viewFile, setViewFile] = useState(null);
 
@@ -27,6 +28,7 @@ const CreateSubmissionBin = ({ auth }) => {
   };
 
   const uploadFile = async () => {
+    setSubmitting(true);
     axios
       .post(route("submission_bins.create"), data, {
         headers: MultipartHeader,
@@ -41,9 +43,12 @@ const CreateSubmissionBin = ({ auth }) => {
           });
         });
 
+        setSubmitting(false);
         router.visit(route("admin.submission_bins"));
+        toast.success("Successfully created submission bin!");
       })
       .catch((err) => {
+        setSubmitting(false);
         console.log(err);
       });
   };
@@ -119,7 +124,7 @@ const CreateSubmissionBin = ({ auth }) => {
               <br />
               <div className="flex gap-2 justify-end">
                 <Link
-                  disabled={processing}
+                  disabled={submitting}
                   href={route("admin.submission_bins")}
                   className="btn btn-light"
                 >
@@ -127,7 +132,7 @@ const CreateSubmissionBin = ({ auth }) => {
                 </Link>
                 <Button
                   onClick={uploadFile}
-                  disabled={processing}
+                  disabled={submitting}
                   variant="primary"
                   size="md"
                   type="submit"

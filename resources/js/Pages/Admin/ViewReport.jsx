@@ -133,24 +133,7 @@ const ViewReport = ({ report }) => {
               <Card.Body className="border-0 h-100">
                 <div className="flex justify-between items-end">
                   <p className="font-bold mb-0">Submitted By</p>
-                  <div className="flex">
-                    {auth.role === "admin" && report.status === "Pending" && (
-                      <>
-                        <button
-                          onClick={() => approveReport(report.id)}
-                          className="mr-2 transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
-                        >
-                          Approve
-                        </button>
-                        <button
-                          onClick={() => rejectReport(report.id)}
-                          className="transition bg-rose-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-rose-400 rounded-md"
-                        >
-                          Reject
-                        </button>
-                      </>
-                    )}
-
+                  <div className="flex items-center">
                     {auth.role === "super_admin" ||
                       (auth.role === "admin" && (
                         <div className="text-end">
@@ -172,12 +155,35 @@ const ViewReport = ({ report }) => {
                               </p>
                             </>
                           ) : (
-                            <p className={`text-rose-600 fw-bold my-0`}>
+                            <p
+                              className={`${
+                                report.status === "Pending"
+                                  ? "text-slate-600"
+                                  : "text-rose-600"
+                              } fw-bold my-0 mr-2`}
+                            >
                               {report.status}
                             </p>
                           )}
                         </div>
                       ))}
+
+                    {auth.role === "admin" && report.status === "Pending" && (
+                      <>
+                        <button
+                          onClick={() => approveReport(report.id)}
+                          className="mr-2 transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
+                        >
+                          Approve
+                        </button>
+                        <button
+                          onClick={() => rejectReport(report.id)}
+                          className="transition bg-rose-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-rose-400 rounded-md"
+                        >
+                          Reject
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
                 <div className="mt-3 flex gap-x-4 w-100">

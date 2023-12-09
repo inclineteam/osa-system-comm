@@ -44,6 +44,7 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports = [] }) => {
       setTimeout(() => {
         setFetching(false);
         setSubmissionBins((prev) => [...prev, ...bins]);
+        console.log("updated ", submissionBins);
         setHasRows(res.data.hasRows);
       }, 1500);
     });
@@ -114,8 +115,6 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports = [] }) => {
       });
     }
   };
-
-  console.log("rows: ", rows);
 
   return (
     <PanelLayout
@@ -278,7 +277,7 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports = [] }) => {
                             as={"button"}
                             disabled={
                               auth.role === "super_admin"
-                                ? item.approved_reports.length == 0
+                                ? item.approved_reports?.length == 0
                                 : getReportsCount(item.id) == 0
                             }
                             href={route("admin.reports.view", {
@@ -389,7 +388,7 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports = [] }) => {
                             <div className="flex justify-end items-center gap-4">
                               <div className="text-center">
                                 <p className="fs-3 fw-bold text-primary">
-                                  {auth.role == "super_admin"
+                                  {auth.role === "super_admin"
                                     ? item.approved_reports?.length ?? 0
                                     : item.reports?.length ?? 0}
                                 </p>

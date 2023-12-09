@@ -105,20 +105,27 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
             )}
 
             <hr />
-            <div className="font-semibold mb-2">Attached reference/s:</div>
+            <div className="font-semibold mb-2">
+              Attached reference{" "}
+              {submissionBin.attachments.length > 1 ? "files" : "file"}:
+            </div>
             <div className="flex flex-wrap gap-2">
-              {submissionBin.attachments.map((attachment) => (
-                <a
-                  title={`Download this file`}
-                  target="_blank"
-                  download={true}
-                  href={attachment.uri}
-                  className="border-[1px] space-x-2 w-max flex border-slate-200 p-2 pr-4 hover:bg-slate-100 rounded-md text-indigo-600 font-semibold text-sm"
-                >
-                  <FileIcon file={attachment} size="xs" />
-                  <span>{attachment.name}</span>
-                </a>
-              ))}
+              {submissionBin.attachments.length ? (
+                submissionBin.attachments.map((attachment) => (
+                  <a
+                    title={`Download this file`}
+                    target="_blank"
+                    download={true}
+                    href={attachment.uri}
+                    className="border-[1px] space-x-2 w-max flex border-slate-200 p-2 pr-4 hover:bg-slate-100 rounded-md text-indigo-600 font-semibold text-sm"
+                  >
+                    <FileIcon file={attachment} size="xs" />
+                    <span>{attachment.name}</span>
+                  </a>
+                ))
+              ) : (
+                <p className="mb-0">No attached file.</p>
+              )}
             </div>
           </Card.Body>
         </Card>

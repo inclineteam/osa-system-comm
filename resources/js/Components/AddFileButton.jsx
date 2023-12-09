@@ -81,7 +81,7 @@ const AddFileButton = ({
     console.log(e.target.files);
     if (e.target.files.length > 0) {
       let file = e.target.files[0];
-      if (file.size / 1024 > 2048) {
+      if (file.size / 1024 > 10240) {
         setFileIsTooLarge(true);
       } else {
         setFileIsTooLarge(false);

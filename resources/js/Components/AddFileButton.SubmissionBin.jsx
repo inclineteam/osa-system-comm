@@ -60,7 +60,7 @@ const AddFileButton = ({
     console.log(e.target.files);
     if (e.target.files.length > 0) {
       let file = e.target.files[0];
-      if (file.size / 1024 > 2048) {
+      if (file.size / 1024 > 10240) {
         setFileIsTooLarge(true);
       } else {
         setFileIsTooLarge(false);
@@ -159,7 +159,7 @@ const AddFileButton = ({
             onClick={onAddBtnClicked}
           >
             <small className="font-medium flex items-center justify-center">
-              <i className="bx bx-plus mr-2"></i>Add Work
+              <i className="bx bx-plus mr-2"></i>Add reference file
             </small>
           </Button>
           <small className="mt-2 text-center text-slate-500 block">
