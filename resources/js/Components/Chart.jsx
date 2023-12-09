@@ -30,7 +30,6 @@ const Chart = () => {
 
   useEffect(() => {
     if (allReports.data) {
-      // {siniluan : {total: 1, offices: {office1: 1, office2: 0}}}
       const campusNames = Object.keys(allReports.data);
 
       const data = [];
@@ -49,7 +48,7 @@ const Chart = () => {
       setChartData(data);
       setAllReports((prev) => ({ ...prev, loading: false }));
     }
-  }, [allReports]);
+  }, [allReports.data]);
 
   return (
     <div className="p-4 border-b border-slate-300 rounded-lg shadow-sm bg-white mb-8">
