@@ -92,9 +92,9 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
         },
         {
           type: NavType.LINK,
-          text: "Create Submission Bin",
-          href: route("admin.create_submission_bin"),
-          urlPath: "create_submission_bin",
+          text: "Submission Bin",
+          href: route("admin.submission_bins"),
+          urlPath: "submission_binsk",
         },
       ],
     },
