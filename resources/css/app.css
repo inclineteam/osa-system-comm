@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.accordion-collapse.collapse {
+  @apply visible;
+}
+
 .fc-theme-standard .fc-scrollgrid {
   @apply border-0;
 }

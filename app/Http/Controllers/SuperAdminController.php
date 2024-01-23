@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\Auth;
 
 class SuperAdminController extends Controller
 {
+    public function destroy(Request $request)
+    {
+        $super_admin = User::find($request->user_id);
+        $super_admin->delete();
+
+        return response()->json(['success' => true]);
+    }
+
     public function register(Request $request)
     {
         if (User::whereHasRole('super_admin')->first()) {

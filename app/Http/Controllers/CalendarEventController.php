@@ -71,4 +71,21 @@ class CalendarEventController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function destroyAll(Request $request)
+    {
+        CalendarEvent::truncate();
+
+        $user = User::find($request->user_id);
+
+        UserEventsHistory::create([
+            'user_name' => $user->name(),
+            'event_name' => 'Delete Calendar Event',
+            'campus_name' => $user->campus?->name,
+            'office_name' => $user->designation?->name,
+            'description' => 'deleted all calendar events'
+        ]);
+
+        return response()->json(['success' => true]);
+    }
 }

@@ -77,7 +77,7 @@ const Chart = () => {
             </linearGradient>
           </defs>
           <XAxis dataKey="name" dy={6} />
-          <YAxis dx={-6} />
+          <YAxis allowDecimals={false} dx={-6} />
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip
             wrapperClassName="shadow-xl !border-transparent rounded-md"

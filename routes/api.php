@@ -8,7 +8,6 @@ use App\Http\Controllers\AppSettingsController;
 use App\Http\Controllers\CalendarEventController;
 use App\Http\Controllers\CampusController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\ReportCommentController;
 use App\Http\Controllers\ReportController;
@@ -16,10 +15,6 @@ use App\Http\Controllers\SubmissionBinController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\UnitHeadController;
 use App\Http\Controllers\UsersController;
-use App\Models\AppSettings;
-use App\Models\CalendarEvent;
-use App\Models\Reminder;
-use App\Models\ReportComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -51,7 +46,7 @@ Route::post('/image-upload', function (Request $request) {
     $image = $request->file('image');
     $imageName = $image->getClientOriginalName();
     $image->move(public_path('images'), $imageName);
-    $imageUrl = "/images/" .  $imageName;
+    $imageUrl = "/images/" . $imageName;
 
     return response()->json(['imageUrl' => $imageUrl]);
 })->name('image.upload');
@@ -60,7 +55,7 @@ Route::post('/file-upload', function (Request $request) {
     $file = $request->file('file');
     $fileName = $file->getClientOriginalName();
     $file->move(public_path('reports'), $fileName);
-    $fileUrl = "/reports/" .  $fileName;
+    $fileUrl = "/reports/" . $fileName;
 
     return response()->json(['fileUrl' => $fileUrl]);
 });
@@ -116,6 +111,7 @@ Route::prefix('/calendar')->group(function () {
     Route::get('/', [CalendarEventController::class, 'index'])->name('calendar.index');
     Route::post('/', [CalendarEventController::class, 'store'])->name('calendar.store');
     Route::delete('/{id}', [CalendarEventController::class, 'destroy'])->name('calendar.destroy');
+    Route::delete('/all/{user_id}', [CalendarEventController::class, 'destroyAll'])->name('calendar.destroy.all');
 })->middleware(['auth']);
 
 Route::prefix('/notifications')->group(function () {
@@ -132,6 +128,10 @@ Route::prefix('/unit_heads')->group(function () {
 
 Route::prefix('/admins')->group(function () {
     Route::post('/delete/many', [AdminController::class, 'deleteMany'])->name('admins.delete.many');
+})->middleware(['auth', 'role:super_admin']);
+
+Route::prefix('/super_admin')->group(function () {
+    Route::delete('/super_admin/{user_id}/reset', [SuperAdminController::class, 'destroy'])->name('super_admin.destroy');
 })->middleware(['auth', 'role:super_admin']);
 
 Route::prefix('/reminders')->group(function () {

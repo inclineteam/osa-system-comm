@@ -94,7 +94,7 @@ class AnnualReportController extends Controller
             // get current logged in user
 
             $annualReport = AnnualReport::create([
-                'generated_by' => $user->id,
+                'generated_by' => $user->firstname . ' ' . $user->lastname,
                 'generated_at' => now(),
                 'data' => json_encode($data),
             ]);
@@ -120,11 +120,6 @@ class AnnualReportController extends Controller
     {
         try {
             $reports = AnnualReport::all();
-
-            foreach ($reports as $report) {
-                $report->generated_by = $report->generatedBy;
-                $report->data = json_decode($report->data);
-            }
 
             return response()->json(['reports' => $reports]);
         } catch (\Throwable $th) {

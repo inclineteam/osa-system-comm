@@ -5,20 +5,16 @@ import interactionPlugin from "@fullcalendar/interaction";
 import React from "react";
 import { Alert, Card, Col, Form, Row } from "react-bootstrap";
 import { useState } from "react";
-import { useForm } from "@inertiajs/react";
 import ModalComponent from "@/Components/ModalComponent";
 import { TextButton } from "@/Components/CustomBtn";
 import { useRef } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import {
-  ConfirmDialogContainer,
-  showConfirmDialog,
-} from "@/Components/ConfirmDialog";
 import ConfirmModal from "@/Components/ConfirmModal";
 
 const Calendar = ({ auth, events: allEvents }) => {
+  const [deleteAllEventsModal, setDeleteAllEventsModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -50,6 +46,15 @@ const Calendar = ({ auth, events: allEvents }) => {
       toast.success("Successfully deleted");
     });
   };
+
+  const deleteAllEvents = () => {
+    axios.delete(route("calendar.destroy.all", auth.user.id)).then((res) => {
+      setDeleteAllEventsModal(false);
+      setEvents([]);
+      toast.success("Successfully deleted");
+    });
+  };
+
   return (
     <PanelLayout headerTitle={"Calendar"} defaultActiveLink={"calendar"}>
       <ConfirmModal
@@ -75,13 +80,26 @@ const Calendar = ({ auth, events: allEvents }) => {
         </Alert>
         <Row className="gx-2 gy-2">
           <Col lg={2}>
+            <ConfirmModal
+              title="Delete all events?"
+              show={deleteAllEventsModal}
+              handleClose={() => setDeleteAllEventsModal(false)}
+              onConfirm={deleteAllEvents}
+              onCancel={() => setDeleteAllEventsModal(false)}
+            />
             <Card className="border-0 shadow-sm">
               <Card.Body className="p-3">
                 <p className="text-black-50">All Events</p>
+                <button
+                  onClick={() => setDeleteAllEventsModal(true)}
+                  className="hover:bg-rose-700 hover:text-white hover:border-transparent transition text-sm py-1.5 rounded-md w-full border-[1px] border-rose-300 text-rose-700 font-medium"
+                >
+                  Delete all
+                </button>
                 <div className="mt-3">
                   {events.map((event, index) => (
                     <div className="mb-3">
-                      <p className="my-0">{event.title}</p>
+                      <p className="my-0 font-medium">{event.title}</p>
                       <p className="my-0 text-sm text-black-50">
                         <small>{event.start}</small>
                       </p>

@@ -126,7 +126,9 @@ const Announcements = ({ auth, announcements: announcementList }) => {
                 )}
               </small>
             </p>
-            <p className="fs-6 mt-3">{announcement.content}</p>
+            <p className="fs-6 mt-3 whitespace-pre-wrap">
+              {announcement.content}
+            </p>
             {announcement.image != "" && announcement.image != null && (
               <div className="">
                 <Image
@@ -220,8 +222,8 @@ const Announcements = ({ auth, announcements: announcementList }) => {
                                         )}
                                       </small>
                                     </p>
-                                    <p className="mb-0 text-secondary">
-                                      {item.content.substr(0, 250)}
+                                    <p className="whitespace-pre-wrap line-clamp-3 mb-0 text-secondary">
+                                      {item.content}
                                       ...
                                     </p>
                                   </Col>

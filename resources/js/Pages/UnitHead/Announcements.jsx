@@ -44,7 +44,7 @@ const Announcements = ({ announcements }) => {
             {formatDate(new Date(announcement.created_at))}
           </p>
           <div className="mt-3">
-            <p>{announcement.content}</p>
+            <p className="whitespace-pre-wrap">{announcement.content}</p>
             <Col lg={5} md={8} sm={8} xs={12}>
               <Image src={announcement.image} fluid thumbnail />
             </Col>
@@ -73,7 +73,7 @@ const Announcements = ({ announcements }) => {
                       </div>
 
                       <p
-                        className="text-dark mb-4 col-12 text-truncate"
+                        className="whitespace-pre-wrap text-dark line-clamp-3 mb-4 col-12 truncate"
                         title={item.content}
                       >
                         {item.content}

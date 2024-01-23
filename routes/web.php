@@ -91,9 +91,9 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/announcements', [AdminController::class, 'announcements'])->name('admin.announcements');
     Route::get('/announcements/create', [AdminController::class, 'create_announcement'])->name('admin.create_announcement')->middleware(['role:super_admin|admin']);
-    Route::get('/announcements/{id}/edit', [AdminController::class, 'edit_announcement'])->name('admin.edit_announcement')->middleware(['role:super_admin']);
+    Route::get('/announcements/{id}/edit', [AdminController::class, 'edit_announcement'])->name('admin.edit_announcement')->middleware(['role:super_admin|admin']);
     Route::get('/reminders/create', [AdminController::class, 'create_reminder'])->name('admin.create_reminder')->middleware(['role:super_admin|admin']);
-    Route::get('/reminders/{id}/edit', [AdminController::class, 'edit_reminder'])->name('admin.edit_reminder')->middleware(['role:super_admin']);
+    Route::get('/reminders/{id}/edit', [AdminController::class, 'edit_reminder'])->name('admin.edit_reminder')->middleware(['role:super_admin|admin']);
     Route::get('/unit-heads', [AdminController::class, 'unit_heads_profile'])->name('admin.unit_heads.profiles')->middleware(['role:super_admin|admin']);
     Route::get('/unit-heads/records', [AdminController::class, 'unit_heads_records'])->name('admin.unit_heads.records')->middleware(['role:super_admin|admin']);
     Route::get('/unit-heads/create', [AdminController::class, 'create_unit_head'])->name('admin.unit_heads.create')->middleware(['role:super_admin|admin']);
@@ -185,7 +185,7 @@ Route::prefix('/feedback')->middleware(['auth'])->group(function () {
 });
 
 
-Route::prefix('/reminders')->middleware(['auth', 'role:super_admin'])->group(function () {
+Route::prefix('/reminders')->middleware(['auth', 'role:super_admin|admin'])->group(function () {
     Route::post('/create', [ReminderController::class, 'create'])->name('reminders.create');
     Route::delete('/{id}', [ReminderController::class, 'delete'])->name('reminders.delete');
     Route::patch('/{id}', [ReminderController::class, 'edit'])->name('reminders.edit');

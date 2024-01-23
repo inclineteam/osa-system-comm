@@ -77,7 +77,7 @@ const Reminders = ({ auth, reminders }) => {
                 {format(new Date(reminder.created_at), "MMM dd, yyy / hh:mm a")}
               </small>
             </p>
-            <p className="fs-6 mt-3">{reminder.content}</p>
+            <p className="fs-6 mt-3 whitespace-pre-wrap">{reminder.content}</p>
           </div>
         )}
       </ModalComponent>
@@ -102,26 +102,32 @@ const Reminders = ({ auth, reminders }) => {
                     Posted reminders
                   </h1>
                   <p className="leading-none mb-4 text-slate-500">
-                    Create, remove, edit, and check details about the reminders
-                    you posted.
+                    {auth.role == "unit_head"
+                      ? "Check details about the reminders that admins have posted."
+                      : "Create, remove, edit, and check details about the reminders you posted."}
                   </p>
                 </div>
-                <Link
-                  href={route("admin.create_reminder")}
-                  className="bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
-                >
-                  <i className="bx bx-plus"></i>{" "}
-                  <span className="tracking-wide">Create new</span>
-                </Link>
+                {auth.role === "unit_head" ? null : (
+                  <Link
+                    href={route("admin.create_reminder")}
+                    className="bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
+                  >
+                    <i className="bx bx-plus"></i>{" "}
+                    <span className="tracking-wide">Create new</span>
+                  </Link>
+                )}
               </div>
             </Card.Header>
-            <Card.Body className=" position-relative ">
+            <Card.Body className="position-relative p-0">
               <ListGroup variant="flushed" className=" list-group-flush">
                 {reminderList && reminderList.length > 0 ? (
                   reminderList.map((item, index) => (
                     <ListGroupItem key={index}>
-                      <Row key={index} className="mt-1 align-items-center gy-3">
-                        <Col>
+                      <Row
+                        key={index}
+                        className="flex mt-1 align-items-center gy-3"
+                      >
+                        <Col class="p-0">
                           <p className=" fw-bold fs-5 mb-0">{item.title}</p>
                           <p className="mt-0 mb-2 text-sm text-secondary">
                             <small>
@@ -131,10 +137,12 @@ const Reminders = ({ auth, reminders }) => {
                               )}
                             </small>
                           </p>
-                          <p>{item.content}</p>
+                          <p className="whitespace-pre-wrap line-clamp-3">
+                            {item.content}
+                          </p>
                         </Col>
                         <Col lg={1}>
-                          <div className="flex ">
+                          <div className="flex justify-end">
                             <button
                               className="btn btn-link fs-6 hover:bg-gray-200 text-decoration-none"
                               type="button"
@@ -142,28 +150,30 @@ const Reminders = ({ auth, reminders }) => {
                             >
                               <i className="fi fi-br-expand"></i>
                             </button>
-                            <Dropdown>
-                              <Dropdown.Toggle
-                                bsPrefix="toggler"
-                                className=" btn-link bg-transparent text-decoration-none"
-                              >
-                                <i className=" fi fi-br-menu-dots-vertical"></i>
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu align="end">
-                                <Dropdown.Item
-                                  href={route("admin.edit_reminder", {
-                                    id: item.id,
-                                  })}
+                            {auth.role !== "unit_head" && (
+                              <Dropdown>
+                                <Dropdown.Toggle
+                                  bsPrefix="toggler"
+                                  className=" btn-link bg-transparent text-decoration-none"
                                 >
-                                  Edit
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                  onClick={() => confirmAction(item.id)}
-                                >
-                                  Delete
-                                </Dropdown.Item>
-                              </Dropdown.Menu>
-                            </Dropdown>
+                                  <i className=" fi fi-br-menu-dots-vertical"></i>
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu align="end">
+                                  <Dropdown.Item
+                                    href={route("admin.edit_reminder", {
+                                      id: item.id,
+                                    })}
+                                  >
+                                    Edit
+                                  </Dropdown.Item>
+                                  <Dropdown.Item
+                                    onClick={() => confirmAction(item.id)}
+                                  >
+                                    Delete
+                                  </Dropdown.Item>
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            )}
                           </div>
                         </Col>
                       </Row>

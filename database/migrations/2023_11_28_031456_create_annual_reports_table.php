@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,7 +14,8 @@ return new class extends Migration
             $table->id();
 
             // generated_by
-            $table->foreignId('generated_by')->constrained('users');
+            // $table->foreignId('generated_by')->constrained('users');
+            $table->string('generated_by');
             // timestamp generated_at
             $table->timestamp('generated_at')->useCurrent();
 
