@@ -112,10 +112,10 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
         Route::get('/reports/{submission_bin_id}/view', [AdminController::class, 'viewReports'])->name('admin.reports.view');
         Route::get('/reports/{campus_id}/{designation_id}/view/filtered', [AdminController::class, 'viewFilteredReports'])->name('admin.reports.view.filtered');
         Route::get('/reports/unit-head/{report_id}/view', [AdminController::class, 'viewReport'])->name('admin.report.open');
-        Route::get('/reports/for-review', [ReportController::class, 'forReview'])->name('admin.reports.for-review')->middleware('role:admin');
+        Route::get('/reports/for-review', [ReportController::class, 'forReview'])->name('admin.reports.for-review')->middleware('role:admin|super_admin');
         Route::get('/reports/checklist', [ReportController::class, 'showChecklist'])->name('admin.reports.checklist')->middleware('role:admin|super_admin');
-        Route::get('/reports/for-review/{campus}', [ReportController::class, 'campusForReview'])->name('admin.reports.for-review.campus')->middleware('role:admin');
-        Route::get('/reports/for-rejected', [ReportController::class, 'forRejected'])->name('admin.reports.for-rejected')->middleware('role:admin');
+        Route::get('/reports/for-review/{campus}', [ReportController::class, 'campusForReview'])->name('admin.reports.for-review.campus')->middleware('role:admin|super_admin');
+        Route::get('/reports/for-rejected', [ReportController::class, 'forRejected'])->name('admin.reports.for-rejected')->middleware('role:admin|super_admin');
     });
     // annual-reports
     Route::get('/annual-reports/{id}', [AnnualReportController::class, 'index'])->name('admin.annual_reports.specific');

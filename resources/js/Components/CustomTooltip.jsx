@@ -6,7 +6,7 @@ const CustomTooltip = (props) => {
   if (props.active && props.payload) {
     console.log(props);
     return (
-      <div className="grid grid-cols-2 p-2 gap-2 rounded-lg shadow-sm bg-white">
+      <div className="grid grid-cols-2 z-[999] p-2 gap-2 rounded-lg shadow-sm bg-white">
         {props.payload.map((item) => (
           <div
             key={item.dataKey}
