@@ -158,14 +158,12 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
           key: "retrieval",
           opened: false,
           navList: [
-            // TODO: change to its correct url
             {
               type: NavType.LINK,
               text: "Unit heads reports checklist",
               href: route("admin.reports.checklist"),
               urlPath: "reports checklist",
             },
-            // TODO: change to its correct url
             {
               type: NavType.LINK,
               text: "Generated reports annually",

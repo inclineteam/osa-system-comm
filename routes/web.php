@@ -101,7 +101,7 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
     Route::get('/campus-admins', [AdminController::class, 'admins'])->name('admin.admins')->middleware(['role:super_admin']);
     Route::get('/admins/create', [AdminController::class, 'createAdmin'])->name('admin.admins.create')->middleware(['role:super_admin|admin']);
     Route::get('/campus-admins/{id}/edit', [AdminController::class, 'editCampusAdmin'])->name('admin.campus_admin.edit')->middleware(['role:super_admin']);
-    Route::get('/feedbacks', [AdminController::class, 'feedbacks'])->name('admin.feedbacks')->middleware(['role:super_admin']);
+    Route::get('/feedbacks', [AdminController::class, 'feedbacks'])->name('admin.feedbacks')->middleware(['role:super_admin|admin']);
     Route::get('/settings', [AdminController::class, 'settings'])->name('admin.settings')->middleware(['role:super_admin']);
     Route::patch('/settings/{appSettings}', [AppSettingsController::class, 'update'])->name('settings.update')->middleware(['role:super_admin']);
     Route::prefix('/document-tracking')->group(function () {

@@ -152,11 +152,10 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
               urlPath: "notification history",
             },
             {
-              type: NavType.BUTTON,
+              type: NavType.LINK,
               text: "Feedback",
-              onClick: (e) => {
-                setShowFeedbackModal(true);
-              },
+              urlPath: "feedback",
+              href: route("admin.feedbacks"),
             },
           ],
         },
