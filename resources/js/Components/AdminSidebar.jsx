@@ -106,7 +106,7 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
           navList: [
             {
               type: NavType.LINK,
-              text: "For Review",
+              text: "For Reviewal",
               href: route("admin.reports.for-review"),
               urlPath: "for review",
             },

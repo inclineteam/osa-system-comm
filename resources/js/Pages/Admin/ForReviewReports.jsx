@@ -11,7 +11,7 @@ export default function ForReviewReports({ campuses }) {
       <div className="content-wrapper">
         <div className="p-4 border-b border-slate-300 rounded-lg shadow-sm bg-white">
           <h1 className="text-xl font-bold mb-2 leading-none">
-            For review reports
+            For reviewal reports
           </h1>
           <p className="border-b border-slate-200 pb-4 leading-none mb-4 text-slate-500">
             Click on the campus to view all of its reports.
