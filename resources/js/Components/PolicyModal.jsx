@@ -11,6 +11,8 @@ import { router } from "@inertiajs/react";
 const PolicyModal = ({ show, handleClose }) => {
   const [privacyPolicy, setPrivacyPolicy] = useState("");
   const [processing, setProcessing] = useState(true);
+  const [error, setError] = useState(false);
+  const [read, setRead] = useState(false);
 
   useEffect(() => {
     const fetchPolicy = () => {
@@ -30,13 +32,18 @@ const PolicyModal = ({ show, handleClose }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    router.post(
-      route("policy.read"),
-      {},
-      {
-        onFinish: () => handleClose(),
-      }
-    );
+    if (read) {
+      setError(false);
+      router.post(
+        route("policy.read"),
+        {},
+        {
+          onFinish: () => handleClose(),
+        }
+      );
+    } else {
+      setError(true);
+    }
   };
 
   return (
@@ -104,11 +111,13 @@ const PolicyModal = ({ show, handleClose }) => {
                 <Form.Check // prettier-ignore
                   type="checkbox"
                   id={`check-agree`}
+                  value={read}
+                  onChange={(e) => setRead(e.target.checked)}
                   label="I have read and understand the privacy policy presented above."
                   className="[&>input]:border-slate-400"
                   required
                 />
-                <TextButton type="submit" onClick={handleClose} allCaps={false}>
+                <TextButton type="submit" allCaps={false}>
                   Confirm
                 </TextButton>
               </div>

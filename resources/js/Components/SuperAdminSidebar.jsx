@@ -107,6 +107,26 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
       navList: [
         {
           type: NavType.DROPDOWN,
+          text: "Tracking",
+          key: "tracking",
+          opened: false,
+          navList: [
+            {
+              type: NavType.LINK,
+              text: "For Review",
+              href: route("admin.reports.for-review"),
+              urlPath: "for review",
+            },
+            {
+              type: NavType.LINK,
+              text: "For Rejected",
+              href: route("admin.reports.for-rejected"),
+              urlPath: "for rejected",
+            },
+          ],
+        },
+        {
+          type: NavType.DROPDOWN,
           text: "Monitoring",
           key: "monitoring",
           opened: false,
@@ -138,14 +158,12 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
           key: "retrieval",
           opened: false,
           navList: [
-            // TODO: change to its correct url
             {
               type: NavType.LINK,
               text: "Unit heads reports checklist",
               href: route("admin.reports.checklist"),
               urlPath: "reports checklist",
             },
-            // TODO: change to its correct url
             {
               type: NavType.LINK,
               text: "Generated reports annually",

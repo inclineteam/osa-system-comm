@@ -1,8 +1,5 @@
-import { Link } from "@inertiajs/react";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Col, Row } from "react-bootstrap";
-import ReportsPerCampus from "./UnitHeadDashboard/ReportsPerCampus";
 import LatestReminder from "./UnitHeadDashboard/LatestReminder";
 import LatestAnnouncement from "./UnitHeadDashboard/LatestAnnouncement";
 import LatestSubmissionBin from "./UnitHeadDashboard/LatestSubmissionBin";
@@ -10,6 +7,9 @@ import LatestSubmissionBin from "./UnitHeadDashboard/LatestSubmissionBin";
 const UnitHeadDashboard = ({ auth }) => {
   return (
     <Row>
+      <Col>
+        <LatestReminder />
+      </Col>
       <Col>
         <div className="mb-4 relative overflow-hidden border-b border-slate-300 shadow-sm bg-white rounded-lg p-4">
           <p>Welcome,</p>
@@ -25,11 +25,8 @@ const UnitHeadDashboard = ({ auth }) => {
 
           <div className="right-0 top-0 absolute w-20 h-20 blur-3xl bg-green-500"></div>
         </div>
-
-        <ReportsPerCampus />
       </Col>
       <Col>
-        <LatestReminder />
         <LatestAnnouncement />
         <LatestSubmissionBin />
       </Col>

@@ -1,8 +1,6 @@
 import { useNavMenuState } from "@/States/States";
 import { Link } from "@inertiajs/react";
-import React, { memo, useState } from "react";
-import { useEffect } from "react";
-import { Nav } from "react-bootstrap";
+import React, { useState } from "react";
 
 export const NavType = {
   LINK: 0,
@@ -31,7 +29,7 @@ const NavLink = ({ item, activeLink }) => {
     </li>
   );
 };
-const NavDownloadable = ({ item, activeLink }) => {
+const NavDownloadable = ({ item }) => {
   return (
     <li>
       <a target="_blank" download={true} href={item.downloadable}>

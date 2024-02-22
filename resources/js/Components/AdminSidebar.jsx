@@ -106,7 +106,7 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
           navList: [
             {
               type: NavType.LINK,
-              text: "For Review",
+              text: "For Reviewal",
               href: route("admin.reports.for-review"),
               urlPath: "for review",
             },
@@ -125,6 +125,20 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
           opened: false,
           navList: [
             {
+              type: NavType.DROPDOWN,
+              text: "Tracking",
+              key: "monitoring_tracking",
+              opened: false,
+              navList: [
+                {
+                  type: NavType.LINK,
+                  text: "Unit Heads Report Logs",
+                  href: route("admin.reports.checklist"),
+                  urlPath: "reports checklist",
+                },
+              ],
+            },
+            {
               type: NavType.LINK,
               text: "User Events History",
               href: route("admin.user_events_history"),
@@ -138,11 +152,10 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
               urlPath: "notification history",
             },
             {
-              type: NavType.BUTTON,
+              type: NavType.LINK,
               text: "Feedback",
-              onClick: (e) => {
-                setShowFeedbackModal(true);
-              },
+              urlPath: "feedback",
+              href: route("admin.feedbacks"),
             },
           ],
         },
@@ -152,14 +165,6 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
           key: "retrieval",
           opened: false,
           navList: [
-            // TODO: change to its correct url
-            {
-              type: NavType.LINK,
-              text: "Unit heads reports checklist",
-              href: route("admin.reports.checklist"),
-              urlPath: "reports checklist",
-            },
-            // TODO: change to its correct url
             {
               type: NavType.LINK,
               text: "Generated reports annually",
