@@ -163,7 +163,7 @@ const AddFileButton = ({
             </small>
           </Button>
           <small className="mt-2 text-center text-slate-500 block">
-            The file should be below 2mb.
+            The file should be below 10mb.
           </small>
         </>
       )}

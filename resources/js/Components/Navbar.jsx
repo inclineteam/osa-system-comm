@@ -59,6 +59,19 @@ const NavbarComponent = ({ isActive, setIsActive, headerTitle }) => {
                 </div>
               </div>
             </div>
+            <div className="flex h-full items-center justify-center">
+              <p className="mt-3">
+                {/* date format : January 22, 2024, 9:57 PM */}
+                {new Date().toLocaleString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                  hour: "numeric",
+                  minute: "numeric",
+                  hour12: true,
+                })}
+              </p>
+            </div>
             <Nav className="ms-auto align-items-center lg:gap-3 md:gap-3 gap-0">
               {/* <Nav.Item>
                                 <ThemeSwitch />
@@ -82,7 +95,7 @@ const NavbarComponent = ({ isActive, setIsActive, headerTitle }) => {
                         <>
                           <p className="my-0 text-dark">
                             <strong>
-                              {userAuth.user.firstname} {userAuth.user.lastname}
+                              {userAuth.user.firstname} {userAuth.user.lastname}{" "}
                             </strong>
                             <br />
                             <small className="my-0">{getUserType()}</small>
@@ -147,7 +160,7 @@ const NavbarComponent = ({ isActive, setIsActive, headerTitle }) => {
           } sub-header w-full px-3 border-bottom shadow-sm`}
         >
           <div className="container-fluid fs-6 text-capitalize">
-            {headerTitle}
+            {headerTitle} {/* time and date */}
           </div>
         </div>
       </div>

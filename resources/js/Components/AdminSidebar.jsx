@@ -170,6 +170,14 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
         },
       ],
     },
+    {
+      type: NavType.BUTTON,
+      text: "Feedback",
+      icon: <i className="fi fi-rr-comment"></i>,
+      onClick: () => {
+        setShowFeedbackModal(true);
+      },
+    },
   ];
 
   useEffect(() => {

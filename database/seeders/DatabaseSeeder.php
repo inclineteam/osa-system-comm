@@ -86,119 +86,119 @@ class DatabaseSeeder extends Seeder
             RolesAndPermission::class,
         ]);
 
-        // create 10 announcements
-        for ($i = 0; $i < 10; $i++) {
-            $maxOrder = Announcement::all(['order'])->max(fn($row) => $row->order);
-            $order = $maxOrder + 1;
-            DB::table('announcements')->insert([
-                'title' => 'Announcement ' . $i,
-                'content' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
-                'created_at' => now(),
-                'updated_at' => now(),
-                'order' => $order
-            ]);
-        }
+        // // create 10 announcements
+        // for ($i = 0; $i < 10; $i++) {
+        //     $maxOrder = Announcement::all(['order'])->max(fn($row) => $row->order);
+        //     $order = $maxOrder + 1;
+        //     DB::table('announcements')->insert([
+        //         'title' => 'Announcement ' . $i,
+        //         'content' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //         'order' => $order
+        //     ]);
+        // }
 
-        $usercounter = 0;
+        // $usercounter = 0;
 
-        // create 10 unit heads
-        for ($i = 0; $i < count($campuses); $i++) {
+        // // create 10 unit heads
+        // for ($i = 0; $i < count($campuses); $i++) {
 
-            //create unique phone number for each campus
-            $phone = '09' . rand(100000000, 999999999) + $i + rand(0, 999);
+        //     //create unique phone number for each campus
+        //     $phone = '09' . rand(100000000, 999999999) + $i + rand(0, 999);
 
-            // create 10 unit heads for each campus with classification and designation
-            foreach ($rows as $key => $row) {
+        //     // create 10 unit heads for each campus with classification and designation
+        //     foreach ($rows as $key => $row) {
 
-                $classification_id = $key + 1;
-                foreach ($row['designations'] as $designation) {
-                    $designation_id = DB::table('designations')->where('name', $designation)->first()->id;
-                    $user = User::create([
-                        'firstname' => 'Unit ' . $usercounter,
-                        'middlename' => '' . $usercounter,
-                        'lastname' => 'Head ' . $usercounter,
-                        'email' => 'unithead' . rand(9, 234) . $i . rand(0, 999) . $key . '@gmail.com',
-                        'phone' => $phone . $usercounter,
-                        'password' => bcrypt('password'),
-                        'designation_id' => $designation_id,
-                        'campus_id' => $i + 1,
-                    ]);
-                    $user->addRole('unit_head');
-                    $usercounter++;
-                }
-            }
-        }
+        //         $classification_id = $key + 1;
+        //         foreach ($row['designations'] as $designation) {
+        //             $designation_id = DB::table('designations')->where('name', $designation)->first()->id;
+        //             $user = User::create([
+        //                 'firstname' => 'Unit ' . $usercounter,
+        //                 'middlename' => '' . $usercounter,
+        //                 'lastname' => 'Head ' . $usercounter,
+        //                 'email' => 'unithead' . rand(9, 234) . $i . rand(0, 999) . $key . '@gmail.com',
+        //                 'phone' => $phone . $usercounter,
+        //                 'password' => bcrypt('password'),
+        //                 'designation_id' => $designation_id,
+        //                 'campus_id' => $i + 1,
+        //             ]);
+        //             $user->addRole('unit_head');
+        //             $usercounter++;
+        //         }
+        //     }
+        // }
 
-        // create 10 admins
-        for ($i = 0; $i < 10; $i++) {
-            $admin = User::create([
-                'firstname' => 'Admin ' . $i,
-                'middlename' => '' . $i,
-                'lastname' => 'Admin ' . $i,
-                'email' => 'admin' . $i . '@gmail.com',
-                'phone' => '09' . rand(100000000, 999999999) + $i + rand(0, 999),
-                'password' => bcrypt('password'),
-            ]);
-            $admin->addRole('admin');
-        }
+        // // create 10 admins
+        // for ($i = 0; $i < 10; $i++) {
+        //     $admin = User::create([
+        //         'firstname' => 'Admin ' . $i,
+        //         'middlename' => '' . $i,
+        //         'lastname' => 'Admin ' . $i,
+        //         'email' => 'admin' . $i . '@gmail.com',
+        //         'phone' => '09' . rand(100000000, 999999999) + $i + rand(0, 999),
+        //         'password' => bcrypt('password'),
+        //     ]);
+        //     $admin->addRole('admin');
+        // }
 
-        for ($i = 0; $i < 10; $i++) {
+        // for ($i = 0; $i < 10; $i++) {
 
-            $user = User::find(1);
+        //     $user = User::find(1);
 
-            // create 10 calendar events with random start and end dates within january 2024
-            $start = now()->addDays(rand(0, 365));
-            $end = $start->addDays(rand(0, 365));
+        //     // create 10 calendar events with random start and end dates within january 2024
+        //     $start = now()->addDays(rand(0, 365));
+        //     $end = $start->addDays(rand(0, 365));
 
-            CalendarEvent::create([
-                'title' => 'Event ' . $i,
-                'user_id' => $user->id,
-                'start' => $start,
-                'end' => $end,
-                'type' => 'event',
-                'notified' => false
-            ]);
-        }
+        //     CalendarEvent::create([
+        //         'title' => 'Event ' . $i,
+        //         'user_id' => $user->id,
+        //         'start' => $start,
+        //         'end' => $end,
+        //         'type' => 'event',
+        //         'notified' => false
+        //     ]);
+        // }
 
-        // create 10 reminders
-        for ($i = 0; $i < 10; $i++) {
+        // // create 10 reminders
+        // for ($i = 0; $i < 10; $i++) {
 
-            Reminder::create([
-                'title' => 'Reminder ' . $i,
-                'content' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
+        //     Reminder::create([
+        //         'title' => 'Reminder ' . $i,
+        //         'content' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
 
-            ]);
-        }
+        //     ]);
+        // }
 
-        // create 10 submission bins and report for each submissioin bin
-        for ($i = 0; $i < 10; $i++) {
+        // // create 10 submission bins and report for each submissioin bin
+        // for ($i = 0; $i < 10; $i++) {
 
-            $submission_bin = SubmissionBin::create([
-                'title' => 'Submission bin ' . $i,
-                'instruction' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
-                'deadline_date' => Carbon::now(),
-                'deadline_time' => Carbon::tomorrow(),
-            ]);
+        //     $submission_bin = SubmissionBin::create([
+        //         'title' => 'Submission bin ' . $i,
+        //         'instruction' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
+        //         'deadline_date' => Carbon::now(),
+        //         'deadline_time' => Carbon::tomorrow(),
+        //     ]);
 
-            SubmissionBinAttachment::create([
-                'uri' => public_path('downloadables\ACCOMPLISHMENT REPORTS\Accomlishment Report- OSAS  Jan -Dec 2021.pdf'),
-                'name' => 'Accomlishment Report- OSAS  Jan -Dec 2021.pdf',
-                'submission_bin_id' => $submission_bin->id
-            ]);
+        //     SubmissionBinAttachment::create([
+        //         'uri' => public_path('downloadables\ACCOMPLISHMENT REPORTS\Accomlishment Report- OSAS  Jan -Dec 2021.pdf'),
+        //         'name' => 'Accomlishment Report- OSAS  Jan -Dec 2021.pdf',
+        //         'submission_bin_id' => $submission_bin->id
+        //     ]);
 
-            $report = Report::create([
-                'user_id' => User::find(1)->id,
-                'submission_bin_id' => $submission_bin->id,
-                'status' => 'Pending',
-                'is_submitted' => true
-            ]);
+        //     $report = Report::create([
+        //         'user_id' => User::find(1)->id,
+        //         'submission_bin_id' => $submission_bin->id,
+        //         'status' => 'Pending',
+        //         'is_submitted' => true
+        //     ]);
 
-            ReportAttachment::create([
-                'uri' => public_path('downloadables\CHED MEMORANDUMS\CHED MEMO.pdf'),
-                'name' => 'CHED MEMO.pdf',
-                'report_id' => $report->id
-            ]);
-        }
+        //     ReportAttachment::create([
+        //         'uri' => public_path('downloadables\CHED MEMORANDUMS\CHED MEMO.pdf'),
+        //         'name' => 'CHED MEMO.pdf',
+        //         'report_id' => $report->id
+        //     ]);
+        // }
 
         // create settings
 
