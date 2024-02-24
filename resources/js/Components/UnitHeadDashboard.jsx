@@ -28,7 +28,6 @@ const UnitHeadDashboard = ({ auth }) => {
       </Col>
       <Col>
         <LatestAnnouncement />
-        <LatestSubmissionBin />
       </Col>
     </Row>
   );

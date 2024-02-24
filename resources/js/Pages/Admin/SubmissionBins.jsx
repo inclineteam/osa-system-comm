@@ -19,7 +19,7 @@ import {
 } from "react-bootstrap";
 import { toast } from "react-toastify";
 
-const SubmissionBins = ({ auth, submission_bins, rows, reports = [] }) => {
+const SubmissionBins = ({ auth, submission_bins, rows, reports }) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [id, setId] = useState(null);
   const [processing, setProcessing] = useState(false);

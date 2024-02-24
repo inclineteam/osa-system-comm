@@ -28,54 +28,35 @@ export default function UnitHeadReportsChecklist({ offices }) {
                   <i className="text-slate-500 fi-rr-city text-xl mr-2"></i>
                   <p className="font-bold mb-0">{officeItem} Office</p>
                 </div>
-                {offices[officeItem].map((report, i) => (
-                  <Link
-                    href={route("admin.report.open", [report.id])}
-                    className="last:border-b-0 border-b group border-slate-200 block py-3"
-                  >
-                    <div>
-                      <div className="space-x-1">
-                        <div>
-                          <div className="flex space-x-3 items-start">
-                            <img
-                              src={report.unit_head.image}
-                              alt="Avatar"
-                              className="mt-1 w-8 h-8 rounded-full"
-                            />
-                            <div>
-                              <div className="w-max px-1 py-0.5 rounded-md group-hover:bg-slate-200 duration-75">
-                                <p className="text-slate-800 w-max mb-0 font-semibold">
-                                  {report.unit_head.firstname}{" "}
-                                  {report.unit_head.lastname}
-                                </p>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <p
-                                  className={`font-semibold rounded-md ml-1 mb-0 text-sm ${
-                                    statusColors[report.status]
-                                  }`}
-                                >
-                                  {report.status}
-                                </p>
-                                <div className="w-1 h-1 bg-slate-200 rounded-full"></div>
-                                <p className="font-semibold ml-1 mb-0 text-sm text-slate-500">
-                                  {report.unit_head.campus.name}
-                                </p>
-                              </div>
-                              <p className="ml-1 mb-0 font-normal text-sm text-slate-500">
-                                Submitted his report on{" "}
-                                <span class="font-semibold">
-                                  "{report.submission_bin.title}"
-                                </span>
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                        {/* <p className="flex-1 mb-0">{userEvent.description}</p> */}
-                      </div>
-                    </div>
-                  </Link>
-                ))}
+                <div className="mt-4 border border-slate-200 rounded-md overflow-hidden">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-4 [&>th]:py-2 border-b [&>th]:text-sm [&>th]:font-bold">
+                        <th>Unit Head</th>
+                        <th>Office</th>
+                        <th>Campus</th>
+                        <th>Submitted Reports</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {offices[officeItem].map((report, i) => (
+                        <tr
+                          key={i}
+                          className="border-b border-slate-200 last:border-0 [&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-4 [&>td]:py-2.5"
+                        >
+                          <td>
+                            {report.unit_head.firstname}{" "}
+                            {report.unit_head.lastname}
+                          </td>
+                          <td>{report.unit_head.designation.name}</td>
+                          <td>{report.unit_head.campus.name}</td>
+                          <td>{report.status}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             ))
           ) : (
