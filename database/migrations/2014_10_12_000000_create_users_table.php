@@ -26,6 +26,9 @@ return new class extends Migration
             $table->unsignedBigInteger('campus_id')->nullable();
             $table->string('employee_no')->nullable();
             $table->text('google_access_token')->nullable();
+
+            // soft delete
+            $table->boolean('is_deleted')->default(false);
             $table->rememberToken();
         });
     }

@@ -17,6 +17,7 @@ class Report extends Model
         'user_id',
         'submission_bin_id',
         'status',
+        'is_archived',
         'is_submitted'
     ];
 

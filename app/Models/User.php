@@ -36,11 +36,12 @@ class User extends Authenticatable implements LaratrustUser
         'campus_id',
         'employee_no',
         'image',
-        'google_access_token'
+        'google_access_token',
+        'is_deleted',
     ];
 
 
-    public function name():string
+    public function name(): string
     {
         return $this->firstname . ' ' . $this->lastname;
     }

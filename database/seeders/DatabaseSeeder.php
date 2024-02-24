@@ -81,37 +81,8 @@ class DatabaseSeeder extends Seeder
             DB::table('campuses')->insert([
                 'name' => $campus
             ]);
-
-            // create 10 submission bins and report for each submission bin, for each campuses
-            for ($i = 0; $i < 10; $i++) {
-
-                $submission_bin = SubmissionBin::create([
-                    'title' => 'Submission bin ' . $i,
-                    'instruction' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
-                    'deadline_date' => Carbon::now(),
-                    'deadline_time' => Carbon::tomorrow(),
-                ]);
-
-                SubmissionBinAttachment::create([
-                    'uri' => public_path('downloadables\ACCOMPLISHMENT REPORTS\Accomlishment Report- OSAS  Jan -Dec 2021.pdf'),
-                    'name' => 'Accomlishment Report- OSAS  Jan -Dec 2021.pdf',
-                    'submission_bin_id' => $submission_bin->id
-                ]);
-
-                $report = Report::create([
-                    'user_id' => User::find(1)->id,
-                    'submission_bin_id' => $submission_bin->id,
-                    'status' => 'Pending',
-                    'is_submitted' => true
-                ]);
-
-                ReportAttachment::create([
-                    'uri' => public_path('downloadables\CHED MEMORANDUMS\CHED MEMO.pdf'),
-                    'name' => 'CHED MEMO.pdf',
-                    'report_id' => $report->id
-                ]);
-            }
         }
+
         $this->call([
             RolesAndPermission::class,
         ]);
