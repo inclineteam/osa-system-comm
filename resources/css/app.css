@@ -50,3 +50,11 @@ tspan {
 .accordion-button {
   @apply hover:!bg-slate-50;
 }
+
+.react-datepicker-popper {
+  @apply bg-white;
+}
+
+.react-datepicker-wrapper {
+  @apply w-full;
+}

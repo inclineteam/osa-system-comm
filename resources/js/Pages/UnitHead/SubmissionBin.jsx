@@ -1,23 +1,21 @@
-import AddFileButton from "@/Components/AddFileButton";
-import CardComponent from "@/Components/CardComponent";
 import CommentsView from "@/Components/CommentsView";
 import FileIcon from "@/Components/FileIcon";
-import { formatDate } from "@/Components/Helper";
 import ModalComponent from "@/Components/ModalComponent";
 import PanelLayout from "@/Layouts/PanelLayout";
-import { Link } from "@inertiajs/react";
-import axios from "axios";
+import DatePicker from "react-datepicker";
 import { format } from "date-fns";
-import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Placeholder, Row } from "react-bootstrap";
+import React, { useState } from "react";
+import { Card, Col, Form, FormCheck, Row } from "react-bootstrap";
 import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
-import ReactTimeAgo from "react-time-ago";
+import "react-datepicker/dist/react-datepicker.css";
+import Checkbox from "@/Components/Checkbox";
 
 const SubmissionBin = ({ submissionBin, auth, report }) => {
   const [showFileModal, setShowFileModal] = useState(false);
   const [viewFile, setViewFile] = useState(null);
   const [isFetchingComments, setIsFetchingComments] = useState(true);
   const [comments, setComments] = useState([]);
+  const [selectedYear, setSelectedYear] = useState(new Date());
 
   console.log("submissionBin: ", submissionBin);
 
@@ -28,6 +26,10 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
   const showFile = (file) => {
     setViewFile(file);
     setShowFileModal(true);
+  };
+
+  const handleYearChange = (date) => {
+    setSelectedYear(date);
   };
 
   const submitReports = () => {};
@@ -132,6 +134,108 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
         {/* report comments */}
         <Row className="mt-3 gy-2">
           <Col className="">
+            <Card className="space-y-4 rounded-3 border-0 bg-white shadow-sm p-4">
+              <div className="font-semibold mb-2">Submit:</div>
+              <div>
+                <Form.Label className="text-secondary">
+                  <span className="text-sm text-danger me-1">*</span>
+                  Title of Activities/Program
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  required
+                  // value={data.firstname}
+                  // onChange={(e) => setData("firstname", e.target.value)}
+                />
+              </div>
+
+              <div className="flex gap-4">
+                <div class="flex-1">
+                  <Form.Label className="text-secondary">
+                    <span className="text-sm text-danger me-1">*</span>
+                    Date
+                  </Form.Label>
+                  <div className="block w-full">
+                    <DatePicker
+                      selected={selectedYear}
+                      onChange={handleYearChange}
+                      scrollableYearDropdown
+                      yearDropdownItemNumber={10}
+                      customInput={<Form.Control className="block w-full" />}
+                    />
+                  </div>
+                </div>
+
+                <div class="flex-1">
+                  <Form.Label className="text-secondary">
+                    <span className="text-sm text-danger me-1">*</span>
+                    Duration
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    required
+                    // value={data.firstname}
+                    // onChange={(e) => setData("firstname", e.target.value)}
+                  />
+                </div>
+              </div>
+
+              {/* ADD FILE UPLOAD TYPE */}
+
+              <div>
+                <Form.Label className="text-secondary">
+                  <span className="text-sm text-danger me-1">*</span>
+                  Participants
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  required
+                  // value={data.firstname}
+                  // onChange={(e) => setData("firstname", e.target.value)}
+                />
+              </div>
+
+              <div>
+                <Form.Label className="text-secondary">
+                  <span className="text-sm text-danger me-1">*</span>
+                  Location
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  required
+                  // value={data.firstname}
+                  // onChange={(e) => setData("firstname", e.target.value)}
+                />
+              </div>
+
+              <div>
+                <Form.Label className="text-secondary">
+                  <span className="text-sm text-danger me-1">*</span>
+                  Conducted/ Sponsored by:
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  required
+                  // value={data.firstname}
+                  // onChange={(e) => setData("firstname", e.target.value)}
+                />
+              </div>
+
+              <div className="gap-2  flex items-center">
+                <FormCheck />
+                <Form.Label className="text-secondary m-0">
+                  Budget/Remark
+                </Form.Label>
+              </div>
+
+              <div className="flex justify-end">
+                <button className="transition bg-indigo-600 text-white px-6 py-2.5 text-sm font-medium shadow hover:bg-indigo-400 rounded-md w-full w-max">
+                  SUBMIT
+                </button>
+              </div>
+            </Card>
+          </Col>
+          <Col lg={4} className="">
             <Card className="rounded-3 border-0 bg-white shadow-sm">
               <Card.Body>
                 <p className="my-1">Private Comments</p>
@@ -142,90 +246,6 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
                     user={auth.user}
                     submissionBin={submissionBin}
                   />
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col lg={4} className="">
-            <Card className="rounded-3 border-0 shadow-sm border-bottom  border-primary">
-              <Card.Body>
-                <p className="my-1 text-primary">Your Report</p>
-                {report?.is_submitted ? (
-                  <>
-                    <p className="text-start text-sm text-black-50 ">
-                      {report.remarks} (
-                      {formatDate(new Date(report.date_submitted))})
-                    </p>
-                    <p
-                      className={`my-0 text-sm  text-end fw-bold text-${getStatusColor()}`}
-                    >
-                      <span className="me-1">{report.status}</span>
-                    </p>
-                  </>
-                ) : (
-                  files.length <= 0 &&
-                  (submissionBin.deadline_date &&
-                  new Date(submissionBin.deadline_date) < new Date() ? (
-                    <p className="my-0 text-sm fw-bold uppercas text-end text-dang">
-                      Missing
-                    </p>
-                  ) : (
-                    <div className="mt-4 border-2 border-dashed border-slate-200 text-slate-500 text-center py-4 px-3">
-                      <p className="my-0 text-sm">No submission yet.</p>
-                    </div>
-                  ))
-                )}
-
-                <div className="">
-                  <div className="p-2 max-h-[245px] overflow-auto">
-                    <AddFileButton
-                      removable={!report?.is_submitted}
-                      disableAddingFile={report?.is_submitted}
-                      accept="application/pdf"
-                      handleViewFile={showFile}
-                      submissionBinId={submissionBin.id}
-                      userId={auth.user.id}
-                      files={files}
-                      setFiles={setFiles}
-                    />
-                  </div>
-                  {files &&
-                    files.length > 0 &&
-                    (!report?.is_submitted ||
-                    (report?.status && report?.status === "Rejected") ? (
-                      <Link
-                        as="button"
-                        type="button"
-                        method="patch"
-                        href={route("reports.submit", { id: submissionBin.id })}
-                        className="transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md w-full"
-                      >
-                        {!report?.status
-                          ? "Submit Report"
-                          : report?.status === "Rejected"
-                          ? "Resubmit Report"
-                          : "Submit Report"}
-                        {/* {!report.status || report.status === "Rejected"
-                          ? "Resubmit Report"
-                          : "Submit Report"} */}
-                      </Link>
-                    ) : (
-                      <Link
-                        disabled={
-                          report.status != "Pending" &&
-                          report.status != "Rejected"
-                        }
-                        as="button"
-                        type="button"
-                        method="patch"
-                        href={route("reports.unsubmit", {
-                          id: submissionBin.id,
-                        })}
-                        className="w-full transition bg-rose-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-rose-400 rounded-md"
-                      >
-                        Unsubmit
-                      </Link>
-                    ))}
                 </div>
               </Card.Body>
             </Card>
