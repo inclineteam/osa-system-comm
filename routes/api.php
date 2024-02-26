@@ -42,6 +42,24 @@ Route::prefix('/classifications')->group(function () {
     Route::get('/all', [ClassificationController::class, 'getAll'])->name('api.classifications.all');
 });
 
+// get user count which is only created within this day which will be labled as : new users count
+Route::get('/users/new', [UsersController::class, 'newUsersCount'])->name('users.new.count');
+
+// get user count for those who is labeled as is_deleted which will be labled as : left users count
+Route::get('/users/left', [UsersController::class, 'leftUsersCount'])->name('users.left.count');
+
+// get all user count but only those who is not labeled as is_deleted which will be labled as : total users count
+Route::get('/users/total', [UsersController::class, 'totalUsersCount'])->name('users.total.count');
+
+// total number of users submitted
+Route::get('/users/submitted', [UsersController::class, 'submittedUsersCount'])->name('users.submitted.count');
+
+// users has not been yet submitting, & near due date
+Route::get('/users/due', [UsersController::class, 'dueUsersCount'])->name('users.due.count');
+
+// users that has reached the due date
+Route::get('/users/overdue', [UsersController::class, 'overdueUsersCount'])->name('users.overdue.count');
+
 Route::post('/image-upload', function (Request $request) {
     $image = $request->file('image');
     $imageName = $image->getClientOriginalName();

@@ -38,6 +38,7 @@ class User extends Authenticatable implements LaratrustUser
         'image',
         'google_access_token',
         'is_deleted',
+        'has_read_policy'
     ];
 
 

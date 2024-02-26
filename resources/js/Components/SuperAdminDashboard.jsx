@@ -24,6 +24,13 @@ const SuperAdminDashboard = () => {
     data: null,
   });
 
+  const [newUsers, setNewUsers] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [leftUsers, setLeftUsers] = useState(0);
+  const [dueUsers, setDueUsers] = useState(0);
+  const [overdueUsers, setOverdueUsers] = useState(0);
+  const [submittedUsers, setSubmittedUsers] = useState(0);
+
   useEffect(() => {
     const fetchCampuses = () => {
       setFetchingCampus(true);
@@ -40,8 +47,56 @@ const SuperAdminDashboard = () => {
       });
     };
 
+    const fetchNewUsers = () => {
+      axios.get(route("users.new.count")).then((res) => {
+        console.log("new users", res.data);
+        setNewUsers(res.data.newUsersCount);
+      });
+    };
+
+    const fetchTotalUsers = () => {
+      axios.get(route("users.total.count")).then((res) => {
+        console.log("total users", res.data);
+        setTotalUsers(res.data.totalUsersCount);
+      });
+    };
+
+    const fetchLeftUsers = () => {
+      axios.get(route("users.left.count")).then((res) => {
+        console.log("left users", res.data);
+        setLeftUsers(res.data.leftUsersCount);
+      });
+    };
+
+    const fetchNearDueUsers = () => {
+      axios.get(route("users.due.count")).then((res) => {
+        console.log("near due users", res.data);
+        setDueUsers(res.data.dueUsersCount);
+      });
+    };
+
+    const fetchOverdueUsers = () => {
+      axios.get(route("users.overdue.count")).then((res) => {
+        console.log("overdue users", res.data);
+        setOverdueUsers(res.data.overdueUsersCount);
+      });
+    };
+
+    const fetchSubmittedUsers = () => {
+      axios.get(route("users.submitted.count")).then((res) => {
+        console.log("submitted users", res.data);
+        setSubmittedUsers(res.data.submittedUsersCount);
+      });
+    };
+
     fetchCampuses();
     fetchLatestReport();
+    fetchNewUsers();
+    fetchTotalUsers();
+    fetchLeftUsers();
+    fetchNearDueUsers();
+    fetchOverdueUsers();
+    fetchSubmittedUsers();
   }, []);
 
   return (
@@ -186,13 +241,153 @@ const SuperAdminDashboard = () => {
                     />
                   </Col>
                 ))}
+                <Col lg={6} md={6} xs={6}>
+                  <Card className={`dashboard-card shadow-sm`}>
+                    <Card.Body className="p-4 flex justify-between">
+                      <div className="">
+                        <div
+                          className={`icon p-2 flex items-center justify-center w-[45px] h-[45px] rounded-2 fs-4 bg-gradient-to-tr from-emerald-600 text-white to-emerald-400 text-center mb-3`}
+                        >
+                          {/* <i className="fi fi-rr-boxes leading-none"></i>  */}
+                          <i className="fi fi-rr-user fs-5"></i>
+                        </div>
+                        <p className="mt-0 mb-0 text-sm fw-bold text-slate-800 fs-6">
+                          Total Users
+                        </p>
+                      </div>
+                      <div className="flex items-center">
+                        <p className={`my-0 fw-bold text-dark text-[2.5rem]`}>
+                          {totalUsers}
+                        </p>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col lg={6} md={6} xs={6}>
+                  <Card className={`dashboard-card shadow-sm`}>
+                    <Card.Body className="p-4 flex justify-between">
+                      <div className="">
+                        <div
+                          className={`icon p-2 flex items-center justify-center w-[45px] h-[45px] rounded-2 fs-4 bg-gradient-to-tr from-emerald-600 text-white to-emerald-400 text-center mb-3`}
+                        >
+                          {/* <i className="fi fi-rr-boxes leading-none"></i>  */}
+                          <i className="fi fi-rr-user fs-5"></i>
+                        </div>
+                        <p className="mt-0 mb-0 text-sm fw-bold text-slate-800 fs-6">
+                          New Users
+                        </p>
+                      </div>
+                      <div className="flex items-center">
+                        <p className={`my-0 fw-bold text-dark text-[2.5rem]`}>
+                          {newUsers}
+                        </p>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col lg={6} md={6} xs={6}>
+                  <Card className={`dashboard-card shadow-sm`}>
+                    <Card.Body className="p-4 flex justify-between">
+                      <div className="">
+                        <div
+                          className={`icon p-2 flex items-center justify-center w-[45px] h-[45px] rounded-2 fs-4 bg-gradient-to-tr from-emerald-600 text-white to-emerald-400 text-center mb-3`}
+                        >
+                          {/* <i className="fi fi-rr-boxes leading-none"></i>  */}
+                          <i className="fi fi-rr-user fs-5"></i>
+                        </div>
+                        <p className="mt-0 mb-0 text-sm fw-bold text-slate-800 fs-6">
+                          Left Users
+                        </p>
+                      </div>
+                      <div className="flex items-center">
+                        <p className={`my-0 fw-bold text-dark text-[2.5rem]`}>
+                          {leftUsers}
+                        </p>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col lg={6} md={6} xs={6}>
+                  <Card
+                    className={`dashboard-card shadow-sm border-l-[5rem] border-l-black`}
+                  >
+                    <Card.Body className="p-4 border-emerald-500 rounded-sm border-l-4 flex justify-between">
+                      <div className="">
+                        <div
+                          className={`icon p-2 flex items-center justify-center w-[45px] h-[45px] rounded-2 fs-4 bg-gradient-to-tr from-emerald-600 text-white to-emerald-400 text-center mb-3`}
+                        >
+                          {/* <i className="fi fi-rr-boxes leading-none"></i>  */}
+                          <i className="fi fi-rr-user fs-5"></i>
+                        </div>
+                        <p className="mt-0 mb-0 text-sm fw-bold text-slate-800 fs-6">
+                          Submitted Users
+                        </p>
+                      </div>
+                      <div className="flex items-center">
+                        <p className={`my-0 fw-bold text-dark text-[2.5rem]`}>
+                          {submittedUsers}
+                        </p>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col lg={6} md={6} xs={6}>
+                  <Card
+                    className={`dashboard-card shadow-sm border-l-[5rem] border-l-black`}
+                  >
+                    <Card.Body className="p-4 border-yellow-500 rounded-sm border-l-4 flex justify-between">
+                      <div className="">
+                        <div
+                          className={`icon p-2 flex items-center justify-center w-[45px] h-[45px] rounded-2 fs-4 bg-gradient-to-tr from-emerald-600 text-white to-emerald-400 text-center mb-3`}
+                        >
+                          {/* <i className="fi fi-rr-boxes leading-none"></i>  */}
+                          <i className="fi fi-rr-user fs-5"></i>
+                        </div>
+                        <p className="mt-0 mb-0 text-sm fw-bold text-slate-800 fs-6">
+                          Near Due Users
+                        </p>
+                      </div>
+                      <div className="flex items-center">
+                        <p className={`my-0 fw-bold text-dark text-[2.5rem]`}>
+                          {dueUsers}
+                        </p>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col lg={6} md={6} xs={6}>
+                  <Card
+                    className={`dashboard-card shadow-sm border-l-[5rem] border-l-black`}
+                  >
+                    <Card.Body className="p-4 border-red-500 rounded-sm border-l-4 flex justify-between">
+                      <div className="">
+                        <div
+                          className={`icon p-2 flex items-center justify-center w-[45px] h-[45px] rounded-2 fs-4 bg-gradient-to-tr from-emerald-600 text-white to-emerald-400 text-center mb-3`}
+                        >
+                          {/* <i className="fi fi-rr-boxes leading-none"></i>  */}
+                          <i className="fi fi-rr-user fs-5"></i>
+                        </div>
+                        <p className="mt-0 mb-0 text-sm fw-bold text-slate-800 fs-6">
+                          Overdue Users
+                        </p>
+                      </div>
+                      <div className="flex items-center">
+                        <p className={`my-0 fw-bold text-dark text-[2.5rem]`}>
+                          {overdueUsers}
+                        </p>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
               </>
             )}
           </Row>
           <CalendarCard viewButton className="mt-8" />
         </Col>
         <Col lg={3}>
-          <AnnouncementsCard link={route("admin.announcements")} />
+          {/* <AnnouncementsCard link={route("admin.announcements")} /> */}
+
+          {/* to be implemented :  */}
           {/* <Card className='border-0 p-3 shadow-sm'>
                         <Card.Body>
                             <p className='fs-6 fw-bold text-sm text-black-50'>Announcements</p>

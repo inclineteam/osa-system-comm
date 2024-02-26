@@ -18,7 +18,15 @@ class Report extends Model
         'submission_bin_id',
         'status',
         'is_archived',
-        'is_submitted'
+        'is_submitted',
+        'title',
+        'date',
+        'duration',
+        'participants',
+        'budget',
+        'conducted_by',
+        'location',
+        'documentation',
     ];
 
     public function attachments(): HasMany

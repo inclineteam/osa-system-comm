@@ -29,6 +29,10 @@ return new class extends Migration
 
             // soft delete
             $table->boolean('is_deleted')->default(false);
+
+            // has_read_policy
+            $table->boolean('has_read_policy')->default(false);
+
             $table->rememberToken();
         });
     }
