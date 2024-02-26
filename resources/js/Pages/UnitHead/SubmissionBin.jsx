@@ -9,13 +9,13 @@ import { Card, Col, Form, FormCheck, Row } from "react-bootstrap";
 import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 import "react-datepicker/dist/react-datepicker.css";
 import Checkbox from "@/Components/Checkbox";
+import { SubmissionBinEntryForm } from "../Admin/SubmissionBinEntryForm";
 
 const SubmissionBin = ({ submissionBin, auth, report }) => {
   const [showFileModal, setShowFileModal] = useState(false);
   const [viewFile, setViewFile] = useState(null);
   const [isFetchingComments, setIsFetchingComments] = useState(true);
   const [comments, setComments] = useState([]);
-  const [selectedYear, setSelectedYear] = useState(new Date());
 
   console.log("submissionBin: ", submissionBin);
 
@@ -26,10 +26,6 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
   const showFile = (file) => {
     setViewFile(file);
     setShowFileModal(true);
-  };
-
-  const handleYearChange = (date) => {
-    setSelectedYear(date);
   };
 
   const submitReports = () => {};
@@ -132,110 +128,9 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
           </Card.Body>
         </Card>
         {/* report comments */}
-        <Row className="mt-3 gy-2">
-          <Col className="">
-            <Card className="space-y-4 rounded-3 border-0 bg-white shadow-sm p-4">
-              <div className="font-semibold mb-2">Submit:</div>
-              <div>
-                <Form.Label className="text-secondary">
-                  <span className="text-sm text-danger me-1">*</span>
-                  Title of Activities/Program
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  required
-                  // value={data.firstname}
-                  // onChange={(e) => setData("firstname", e.target.value)}
-                />
-              </div>
-
-              <div className="flex gap-4">
-                <div class="flex-1">
-                  <Form.Label className="text-secondary">
-                    <span className="text-sm text-danger me-1">*</span>
-                    Date
-                  </Form.Label>
-                  <div className="block w-full">
-                    <DatePicker
-                      selected={selectedYear}
-                      onChange={handleYearChange}
-                      scrollableYearDropdown
-                      yearDropdownItemNumber={10}
-                      customInput={<Form.Control className="block w-full" />}
-                    />
-                  </div>
-                </div>
-
-                <div class="flex-1">
-                  <Form.Label className="text-secondary">
-                    <span className="text-sm text-danger me-1">*</span>
-                    Duration
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    required
-                    // value={data.firstname}
-                    // onChange={(e) => setData("firstname", e.target.value)}
-                  />
-                </div>
-              </div>
-
-              {/* ADD FILE UPLOAD TYPE */}
-
-              <div>
-                <Form.Label className="text-secondary">
-                  <span className="text-sm text-danger me-1">*</span>
-                  Participants
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  required
-                  // value={data.firstname}
-                  // onChange={(e) => setData("firstname", e.target.value)}
-                />
-              </div>
-
-              <div>
-                <Form.Label className="text-secondary">
-                  <span className="text-sm text-danger me-1">*</span>
-                  Location
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  required
-                  // value={data.firstname}
-                  // onChange={(e) => setData("firstname", e.target.value)}
-                />
-              </div>
-
-              <div>
-                <Form.Label className="text-secondary">
-                  <span className="text-sm text-danger me-1">*</span>
-                  Conducted/ Sponsored by:
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  required
-                  // value={data.firstname}
-                  // onChange={(e) => setData("firstname", e.target.value)}
-                />
-              </div>
-
-              <div className="gap-2  flex items-center">
-                <FormCheck />
-                <Form.Label className="text-secondary m-0">
-                  Budget/Remark
-                </Form.Label>
-              </div>
-
-              <div className="flex justify-end">
-                <button className="transition bg-indigo-600 text-white px-6 py-2.5 text-sm font-medium shadow hover:bg-indigo-400 rounded-md w-full w-max">
-                  SUBMIT
-                </button>
-              </div>
-            </Card>
-          </Col>
-          <Col lg={4} className="">
+        <Row className="!mt-8">
+          <Col className="space-y-8">
+            <SubmissionBinEntryForm />
             <Card className="rounded-3 border-0 bg-white shadow-sm">
               <Card.Body>
                 <p className="my-1">Private Comments</p>
