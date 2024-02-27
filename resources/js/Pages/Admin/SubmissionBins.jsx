@@ -17,7 +17,7 @@ import {
   Placeholder,
   useAccordionButton,
 } from "react-bootstrap";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const SubmissionBins = ({ auth, submission_bins, rows, reports }) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);

@@ -19,14 +19,7 @@ class Report extends Model
         'status',
         'is_archived',
         'is_submitted',
-        'title',
-        'date',
-        'duration',
-        'participants',
-        'budget',
-        'conducted_by',
-        'location',
-        'documentation',
+        'date'
     ];
 
     public function attachments(): HasMany
@@ -42,6 +35,11 @@ class Report extends Model
     public function comments()
     {
         return $this->hasMany(ReportComment::class, 'report_id', 'id');
+    }
+
+    public function entries()
+    {
+        return $this->hasMany(ReportEntry::class, 'report_id', 'id');
     }
 
     public function campus()

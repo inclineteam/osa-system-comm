@@ -66,13 +66,13 @@ class SubmissionBinController extends Controller
             $user->notify(new NewSubmissionBin($bin));
         }
 
-        $unitHeads = User::whereHasRole('unit_head')->get();
-        foreach ($unitHeads as $key => $unitHead) {
-            $report = Report::create([
-                'user_id' => $unitHead->id,
-                'submission_bin_id' => $bin->id,
-            ]);
-        }
+        // $unitHeads = User::whereHasRole('unit_head')->get();
+        // foreach ($unitHeads as $key => $unitHead) {
+        //     $report = Report::create([
+        //         'user_id' => $unitHead->id,
+        //         'submission_bin_id' => $bin->id,
+        //     ]);
+        // }
 
         return response()->json(['bin' => $bin]);
     }

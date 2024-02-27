@@ -4,7 +4,7 @@ import FileIcon from "./FileIcon";
 import FileItem from "./FileItem";
 import axios from "axios";
 import { MultipartHeader } from "@/constants/constants";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const AddFileButton = ({
   files,

@@ -53,17 +53,17 @@ class ReportController extends Controller
             ]);
         }
         // save report to server
-        $file = $request->file('file');
-        $fileName = $file->getClientOriginalName();
-        $file->move(public_path('reports'), $fileName);
-        $fileUrl = "/reports/" . $fileName;
+        // $file = $request->file('file');
+        // $fileName = $file->getClientOriginalName();
+        // $file->move(public_path('reports'), $fileName);
+        // $fileUrl = "/reports/" . $fileName;
 
         // create report attachment
-        $attachment = ReportAttachment::create([
-            'uri' => $fileUrl,
-            'name' => $fileName,
-            'report_id' => $report->id
-        ]);
+        // $attachment = ReportAttachment::create([
+        //     'uri' => $fileUrl,
+        //     'name' => $fileName,
+        //     'report_id' => $report->id
+        // ]);
 
 
         UserEventsHistory::create([
@@ -74,7 +74,7 @@ class ReportController extends Controller
             'description' => 'added a report '
         ]);
 
-        return response()->json(['fileUrl' => $fileUrl, 'attachment' => $attachment]);
+        return response()->json();
     }
     /* api */
     public function removeAttachment(Request $request)

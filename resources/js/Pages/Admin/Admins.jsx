@@ -16,7 +16,7 @@ import {
   Table,
 } from "react-bootstrap";
 import DataTable from "react-data-table-component";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import Swal from "sweetalert2";
 import { MultipartHeader } from "@/constants/constants";
 

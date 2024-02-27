@@ -2,7 +2,7 @@ import React from "react";
 import ModalComponent from "./ModalComponent";
 import { Button, ButtonGroup, Container, Form, Image } from "react-bootstrap";
 import { useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useForm } from "@inertiajs/react";
 
 const FeedBackModal = ({ show = false, handleClose }) => {

@@ -6,13 +6,13 @@ import SuperAdminSidebar from "@/Components/SuperAdminSidebar";
 import AdminSidebar from "@/Components/AdminSidebar";
 import UnitHeadSidebar from "@/Components/UnitHeadSidebar";
 import BottomNav from "@/Components/BottomNav";
-import { ToastContainer, toast } from "react-toastify";
 import { useNavState, usePolicyState } from "@/States/States";
 import { Head, usePage, useRemember } from "@inertiajs/react";
 import { useEffect } from "react";
 import FeedBackModal from "@/Components/FeedBackModal";
 import PolicyModal from "@/Components/PolicyModal";
 import axios from "axios";
+import { Toaster, toast } from "sonner";
 
 export const LayoutType = {
   SUPER_ADMIN: "super_admin",
@@ -89,12 +89,7 @@ const PanelLayout = ({
           activeLink[0].toUpperCase() + activeLink.substr(1).toLowerCase()
         }
       />
-      <ToastContainer
-        hideProgressBar
-        autoClose={1500}
-        theme="light"
-        position="bottom-right"
-      />
+      <Toaster duration={1500} theme="light" position="bottom-right" />
       <NavbarComponent
         headerTitle={headerTitle || activeLink}
         setIsActive={setNavActive}

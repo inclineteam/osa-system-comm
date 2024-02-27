@@ -6,7 +6,7 @@ import DropdownItem from "react-bootstrap/esm/DropdownItem";
 import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
 import DropdownToggle from "react-bootstrap/esm/DropdownToggle";
 import { formatDate } from "./Helper";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const CalendarDropdown = () => {
   const [notifications, setNotifications] = useState([]);

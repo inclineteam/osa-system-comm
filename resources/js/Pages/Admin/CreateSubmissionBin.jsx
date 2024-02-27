@@ -7,7 +7,7 @@ import axios from "axios";
 import React from "react";
 import { useState } from "react";
 import { Button, Card, Container, Form } from "react-bootstrap";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const CreateSubmissionBin = ({ auth }) => {
   const { post, processing, data, setData } = useForm({

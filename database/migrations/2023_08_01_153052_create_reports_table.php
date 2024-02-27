@@ -22,13 +22,6 @@ return new class extends Migration {
             $table->date('date');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('submission_bin_id');
-            $table->string('title');
-            $table->string('duration');
-            $table->string('participants');
-            $table->boolean('budget');
-            $table->string('conducted_by');
-            $table->string('location');
-            $table->json('documentation');
         });
     }
 
