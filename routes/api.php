@@ -15,6 +15,7 @@ use App\Http\Controllers\SubmissionBinController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\UnitHeadController;
 use App\Http\Controllers\UsersController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -176,6 +177,10 @@ Route::get('/policy', [AppSettingsController::class, 'getPolicy'])->name('policy
 
 Route::group(['middleware' => ['web']], function () {
     Route::post('/policy/read', function (Request $request) {
+        $user = User::find(auth()->user()->id);
+        $user->has_read_policy = true;
+        $user->save();
+
         $request->session()->put('has_read_policy', true);
         return redirect()->back();
     })->name('policy.read');
