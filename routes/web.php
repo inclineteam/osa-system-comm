@@ -173,7 +173,7 @@ Route::prefix('/announcements')->middleware(['auth', 'role:super_admin|admin'])-
 });
 
 Route::prefix('/reports')->middleware(['auth'])->group(function () {
-    Route::patch('/{submission_bin_id}/submit', [ReportController::class, 'submitReport'])->name('reports.submit');
+    Route::post('/{submission_bin_id}/submit', [ReportController::class, 'submitReport'])->name('reports.submit');
     Route::patch('/{submission_bin_id}/unsubmit', [ReportController::class, 'unSubmitReport'])->name('reports.unsubmit');
     Route::get('/{report}/view', [ReportController::class, 'view'])->name('reports.view');
     Route::get('/latest', [ReportController::class, 'latest'])->name('reports.latest');

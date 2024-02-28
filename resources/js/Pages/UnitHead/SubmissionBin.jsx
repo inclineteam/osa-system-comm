@@ -14,21 +14,11 @@ import { SubmissionBinEntryForm } from "../Admin/SubmissionBinEntryForm";
 const SubmissionBin = ({ submissionBin, auth, report }) => {
   const [showFileModal, setShowFileModal] = useState(false);
   const [viewFile, setViewFile] = useState(null);
-  const [isFetchingComments, setIsFetchingComments] = useState(true);
-  const [comments, setComments] = useState([]);
-
-  console.log("submissionBin: ", submissionBin);
-
-  const [files, setFiles] = useState(
-    report?.attachments.map((a, i) => ({ ...a, uploaded: true })) || []
-  );
 
   const showFile = (file) => {
     setViewFile(file);
     setShowFileModal(true);
   };
-
-  const submitReports = () => {};
 
   const getStatusColor = () => {
     if (report.status.toLowerCase() == "approved") {
@@ -130,7 +120,7 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
         {/* report comments */}
         <Row className="!mt-8">
           <Col className="space-y-8">
-            <SubmissionBinEntryForm />
+            <SubmissionBinEntryForm submissionBinId={submissionBin.id} />
             <Card className="rounded-3 border-0 bg-white shadow-sm">
               <Card.Body>
                 <p className="my-1">Private Comments</p>

@@ -19,10 +19,7 @@ export const SubmissionBinEntryImageInput = ({ setData }) => {
         } else {
           setData((prevData) => ({
             ...prevData,
-            documentation: [
-              ...prevData.documentation,
-              URL.createObjectURL(file),
-            ],
+            documentation: [...prevData.documentation, file],
           }));
         }
       });

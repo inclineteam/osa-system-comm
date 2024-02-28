@@ -66,6 +66,7 @@ export const SubmissionBinEntry = ({
                 </Form.Label>
                 <div className="block w-full">
                   <DatePicker
+                    dateFormat={"yy/mm/dd"}
                     selected={data.date}
                     onChange={handleYearChange}
                     scrollableYearDropdown
@@ -99,12 +100,12 @@ export const SubmissionBinEntry = ({
               <SubmissionBinEntryImageInput data={data} setData={setData} />
               <div className="flex flex-wrap gap-4 mt-4">
                 {data.documentation.length
-                  ? data.documentation.map((previewImage) => (
-                      <div key={previewImage} className="relative">
+                  ? data.documentation.map((previewImage, i) => (
+                      <div key={i} className="relative">
                         <button
                           onClick={() => {
                             let files = data.documentation.filter(
-                              (file) => file !== previewImage
+                              (file) => file.name !== previewImage.name
                             );
 
                             setData((prevData) => ({
@@ -117,7 +118,7 @@ export const SubmissionBinEntry = ({
                           &times;
                         </button>
                         <img
-                          src={previewImage}
+                          src={URL.createObjectURL(previewImage)}
                           alt="Preview"
                           className="rounded-xl w-40 h-40 object-cover"
                         />
@@ -173,7 +174,15 @@ export const SubmissionBinEntry = ({
             </div>
 
             <div className="gap-2  flex items-center">
-              <FormCheck value={data.budget} />
+              <FormCheck
+                value={data.budget}
+                onChange={(e) =>
+                  setData((prevData) => ({
+                    ...prevData,
+                    budget: e.target.checked,
+                  }))
+                }
+              />
               <Form.Label className="text-secondary m-0">
                 Budget/Remark
               </Form.Label>

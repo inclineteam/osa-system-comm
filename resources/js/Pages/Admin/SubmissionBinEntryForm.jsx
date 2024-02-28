@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Card, Form, FormCheck } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { SubmissionBinEntry } from "./SubmissionBinEntry";
+import { router } from "@inertiajs/react";
 
-export const SubmissionBinEntryForm = () => {
+export const SubmissionBinEntryForm = ({ submissionBinId }) => {
   const [entries, setEntries] = useState([
     {
       id: crypto.randomUUID(),
@@ -36,6 +37,14 @@ export const SubmissionBinEntryForm = () => {
     setEntries(newArr);
   };
 
+  const handleSubmit = () => {
+    router.post(
+      route("reports.submit", { submission_bin_id: submissionBinId }),
+      { entries }
+    );
+    console.log(entries);
+  };
+
   return (
     <Card className="space-y-4 rounded-3 border-0 bg-white shadow-sm p-4">
       <div className="font-semibold mb-2">Submit:</div>
@@ -49,6 +58,7 @@ export const SubmissionBinEntryForm = () => {
         />
       ))}
       <button
+        type="button"
         onClick={() => {
           setEntriesCount((entry) => entry + 1);
           setEntries((prevEntries) => [
@@ -70,7 +80,10 @@ export const SubmissionBinEntryForm = () => {
         Add Entry
       </button>
       <div className="flex justify-end">
-        <button className="transition bg-indigo-600 text-white px-6 py-2.5 text-sm font-medium shadow hover:bg-indigo-400 rounded-md w-max">
+        <button
+          onClick={handleSubmit}
+          className="transition bg-indigo-600 text-white px-6 py-2.5 text-sm font-medium shadow hover:bg-indigo-400 rounded-md w-max"
+        >
           SUBMIT
         </button>
       </div>

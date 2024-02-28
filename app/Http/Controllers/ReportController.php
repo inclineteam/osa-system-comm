@@ -6,6 +6,8 @@ use App\Models\Campus;
 use App\Models\Designation;
 use App\Models\Report;
 use App\Models\ReportAttachment;
+use App\Models\ReportEntry;
+use App\Models\SubmissionBin;
 use App\Models\User;
 use App\Models\UserEventsHistory;
 use App\Notifications\NewReportSubmitted;
@@ -97,15 +99,34 @@ class ReportController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function submitReport(Request $request)
+    public function submitReport(Request $request, SubmissionBin $submissionBin)
     {
         $user = $request->user();
-        $report = Report::with(['submission_bin'])->where('submission_bin_id', $request->submission_bin_id)->where('user_id', $user->id)->first();
+        $report = $report = Report::create([
+            'user_id' => $user->id,
+            'submission_bin_id' => $request->submission_bin_id,
+        ]);
 
         if ($report) {
             $report->is_submitted = true;
             $report->status = 'Pending';
             $report->date_submitted = Carbon::now()->toDateTimeString();
+
+            foreach ($request->entries as $entry) {
+                $date = date('Y-m-d H:i:s', intval($entry['date']));
+
+                ReportEntry::create([
+                    'title' => $entry['title'],
+                    'date' => $date,
+                    'duration' => $entry['duration'],
+                    'participants' => $entry['participants'],
+                    'location' => $entry['location'],
+                    'conducted_by' => $entry['conducted_by'],
+                    'budget' => $entry['budget'],
+                    'documentation' => json_encode($entry['documentation']),
+                    'report_id' => $report->id
+                ]);
+            }
 
             //check if has deadline
             if ($report->deadline_date) {
