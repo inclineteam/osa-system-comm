@@ -113,7 +113,7 @@ const NavbarComponent = ({ isActive, setIsActive, headerTitle }) => {
                     </div>
                   </div>
                 </DropdownToggle>
-                <Dropdown.Menu>
+                <Dropdown.Menu className="shadow-md shadow-black/[0.05]">
                   <div className="text-center w-[13rem] pt-2">
                     <Image
                       src={userAuth?.user?.image}
@@ -121,32 +121,30 @@ const NavbarComponent = ({ isActive, setIsActive, headerTitle }) => {
                       width={70}
                       height={70}
                     />
-                    <p className="my-1 text-sm fw-bold">
+                    <p className="mt-2 mb-1 text-sm fw-bold">
                       {userAuth?.user?.firstname} {userAuth?.user?.lastname}
                     </p>
                   </div>
                   <div className="px-2">
                     <hr className="bg-light text-black-50 mb-1" />
                   </div>
-                  <Nav className="flex-column px-3 mt-2">
+                  <Nav className="flex-column px-2 mt-2">
                     <Nav.Item>
-                      <Nav.Link
+                      <Link
                         preserveScroll={false}
-                        as={Link}
                         href={route("profile.edit")}
-                        className="link-secondary"
+                        className="block py-1.5 text-slate-800 hover:bg-slate-100 rounded px-3"
                       >
                         Profile
-                      </Nav.Link>
+                      </Link>
                     </Nav.Item>
                     <Nav.Item>
-                      <Nav.Link
-                        as={Link}
+                      <Link
                         href={route("admin.signout")}
-                        className="link-secondary"
+                        className="block py-1.5 text-rose-600 hover:bg-rose-100 rounded px-3"
                       >
                         Log Out
-                      </Nav.Link>
+                      </Link>
                     </Nav.Item>
                   </Nav>
                 </Dropdown.Menu>

@@ -87,14 +87,22 @@ const Welcome = () => {
 
   return (
     <AppLayout>
-      <div className="flex flex-col items-center justify-center   min-h-screen bg-cover bg-[url('https://lspuonline.com/uploads/login_image/slider_1.jpg')]">
-        <Toaster duration={1500} theme="light" position="bottom-right" />
+      <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-[url('/images/signin-bg.jpg')] bg-center">
+        <Toaster duration={3000} theme="light" position="bottom-right" />
         <ModalComponent
           backdrop="static"
           centered
           handleClose={() => setShowProgressModal(false)}
           show={showProgressModal}
           size="sm"
+          toastOptions={{
+            classNames: {
+              error: "!text-red-500",
+              success: "!text-green-600",
+              warning: "!text-yellow-600",
+              info: "!text-blue-500",
+            },
+          }}
         >
           <div className="text-center">
             <p className="my-0 fw-bold">

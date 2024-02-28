@@ -89,7 +89,19 @@ const PanelLayout = ({
           activeLink[0].toUpperCase() + activeLink.substr(1).toLowerCase()
         }
       />
-      <Toaster duration={1500} theme="light" position="bottom-right" />
+      <Toaster
+        duration={3000}
+        theme="light"
+        position="bottom-right"
+        toastOptions={{
+          classNames: {
+            error: "!text-red-500",
+            success: "!text-green-500",
+            warning: "!text-yellow-500",
+            info: "!text-blue-500",
+          },
+        }}
+      />
       <NavbarComponent
         headerTitle={headerTitle || activeLink}
         setIsActive={setNavActive}
