@@ -112,22 +112,6 @@ class ReportController extends Controller
             $report->status = 'Pending';
             $report->date_submitted = Carbon::now()->toDateTimeString();
 
-            foreach ($request->entries as $entry) {
-                $date = date('Y-m-d H:i:s', intval($entry['date']));
-
-                ReportEntry::create([
-                    'title' => $entry['title'],
-                    'date' => $date,
-                    'duration' => $entry['duration'],
-                    'participants' => $entry['participants'],
-                    'location' => $entry['location'],
-                    'conducted_by' => $entry['conducted_by'],
-                    'budget' => $entry['budget'],
-                    'documentation' => json_encode($entry['documentation']),
-                    'report_id' => $report->id
-                ]);
-            }
-
             //check if has deadline
             if ($report->deadline_date) {
                 if ($report->deadline_date > Carbon::now()->toDate()) {
@@ -141,6 +125,23 @@ class ReportController extends Controller
 
             if ($report->save()) {
                 $admin = User::whereHasRole('admin')->where('campus_id', $user->campus_id)->get();
+
+                foreach ($request->entries as $entry) {
+                    $date = date('Y-m-d H:i:s', intval($entry['date']));
+
+                    ReportEntry::create([
+                        'title' => $entry['title'],
+                        'date' => $date,
+                        'duration' => $entry['duration'],
+                        'participants' => $entry['participants'],
+                        'location' => $entry['location'],
+                        'conducted_by' => $entry['conducted_by'],
+                        'budget' => $entry['budget'],
+                        'documentation' => json_encode($entry['documentation']),
+                        'report_id' => $report->id
+                    ]);
+                }
+
                 foreach ($admin as $key => $admin) {
                     $admin->notify(new NewReportSubmitted($report));
                 }

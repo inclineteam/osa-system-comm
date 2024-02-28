@@ -66,7 +66,6 @@ export const SubmissionBinEntry = ({
                 </Form.Label>
                 <div className="block w-full">
                   <DatePicker
-                    dateFormat={"yy/mm/dd"}
                     selected={data.date}
                     onChange={handleYearChange}
                     scrollableYearDropdown

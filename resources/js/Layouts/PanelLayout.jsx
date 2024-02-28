@@ -96,8 +96,8 @@ const PanelLayout = ({
         toastOptions={{
           classNames: {
             error: "!text-red-500",
-            success: "!text-green-500",
-            warning: "!text-yellow-500",
+            success: "!text-green-700",
+            warning: "!text-yellow-700",
             info: "!text-blue-500",
           },
         }}
