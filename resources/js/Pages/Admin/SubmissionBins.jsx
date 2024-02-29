@@ -138,6 +138,11 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports }) => {
           <>
             <div className="flex justify-between items-end">
               <div>
+                <h1 className="text-xl font-bold">Submission Bins</h1>
+                <p className="mb-4 text-secondary">
+                  This is where you can create submission bins for the
+                  accomplishment reports of unit heads.
+                </p>
                 <Link
                   href={route("admin.create_submission_bin")}
                   variant="primary"
@@ -145,10 +150,6 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports }) => {
                 >
                   <i className="bx bx-plus"></i> Create
                 </Link>
-                <p className="text-sm mt-3 text-secondary">
-                  This is where you can create submission bins for the
-                  accomplishment reports of unit heads.
-                </p>
               </div>
             </div>
           </>
@@ -159,7 +160,7 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports }) => {
             </p>
           </>
         )}
-        <hr />
+        <hr className="my-6" />
 
         <div className="mb-3">
           <Form onSubmit={onSearchSubmit}>

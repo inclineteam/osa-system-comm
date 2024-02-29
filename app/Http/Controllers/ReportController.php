@@ -218,9 +218,9 @@ class ReportController extends Controller
 
     public function forReview(Request $request)
     {
-        $campuses = Campus::all();
+        $reports = Report::with(['unitHead', 'submission_bin'])->get();
 
-        return Inertia::render('Admin/ForReviewReports', ['campuses' => $campuses]);
+        return Inertia::render('Admin/ForReviewReports', ['reports' => $reports]);
     }
 
     public function campusForReview(Request $request)

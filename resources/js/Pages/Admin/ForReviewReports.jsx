@@ -1,7 +1,9 @@
 import PanelLayout, { LayoutType } from "@/Layouts/PanelLayout";
 import { Link } from "@inertiajs/react";
+import dayjs from "dayjs";
 
-export default function ForReviewReports({ campuses }) {
+export default function ForReviewReports({ reports }) {
+  console.log(reports);
   return (
     <PanelLayout
       layout={LayoutType.ADMIN}
@@ -16,19 +18,39 @@ export default function ForReviewReports({ campuses }) {
           <p className="border-b border-slate-200 pb-4 leading-none mb-4 text-slate-500">
             Click on the campus to view all of its reports.
           </p>
-          <div className="flex flex-wrap gap-4">
-            {campuses.map((campus) => (
-              <Link
-                key={campus.id}
-                href={route("admin.reports.for-review.campus", [
-                  encodeURIComponent(campus.name),
-                ])}
-                className="hover:border-slate-400 w-full lg:flex-1 transition uppercase rounded-md text-xl text-slate-800 text-center flex flex-col items-center justify-center p-6 border-[1px] border-slate-200"
-              >
-                <i class="fi fi-rr-cabin text-3xl mb-3 text-slate-500"></i>
-                <span>{campus.name}</span>
-              </Link>
-            ))}
+          <div className="mt-4 border border-slate-200 rounded-md overflow-hidden">
+            <table className="w-full">
+              <thead>
+                <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-4 [&>th]:py-2 border-b [&>th]:text-sm [&>th]:font-bold">
+                  <th>Name</th>
+                  <th>Date Submitted</th>
+                  <th>Campus</th>
+                  <th>Office</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {reports.map((report) => (
+                  <tr
+                    key={report.id}
+                    className="border-b border-slate-200 last:border-0 [&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-4 [&>td]:py-2.5"
+                  >
+                    <td>
+                      {report.unit_head.firstname} {report.unit_head.lastname}
+                    </td>
+                    <td>{dayjs(report.created_at).format("MMM. D, YYYY")}</td>
+                    <td>{report.unit_head.campus.name}</td>
+                    <td>{report.unit_head.designation.name}</td>
+                    <td>{report.status}</td>
+                    <td>
+                      <Link href="/">View Reports</Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
