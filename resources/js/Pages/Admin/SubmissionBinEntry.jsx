@@ -99,12 +99,12 @@ export const SubmissionBinEntry = ({
               <SubmissionBinEntryImageInput data={data} setData={setData} />
               <div className="flex flex-wrap gap-4 mt-4">
                 {data.documentation.length
-                  ? data.documentation.map((previewImage) => (
-                      <div key={previewImage} className="relative">
+                  ? data.documentation.map((previewImage, i) => (
+                      <div key={i} className="relative">
                         <button
                           onClick={() => {
                             let files = data.documentation.filter(
-                              (file) => file !== previewImage
+                              (file) => file.name !== previewImage.name
                             );
 
                             setData((prevData) => ({
@@ -117,7 +117,7 @@ export const SubmissionBinEntry = ({
                           &times;
                         </button>
                         <img
-                          src={previewImage}
+                          src={URL.createObjectURL(previewImage)}
                           alt="Preview"
                           className="rounded-xl w-40 h-40 object-cover"
                         />
@@ -173,7 +173,15 @@ export const SubmissionBinEntry = ({
             </div>
 
             <div className="gap-2  flex items-center">
-              <FormCheck value={data.budget} />
+              <FormCheck
+                value={data.budget}
+                onChange={(e) =>
+                  setData((prevData) => ({
+                    ...prevData,
+                    budget: e.target.checked,
+                  }))
+                }
+              />
               <Form.Label className="text-secondary m-0">
                 Budget/Remark
               </Form.Label>
@@ -189,12 +197,14 @@ export const SubmissionBinEntry = ({
 
               <div className="space-x-2">
                 <button
+                  type="button"
                   onClick={() => deleteDataInEntries(id)}
                   className="transition bg-rose-100 text-rose-600 px-3 py-2 text-sm font-medium hover:bg-rose-200 active:bg-rose-300 rounded-md w-max"
                 >
                   Remove
                 </button>
                 <button
+                  type="button"
                   onClick={handleSave}
                   className="transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md w-max"
                 >
@@ -206,6 +216,7 @@ export const SubmissionBinEntry = ({
         ) : (
           <div>
             <button
+              type="button"
               onClick={() => setHide(false)}
               className="transition bg-slate-100 text-slate-600 px-3 py-2 text-sm font-medium hover:bg-slate-200 active:bg-slate-300 rounded-md w-max"
             >

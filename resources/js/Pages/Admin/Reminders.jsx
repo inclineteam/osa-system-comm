@@ -16,7 +16,7 @@ import {
   ListGroupItem,
   Row,
 } from "react-bootstrap";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const Reminders = ({ auth, reminders }) => {
   const [reminderList, setReminderList] = useState([...reminders]);

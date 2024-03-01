@@ -18,7 +18,7 @@ import {
   ListGroupItem,
   Row,
 } from "react-bootstrap";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const Announcements = ({ auth, announcements: announcementList }) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);

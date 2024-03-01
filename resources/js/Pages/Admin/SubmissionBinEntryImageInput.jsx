@@ -1,4 +1,4 @@
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 export const SubmissionBinEntryImageInput = ({ setData }) => {
   const handleChange = (e) => {
@@ -19,10 +19,7 @@ export const SubmissionBinEntryImageInput = ({ setData }) => {
         } else {
           setData((prevData) => ({
             ...prevData,
-            documentation: [
-              ...prevData.documentation,
-              URL.createObjectURL(file),
-            ],
+            documentation: [...prevData.documentation, file],
           }));
         }
       });

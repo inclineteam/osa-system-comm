@@ -5,7 +5,7 @@ import { Link, router } from "@inertiajs/react";
 import axios from "axios";
 import dayjs from "dayjs";
 import { Accordion } from "react-bootstrap";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 export default function CampusForReviewReports({ offices, campus }) {
   const officesArr = Object.keys(offices);

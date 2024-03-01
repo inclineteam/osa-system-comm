@@ -2,10 +2,8 @@ import { Link, usePage } from "@inertiajs/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Badge, Dropdown, Nav, NavItem } from "react-bootstrap";
-import DropdownItem from "react-bootstrap/esm/DropdownItem";
-import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
 import DropdownToggle from "react-bootstrap/esm/DropdownToggle";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const NotificationsDropdown = () => {
   const [notifications, setNotifications] = useState([]);

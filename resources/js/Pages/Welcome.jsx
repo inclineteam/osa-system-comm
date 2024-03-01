@@ -1,14 +1,14 @@
 import AppLayout from "@/Layouts/AppLayout";
-import { Alert, Container, Form, Image, Spinner } from "react-bootstrap";
+import { Alert, Container, Image, Spinner } from "react-bootstrap";
 import React from "react";
-import { Link, router } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 import CustomSelectDropdown from "@/Components/SignInDropdownButton";
 import { useState } from "react";
 import GoogleSignInButton from "@/Components/GoogleSignInButton";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import ModalComponent from "@/Components/ModalComponent";
-import { ToastContainer, toast } from "react-toastify";
+import { Toaster } from "sonner";
 
 const Welcome = () => {
   const [userType, setUserType] = useState(null);
@@ -87,19 +87,22 @@ const Welcome = () => {
 
   return (
     <AppLayout>
-      <div className="flex flex-col items-center justify-center   min-h-screen bg-cover bg-[url('https://lspuonline.com/uploads/login_image/slider_1.jpg')]">
-        <ToastContainer
-          hideProgressBar
-          autoClose={1500}
-          theme="dark"
-          position="bottom-right"
-        />
+      <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-[url('/images/signin-bg.jpg')] bg-center">
+        <Toaster duration={3000} theme="light" position="bottom-right" />
         <ModalComponent
           backdrop="static"
           centered
           handleClose={() => setShowProgressModal(false)}
           show={showProgressModal}
           size="sm"
+          toastOptions={{
+            classNames: {
+              error: "!text-red-500",
+              success: "!text-green-700",
+              warning: "!text-yellow-700",
+              info: "!text-blue-500",
+            },
+          }}
         >
           <div className="text-center">
             <p className="my-0 fw-bold">

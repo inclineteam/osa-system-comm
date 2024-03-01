@@ -10,7 +10,7 @@ import { TextButton } from "@/Components/CustomBtn";
 import { useRef } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import ConfirmModal from "@/Components/ConfirmModal";
 
 const Calendar = ({ auth, events: allEvents }) => {

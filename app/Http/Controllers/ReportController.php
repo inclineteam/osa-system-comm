@@ -6,6 +6,8 @@ use App\Models\Campus;
 use App\Models\Designation;
 use App\Models\Report;
 use App\Models\ReportAttachment;
+use App\Models\ReportEntry;
+use App\Models\SubmissionBin;
 use App\Models\User;
 use App\Models\UserEventsHistory;
 use App\Notifications\NewReportSubmitted;
@@ -53,17 +55,17 @@ class ReportController extends Controller
             ]);
         }
         // save report to server
-        $file = $request->file('file');
-        $fileName = $file->getClientOriginalName();
-        $file->move(public_path('reports'), $fileName);
-        $fileUrl = "/reports/" . $fileName;
+        // $file = $request->file('file');
+        // $fileName = $file->getClientOriginalName();
+        // $file->move(public_path('reports'), $fileName);
+        // $fileUrl = "/reports/" . $fileName;
 
         // create report attachment
-        $attachment = ReportAttachment::create([
-            'uri' => $fileUrl,
-            'name' => $fileName,
-            'report_id' => $report->id
-        ]);
+        // $attachment = ReportAttachment::create([
+        //     'uri' => $fileUrl,
+        //     'name' => $fileName,
+        //     'report_id' => $report->id
+        // ]);
 
 
         UserEventsHistory::create([
@@ -74,7 +76,7 @@ class ReportController extends Controller
             'description' => 'added a report '
         ]);
 
-        return response()->json(['fileUrl' => $fileUrl, 'attachment' => $attachment]);
+        return response()->json();
     }
     /* api */
     public function removeAttachment(Request $request)
@@ -97,10 +99,13 @@ class ReportController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function submitReport(Request $request)
+    public function submitReport(Request $request, SubmissionBin $submissionBin)
     {
         $user = $request->user();
-        $report = Report::with(['submission_bin'])->where('submission_bin_id', $request->submission_bin_id)->where('user_id', $user->id)->first();
+        $report = $report = Report::create([
+            'user_id' => $user->id,
+            'submission_bin_id' => $request->submission_bin_id,
+        ]);
 
         if ($report) {
             $report->is_submitted = true;
@@ -120,6 +125,23 @@ class ReportController extends Controller
 
             if ($report->save()) {
                 $admin = User::whereHasRole('admin')->where('campus_id', $user->campus_id)->get();
+
+                foreach ($request->entries as $entry) {
+                    $date = date('Y-m-d H:i:s', intval($entry['date']));
+
+                    ReportEntry::create([
+                        'title' => $entry['title'],
+                        'date' => $date,
+                        'duration' => $entry['duration'],
+                        'participants' => $entry['participants'],
+                        'location' => $entry['location'],
+                        'conducted_by' => $entry['conducted_by'],
+                        'budget' => $entry['budget'],
+                        'documentation' => json_encode($entry['documentation']),
+                        'report_id' => $report->id
+                    ]);
+                }
+
                 foreach ($admin as $key => $admin) {
                     $admin->notify(new NewReportSubmitted($report));
                 }
@@ -196,9 +218,9 @@ class ReportController extends Controller
 
     public function forReview(Request $request)
     {
-        $campuses = Campus::all();
+        $reports = Report::with(['unitHead', 'submission_bin'])->get();
 
-        return Inertia::render('Admin/ForReviewReports', ['campuses' => $campuses]);
+        return Inertia::render('Admin/ForReviewReports', ['reports' => $reports]);
     }
 
     public function campusForReview(Request $request)

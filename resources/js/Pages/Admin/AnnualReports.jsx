@@ -3,7 +3,7 @@ import axios from "axios";
 import PanelLayout, { LayoutType } from "@/Layouts/PanelLayout";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import dayjs from "dayjs";
 import DataTable from "react-data-table-component";
 
