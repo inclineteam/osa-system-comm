@@ -112,18 +112,26 @@ class ReportController extends Controller
             $report->status = 'Pending';
             $report->date_submitted = Carbon::now()->toDateTimeString();
 
+
             foreach ($request->entries as $entry) {
-                $date = date('Y-m-d H:i:s', intval($entry['date']));
+                $documentations = [];
+
+                foreach ($entry['documentation'] as $image) {
+                    $fileName = $image->getClientOriginalName();
+                    $image->move(public_path('reports'), $fileName);
+                    $fileUrl = "/reports/" . $fileName;
+                    $documentations[] = $fileUrl;
+                }
 
                 ReportEntry::create([
                     'title' => $entry['title'],
-                    'date' => $date,
+                    'date' => $entry['date'],
                     'duration' => $entry['duration'],
                     'participants' => $entry['participants'],
                     'location' => $entry['location'],
                     'conducted_by' => $entry['conducted_by'],
                     'budget' => $entry['budget'],
-                    'documentation' => json_encode($entry['documentation']),
+                    'documentation' => json_encode($documentations),
                     'report_id' => $report->id
                 ]);
             }

@@ -65,13 +65,15 @@ export const SubmissionBinEntry = ({
                   Date
                 </Form.Label>
                 <div className="block w-full">
-                  <DatePicker
-                    dateFormat={"yy/mm/dd"}
-                    selected={data.date}
-                    onChange={handleYearChange}
-                    scrollableYearDropdown
-                    yearDropdownItemNumber={10}
-                    customInput={<Form.Control className="block w-full" />}
+                  <Form.Control
+                    type="date"
+                    value={data.date}
+                    onChange={(e) =>
+                      setData((prevData) => ({
+                        ...prevData,
+                        date: e.target.value,
+                      }))
+                    }
                   />
                 </div>
               </div>

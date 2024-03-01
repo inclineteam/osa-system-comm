@@ -1,3 +1,4 @@
+import { statusColors } from "@/Components/SuperAdminDashboard";
 import PanelLayout, { LayoutType } from "@/Layouts/PanelLayout";
 import { Link } from "@inertiajs/react";
 import dayjs from "dayjs";
@@ -21,7 +22,7 @@ export default function ForReviewReports({ reports }) {
           <div className="mt-4 border border-slate-200 rounded-md overflow-hidden">
             <table className="w-full">
               <thead>
-                <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-4 [&>th]:py-2 border-b [&>th]:text-sm [&>th]:font-bold">
+                <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-5 [&>th]:py-2.5 border-b [&>th]:text-sm [&>th]:font-medium">
                   <th>Name</th>
                   <th>Date Submitted</th>
                   <th>Campus</th>
@@ -35,7 +36,7 @@ export default function ForReviewReports({ reports }) {
                 {reports.map((report) => (
                   <tr
                     key={report.id}
-                    className="border-b border-slate-200 last:border-0 [&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-4 [&>td]:py-2.5"
+                    className="border-b border-slate-200 last:border-0 [&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-5 [&>td]:py-4"
                   >
                     <td>
                       {report.unit_head.firstname} {report.unit_head.lastname}
@@ -43,9 +44,18 @@ export default function ForReviewReports({ reports }) {
                     <td>{dayjs(report.created_at).format("MMM. D, YYYY")}</td>
                     <td>{report.unit_head.campus.name}</td>
                     <td>{report.unit_head.designation.name}</td>
-                    <td>{report.status}</td>
                     <td>
-                      <Link href="/">View Reports</Link>
+                      <div
+                        className={`inline-block mr-2 w-2 h-2 rounded-full ${
+                          statusColors[report.status]
+                        }`}
+                      ></div>
+                      {report.status}
+                    </td>
+                    <td>
+                      <Link href={route("admin.report.open", report.id)}>
+                        View Reports
+                      </Link>
                     </td>
                   </tr>
                 ))}

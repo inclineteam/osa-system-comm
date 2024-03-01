@@ -6,6 +6,7 @@ import ModalComponent from "@/Components/ModalComponent";
 import TextProfilePic from "@/Components/TextProfilePic";
 import PanelLayout from "@/Layouts/PanelLayout";
 import { Head, router, useForm, usePage } from "@inertiajs/react";
+import dayjs from "dayjs";
 import React, { useState, useEffect } from "react";
 import {
   Button,
@@ -73,7 +74,7 @@ const ViewReport = ({ report }) => {
           backButton
           backButtonLink={
             auth.role === "admin"
-              ? route("admin.reports.for-review.campus", [
+              ? route("admin.reports.for-review", [
                   report.unit_head.campus.name,
                 ])
               : route("admin.reports.checklist")
@@ -131,8 +132,8 @@ const ViewReport = ({ report }) => {
           <Col>
             <Card className="border-0 shadow-sm rounded-xl p-2 mb-4">
               <Card.Body className="border-0 h-100">
-                <div className="flex justify-between items-end">
-                  <p className="font-bold mb-0">Submitted By</p>
+                <div className="flex justify-between items-center">
+                  <p className="text-xl font-bold mb-0">Submitted by</p>
                   <div className="flex items-center">
                     {auth.role === "super_admin" ||
                       (auth.role === "admin" && (
@@ -240,71 +241,95 @@ const ViewReport = ({ report }) => {
                 </div>
               </Card.Body>
             </Card>
-            <Card className="border-0 shadow-sm rounded-xl p-2 mb-2">
+            <Card className="border-0 shadow-sm rounded-xl p-2 mb-4 ">
               <Card.Body className="h-100">
-                <p className="text-sm text-danger fw-bold mb-1">Attachments</p>
+                <p className="text-xl font-bold mb-1">Reports</p>
                 {report.is_submitted ? (
                   <>
                     {auth.role === "super_admin" ? (
                       report.status === "Approved" ? (
-                        <p className="text-sm text-secondary my-0 fw-bold">
+                        <p className="text-sm text-slate-500 my-0">
                           <span>
                             Submitted on{" "}
-                            {formatDate(new Date(report.date_submitted))}
+                            <b>{formatDate(new Date(report.date_submitted))}</b>
                           </span>
                         </p>
                       ) : null
                     ) : (
-                      <p className="text-sm text-secondary my-0 fw-bold">
+                      <p className="text-sm text-slate-500 my-0">
                         <span>
                           Submitted on{" "}
-                          {formatDate(new Date(report.date_submitted))}
+                          <b>{formatDate(new Date(report.date_submitted))}</b>
                         </span>
                       </p>
                     )}
                   </>
                 ) : null}
-                <hr />
-                <div className="">
+                <div className="p-2">
                   {auth.role === "admin" ? (
                     <div className="row g-3">
-                      {report.attachments.length == 0 && (
-                        <p>No submission yet.</p>
-                      )}
-                      {report.attachments.map((att, index) => (
-                        // <ListGroupItem key={index} className={` cursor-pointer ${att.id === selectedFile.id ? 'bg-light-primary rounded-1' : ''}`} onClick={() => setSelectedFile(att)}>
-                        //     {att.name}
-                        // </ListGroupItem>
-                        <Col key={index} xl={2} lg={3} sm={4} xs={6}>
-                          <div
-                            onClick={() => {
-                              setSelectedFile(att);
-                              setShowFileModal(true);
-                            }}
-                            className={`text-center rounded p-3 cursor-pointer ${
-                              selectedFile?.id === att.id ? "bg-slate-100" : ""
-                            }`}
-                            title={att.name}
-                          >
-                            <FileIcon
-                              file={att}
-                              className={"mx-auto"}
-                              size="sm"
-                            />
-                            <p className="text-center mt-3 mb-0 col-11 text-sm text-truncate">
-                              <small>{att.name}</small>
-                            </p>
-                          </div>
-                        </Col>
-                      ))}
+                      {report.entries.length == 0 && <p>No submission yet.</p>}
+                      <div className="p-0 mt-4 border border-slate-200 rounded-md overflow-hidden">
+                        <table className="border-collapse w-full">
+                          <thead>
+                            <tr className="[&>th]:border-l [&>th:first-child]:border-0 [&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:px-5 [&>th]:py-2.5 border-b [&>th]:text-sm [&>th]:font-medium">
+                              <th>Title of Activities/ Program</th>
+                              <th>Date/ Duration</th>
+                              <th>Documentation (Pictures)</th>
+                              <th>Participants</th>
+                              <th>Location</th>
+                              <th>Conducted/ Sponsored by:</th>
+                              <th className="text-center">Budget/Remark</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+                            {report.entries.map((entry, index) => (
+                              <tr
+                                key={index}
+                                className="border-b [&>td]:border-l [&>td:first-child]:border-0 last:border-0 [&>td]:px-5 [&>td]:py-4 [&>td]:text-sm"
+                              >
+                                <td>{entry.title}</td>
+                                <td>
+                                  {dayjs(entry.date).format("MMM. D, YYYY")} -{" "}
+                                  {entry.duration}
+                                </td>
+                                <td className="flex flex-wrap gap-2">
+                                  {JSON.parse(entry.documentation).map(
+                                    (image, index) => (
+                                      <img
+                                        key={index}
+                                        src={image}
+                                        alt="sss"
+                                        className="w-20 h-20 rounded-md object-cover"
+                                      />
+                                    )
+                                  )}
+                                </td>
+                                <td>{entry.participants}</td>
+                                <td>{entry.location}</td>
+                                <td>{entry.conducted_by}</td>
+                                <td>
+                                  <div className="flex justify-center">
+                                    <input
+                                      type="checkbox"
+                                      checked={
+                                        entry.budget === 1 ? true : false
+                                      }
+                                      disabled
+                                    />
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   ) : (
                     <>
                       {report.status === "Approved" ? (
                         <div className="row g-3">
-                          {report.attachments.length == 0 && (
-                            <p>No submission yet.</p>
-                          )}
                           {report.attachments.map((att, index) => (
                             // <ListGroupItem key={index} className={` cursor-pointer ${att.id === selectedFile.id ? 'bg-light-primary rounded-1' : ''}`} onClick={() => setSelectedFile(att)}>
                             //     {att.name}
@@ -342,9 +367,7 @@ const ViewReport = ({ report }) => {
                 </div>
               </Card.Body>
             </Card>
-          </Col>
-          <Col xl={3} md={4} className=" ">
-            <Card className="border-0 shadow-sm  rounded-0">
+            <Card className="border-0 shadow-sm rounded-xl">
               <Card.Body className="p-4 ">
                 <p className="fw-bold text-slate-800 mb-0">Private Comments</p>
                 <hr className="my-3 border-slate-400" />
