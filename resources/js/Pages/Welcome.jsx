@@ -98,8 +98,8 @@ const Welcome = () => {
           toastOptions={{
             classNames: {
               error: "!text-red-500",
-              success: "!text-green-700",
-              warning: "!text-yellow-700",
+              success: "!text-green-600",
+              warning: "!text-yellow-600",
               info: "!text-blue-500",
             },
           }}
