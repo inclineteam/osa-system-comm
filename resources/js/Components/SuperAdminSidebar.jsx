@@ -63,6 +63,13 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
           href: route("admin.reminders"),
           urlPath: "reminders",
         },
+        {
+          type: NavType.LINK,
+          text: "Objectives",
+          icon: <i className="fi fi-rr-note"></i>,
+          href: route("admin.objectives"),
+          urlPath: "objectives",
+        },
       ],
     },
     {

@@ -10,6 +10,7 @@ use App\Http\Controllers\CampusAdminController;
 use App\Http\Controllers\CampusController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ObjectiveController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\ReportAttachmentController;
@@ -87,6 +88,11 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
         }
     ])->name('admin.generated-reports.specific');
     Route::get('/calendar', [CalendarEventController::class, 'index'])->name('calendar')->middleware(['auth']);
+    Route::get('/objectives', [ObjectiveController::class, 'index'])->name('admin.objectives');
+    Route::put('/objectives/{id}', [ObjectiveController::class, 'update'])->name('admin.objectives.update');
+    Route::get('/objectives/{id}/edit', [ObjectiveController::class, 'edit'])->name('admin.objectives.edit');
+
+    Route::get('/objectives/create', [ObjectiveController::class, 'create'])->name('admin.objectives.create');
     Route::get('/signout', [AdminController::class, 'signout'])->name('admin.signout');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/announcements', [AdminController::class, 'announcements'])->name('admin.announcements');

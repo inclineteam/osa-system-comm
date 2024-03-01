@@ -8,6 +8,7 @@ use App\Http\Controllers\AppSettingsController;
 use App\Http\Controllers\CalendarEventController;
 use App\Http\Controllers\CampusController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ObjectiveController;
 use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\ReportCommentController;
 use App\Http\Controllers\ReportController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\SubmissionBinController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\UnitHeadController;
 use App\Http\Controllers\UsersController;
+use App\Models\SubmissionBin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -123,7 +125,26 @@ Route::prefix('/submissionBins')->group(function () {
     Route::get('/{id}', [SubmissionBinController::class, 'all'])->name('submission-bins.index');
     Route::get('/{text}/search', [SubmissionBinController::class, 'search'])->name('submission-bins.search');
     Route::delete('/{id}', [SubmissionBinController::class, 'delete'])->name('submission-bins.delete');
+    // get submission bins that are not yet closed
+
 })->middleware(['auth']);
+
+Route::get("/bins/not-closed", function () {
+    $open = SubmissionBin::where('deadline_date', '>', now())->get();
+    return response()->json($open);
+})->name('submission-bins.not-closed');
+
+Route::prefix('/objectives')->group(function () {
+    // post objective
+
+    Route::post('/', [ObjectiveController::class, 'storeObjective'])->name('objectives.store');
+    Route::delete('/{id}', [ObjectiveController::class, 'delete'])->name('admin.objectives.delete');
+    // get all objectives
+    Route::get('/all', [ObjectiveController::class, 'all'])->name('objectives.all');
+})->middleware(['auth']);
+
+
+
 
 Route::prefix('/calendar')->group(function () {
     Route::get('/', [CalendarEventController::class, 'index'])->name('calendar.index');
