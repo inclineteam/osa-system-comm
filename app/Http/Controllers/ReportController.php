@@ -127,7 +127,7 @@ class ReportController extends Controller
                 ReportEntry::create([
                     'title' => $entry['title'],
                     'date' => $entry['date'],
-                    'duration' => $entry['duration'],
+                    'duration' => '',
                     'participants' => $entry['participants'],
                     'location' => $entry['location'],
                     'conducted_by' => $entry['conducted_by'],
@@ -255,9 +255,34 @@ class ReportController extends Controller
 
     public function forReview(Request $request)
     {
-        $reports = Report::with(['unitHead', 'submission_bin'])->get();
+        $reports = Report::with(['unitHead', 'submission_bin', 'entries'])->get();
+        $data = [
+            'reports' => [],
+            'entries' => [],
+        ];
 
-        return Inertia::render('Admin/ForReviewReports', ['reports' => $reports]);
+        if (auth()->user()->hasRole('super_admin')) {
+            foreach ($reports as $report) {
+                $reportCampus = Campus::get();
+
+                array_push($data['reports'], $report);
+                array_push($data['entries'], ...$report->entries);
+            }
+        } else {
+            foreach ($reports as $report) {
+                $reportUser = User::find($report->user_id);
+                $reportCampus = Campus::find($reportUser->campus_id);
+
+                if ($reportCampus->id === auth()->user()->campus_id) {
+                    array_push($data['reports'], $report);
+                    array_push($data['entries'], ...$report->entries);
+                }
+            }
+        }
+
+        // ddd($data);
+
+        return Inertia::render('Admin/ForReviewReports', ['reports' => $data]);
     }
 
     public function campusForReview(Request $request)

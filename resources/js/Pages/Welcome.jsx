@@ -87,7 +87,7 @@ const Welcome = () => {
 
   return (
     <AppLayout>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-[url('/images/signin-bg.jpg')] bg-center">
+      <div className="flex flex-col items-center before:fixed before:inset-0 justify-center min-h-screen before:content-[''] before:bg-cover before:bg-[url('/images/signin-bg.jpg')] before:opacity-20 before:bg-center">
         <Toaster duration={3000} theme="light" position="bottom-right" />
         <ModalComponent
           backdrop="static"
@@ -119,9 +119,9 @@ const Welcome = () => {
             </div>
           </div>
         </ModalComponent>
-        <Container>
+        <Container className="z-50">
           <div className="pt-4">
-            <div className="col-md-6 bg-black/70   p-6 rounded-lg mx-auto">
+            <div className="col-md-6 bg-black/70  p-6 rounded-lg mx-auto">
               <div className="text-center">
                 <p class="text-xl text-white">Welcome to</p>
                 <Image

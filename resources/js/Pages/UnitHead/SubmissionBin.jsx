@@ -11,6 +11,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import Checkbox from "@/Components/Checkbox";
 import { SubmissionBinEntryForm } from "../Admin/SubmissionBinEntryForm";
 import dayjs from "dayjs";
+import Flickity from "react-flickity-component";
+import { ReportImages } from "../Admin/ReportTableRow";
 
 const SubmissionBin = ({ submissionBin, auth, report }) => {
   const [showFileModal, setShowFileModal] = useState(false);
@@ -38,30 +40,6 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
       defaultActiveLink="reports"
       headerTitle={"Accomplishment Report"}
     >
-      <ModalComponent
-        className={"rounded-0 bg-transparent"}
-        show={showFileModal}
-        handleClose={() => {
-          setShowFileModal((s) => !s);
-          setViewFile(null);
-        }}
-        closeButton
-        title={submissionBin.title}
-        size="xl"
-      >
-        {viewFile && (
-          <DocViewer
-            pluginRenderers={DocViewerRenderers}
-            documents={[{ uri: viewFile.uri }]}
-            config={{
-              zoom: 1,
-            }}
-          />
-          // <>
-          // <iframe className='w-100 h-[90vh]' src={viewFile.uri}/>
-          // </>
-        )}
-      </ModalComponent>
       <div className="content-wrapper">
         <Card className="rounded-3 border-0 shadow-sm ">
           <Card.Body className="p-0">
@@ -77,7 +55,7 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
                       Due on{" "}
                       {format(
                         new Date(submissionBin.deadline_date),
-                        "MMM d, Y"
+                        "MMM d, Y / hh:mm aaa"
                       )}
                     </>
                   ) : (
@@ -88,11 +66,16 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
 
               {report ? (
                 <div>
-                  <span className="mr-4 items-center gap-2 w-max flex px-2.5 py-1 border border-slate-300 rounded-md">
-                    <i class="fi text-slate-800 fi-ss-check-circle"></i>
-                    <p className="text-slate-800 text-sm font-medium m-0">
-                      {report.remarks}
-                    </p>
+                  <span className="mr-4 items-center gap-2.5 w-max flex pl-3.5 pr-2.5 py-1.5 border border-slate-300 rounded-md">
+                    <i class="fi mt-0.5 text-slate-800 fi-ss-check-circle"></i>
+                    <div>
+                      <p className="text-slate-800 text-sm font-bold m-0">
+                        {report.status}
+                      </p>
+                      <p className="text-slate-800 text-sm font-medium m-0">
+                        {report.remarks}
+                      </p>
+                    </div>
                   </span>
                 </div>
               ) : null}
@@ -166,40 +149,7 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
 
                     <tbody>
                       {report.entries.map((entry, index) => (
-                        <tr
-                          key={index}
-                          className="border-b [&>td]:border-l [&>td:first-child]:border-0 last:border-0 [&>td]:px-5 [&>td]:py-4 [&>td]:text-sm"
-                        >
-                          <td>{entry.title}</td>
-                          <td>
-                            {dayjs(entry.date).format("MMM. D, YYYY")} -{" "}
-                            {entry.duration}
-                          </td>
-                          <td className="flex flex-wrap gap-2">
-                            {JSON.parse(entry.documentation).map(
-                              (image, index) => (
-                                <img
-                                  key={index}
-                                  src={image}
-                                  alt="sss"
-                                  className="w-20 h-20 rounded-md object-cover"
-                                />
-                              )
-                            )}
-                          </td>
-                          <td>{entry.participants}</td>
-                          <td>{entry.location}</td>
-                          <td>{entry.conducted_by}</td>
-                          <td>
-                            <div className="flex justify-center">
-                              <input
-                                type="checkbox"
-                                checked={entry.budget === 1 ? true : false}
-                                disabled
-                              />
-                            </div>
-                          </td>
-                        </tr>
+                        <ReportImages key={index} entry={entry} />
                       ))}
                     </tbody>
                   </table>

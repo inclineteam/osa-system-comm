@@ -20,16 +20,11 @@ import {
   Row,
 } from "react-bootstrap";
 import DocViewer, { DocViewerRenderers, PDFRenderer } from "react-doc-viewer";
+import { ReportImages } from "./ReportTableRow";
 
 const ViewReport = ({ report }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const { auth } = usePage().props;
-  const [showFileModal, setShowFileModal] = useState(false);
-  // const [status, setStatus] = useState(report.status)
-
-  const { data, setData, patch } = useForm({
-    status: report.status,
-  });
 
   const approveReport = async (id) => {
     const res = await axios.patch(
@@ -60,7 +55,7 @@ const ViewReport = ({ report }) => {
     return;
   };
 
-  console.log(report);
+  console.log(auth.user);
 
   useEffect(() => {
     setSelectedFile(report.attachments[0]);
@@ -83,41 +78,6 @@ const ViewReport = ({ report }) => {
       }
       defaultActiveLink="submission-bins"
     >
-      <ModalComponent
-        className={"rounded-0 bg-transparent"}
-        bodyClassname="p-0 overflow-hidden"
-        show={showFileModal}
-        handleClose={() => {
-          setShowFileModal((s) => !s);
-        }}
-        closeButton
-        title={selectedFile?.name}
-        size="fullscreen"
-      >
-        <hr className="my-1" />
-        {selectedFile && (
-          <DocViewer
-            style={{ maxHeight: "100% !important", height: "100%" }}
-            pluginRenderers={DocViewerRenderers}
-            documents={[{ uri: selectedFile.uri }]}
-            config={{
-              zoom: 0.5,
-              header: {
-                disableHeader: true,
-              },
-            }}
-            theme={{
-              primary: "#5296d8",
-              secondary: "#ffffff",
-              tertiary: "#5296d899",
-              text_primary: "#ffffff",
-              text_secondary: "#5296d8",
-              text_tertiary: "#00000099",
-              disableThemeScrollbar: false,
-            }}
-          />
-        )}
-      </ModalComponent>
       <Head
         title={
           report.unit_head.firstname +
@@ -243,28 +203,36 @@ const ViewReport = ({ report }) => {
             </Card>
             <Card className="border-0 shadow-sm rounded-xl p-2 mb-4 ">
               <Card.Body className="h-100">
-                <p className="text-xl font-bold mb-1">Reports</p>
-                {report.is_submitted ? (
-                  <>
-                    {auth.role === "super_admin" ? (
-                      report.status === "Approved" ? (
-                        <p className="text-sm text-slate-500 my-0">
-                          <span>
-                            Submitted on{" "}
-                            <b>{formatDate(new Date(report.date_submitted))}</b>
-                          </span>
-                        </p>
-                      ) : null
-                    ) : (
-                      <p className="text-sm text-slate-500 my-0">
-                        <span>
-                          Submitted on{" "}
-                          <b>{formatDate(new Date(report.date_submitted))}</b>
-                        </span>
-                      </p>
-                    )}
-                  </>
-                ) : null}
+                <div className="flex justify-between">
+                  <div>
+                    <p className="text-xl font-bold mb-1">Reports</p>
+                    {report.is_submitted ? (
+                      <>
+                        {auth.role === "super_admin" ? (
+                          report.status === "Approved" ? (
+                            <p className="text-sm text-slate-500 my-0">
+                              <span>
+                                Submitted on{" "}
+                                <b>
+                                  {formatDate(new Date(report.date_submitted))}
+                                </b>
+                              </span>
+                            </p>
+                          ) : null
+                        ) : (
+                          <p className="text-sm text-slate-500 my-0">
+                            <span>
+                              Submitted on{" "}
+                              <b>
+                                {formatDate(new Date(report.date_submitted))}
+                              </b>
+                            </span>
+                          </p>
+                        )}
+                      </>
+                    ) : null}
+                  </div>
+                </div>
                 <div className="p-2">
                   {auth.role === "admin" ? (
                     <div className="row g-3">
@@ -279,48 +247,13 @@ const ViewReport = ({ report }) => {
                               <th>Participants</th>
                               <th>Location</th>
                               <th>Conducted/ Sponsored by:</th>
-                              <th className="text-center">Budget/Remark</th>
+                              <th>Budget/Remark</th>
                             </tr>
                           </thead>
 
                           <tbody>
                             {report.entries.map((entry, index) => (
-                              <tr
-                                key={index}
-                                className="border-b [&>td]:border-l [&>td:first-child]:border-0 last:border-0 [&>td]:px-5 [&>td]:py-4 [&>td]:text-sm"
-                              >
-                                <td>{entry.title}</td>
-                                <td>
-                                  {dayjs(entry.date).format("MMM. D, YYYY")} -{" "}
-                                  {entry.duration}
-                                </td>
-                                <td className="flex flex-wrap gap-2">
-                                  {JSON.parse(entry.documentation).map(
-                                    (image, index) => (
-                                      <img
-                                        key={index}
-                                        src={image}
-                                        alt="sss"
-                                        className="w-20 h-20 rounded-md object-cover"
-                                      />
-                                    )
-                                  )}
-                                </td>
-                                <td>{entry.participants}</td>
-                                <td>{entry.location}</td>
-                                <td>{entry.conducted_by}</td>
-                                <td>
-                                  <div className="flex justify-center">
-                                    <input
-                                      type="checkbox"
-                                      checked={
-                                        entry.budget === 1 ? true : false
-                                      }
-                                      disabled
-                                    />
-                                  </div>
-                                </td>
-                              </tr>
+                              <ReportImages entry={entry} key={index} />
                             ))}
                           </tbody>
                         </table>
@@ -330,34 +263,30 @@ const ViewReport = ({ report }) => {
                     <>
                       {report.status === "Approved" ? (
                         <div className="row g-3">
-                          {report.attachments.map((att, index) => (
-                            // <ListGroupItem key={index} className={` cursor-pointer ${att.id === selectedFile.id ? 'bg-light-primary rounded-1' : ''}`} onClick={() => setSelectedFile(att)}>
-                            //     {att.name}
-                            // </ListGroupItem>
-                            <Col key={index} xl={2} lg={3} sm={4} xs={6}>
-                              <div
-                                onClick={() => {
-                                  setSelectedFile(att);
-                                  setShowFileModal(true);
-                                }}
-                                className={`text-center rounded p-3 cursor-pointer ${
-                                  selectedFile?.id === att.id
-                                    ? "bg-slate-100"
-                                    : ""
-                                }`}
-                                title={att.name}
-                              >
-                                <FileIcon
-                                  file={att}
-                                  className={"mx-auto"}
-                                  size="sm"
-                                />
-                                <p className="text-center mt-3 mb-0 col-11 text-sm text-truncate">
-                                  <small>{att.name}</small>
-                                </p>
-                              </div>
-                            </Col>
-                          ))}
+                          {report.entries.length == 0 && (
+                            <p>No submission yet.</p>
+                          )}
+                          <div className="p-0 mt-4 border border-slate-200 rounded-md overflow-hidden">
+                            <table className="border-collapse w-full">
+                              <thead>
+                                <tr className="[&>th]:border-l [&>th:first-child]:border-0 [&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:px-5 [&>th]:py-2.5 border-b [&>th]:text-sm [&>th]:font-medium">
+                                  <th>Title of Activities/ Program</th>
+                                  <th>Date/ Duration</th>
+                                  <th>Documentation (Pictures)</th>
+                                  <th>Participants</th>
+                                  <th>Location</th>
+                                  <th>Conducted/ Sponsored by:</th>
+                                  <th>Budget/Remark</th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+                                {report.entries.map((entry, index) => (
+                                  <ReportImages entry={entry} key={index} />
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                       ) : (
                         <p>No submission yet.</p>
