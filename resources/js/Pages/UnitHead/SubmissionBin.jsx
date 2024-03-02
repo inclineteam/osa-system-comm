@@ -84,7 +84,7 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
 
             {submissionBin.instruction ? (
               <>
-                <p className="text-slate-600 my-1">
+                <p className="text-slate-600 my-1 whitespace-pre-wrap">
                   {submissionBin.instruction}
                 </p>
               </>

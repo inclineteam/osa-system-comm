@@ -5,10 +5,11 @@ export default function UnitHeadReportsChecklist({ offices }) {
   const officesArr = Object.keys(offices);
 
   const statusColors = {
-    Approved: "text-emerald-600",
-    Rejected: "text-rose-600",
-    Pending: "text-amber-600",
+    Approved: "bg-emerald-600",
+    Rejected: "bg-rose-600",
+    Pending: "bg-amber-600",
   };
+
   return (
     <PanelLayout defaultActiveLink="reports checklist">
       <div className="content-wrapper">
@@ -31,11 +32,12 @@ export default function UnitHeadReportsChecklist({ offices }) {
                 <div className="mt-4 border border-slate-200 rounded-md overflow-hidden">
                   <table className="w-full">
                     <thead>
-                      <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-4 [&>th]:py-2 border-b [&>th]:text-sm [&>th]:font-bold">
+                      <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-5 [&>th]:py-2.5 border-b [&>th]:text-sm [&>th]:font-medium">
                         <th>Unit Head</th>
                         <th>Office</th>
                         <th>Campus</th>
                         <th>Submitted Reports</th>
+                        <th> </th>
                       </tr>
                     </thead>
 
@@ -43,7 +45,7 @@ export default function UnitHeadReportsChecklist({ offices }) {
                       {offices[officeItem].map((report, i) => (
                         <tr
                           key={i}
-                          className="border-b border-slate-200 last:border-0 [&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-4 [&>td]:py-2.5"
+                          className="border-b border-slate-200 last:border-0 [&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-5 [&>td]:py-4"
                         >
                           <td>
                             {report.unit_head.firstname}{" "}
@@ -51,7 +53,18 @@ export default function UnitHeadReportsChecklist({ offices }) {
                           </td>
                           <td>{report.unit_head.designation.name}</td>
                           <td>{report.unit_head.campus.name}</td>
-                          <td>{report.status}</td>
+                          <td>
+                            {" "}
+                            <div
+                              className={`inline-block mr-2 w-2 h-2 rounded-full ${
+                                statusColors[report.status]
+                              }`}
+                            ></div>
+                            {report.status}
+                          </td>
+                          <td>
+                            <button>View</button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>

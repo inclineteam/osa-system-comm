@@ -95,7 +95,7 @@ export default function AnnualReport({ report }) {
                           <div className="border border-slate-200 rounded-md overflow-hidden">
                             <table className="w-full">
                               <thead>
-                                <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-4 [&>th]:py-2 border-b [&>th]:text-sm [&>th]:font-bold">
+                                <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-4 [&>th]:py-2 border-b [&>th]:text-sm [&>th]:font-medium">
                                   <th>Office</th>
                                   <th>Number of Reports</th>
                                 </tr>

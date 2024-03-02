@@ -125,7 +125,7 @@ const SuperAdminDashboard = () => {
                 ) : latestReport.data != null ? (
                   <table className="w-full">
                     <thead className="">
-                      <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-4 [&>th]:py-2 border-b [&>th]:text-sm [&>th]:font-bold">
+                      <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-5 [&>th]:py-2.5 border-b [&>th]:text-sm [&>th]:font-medium">
                         <th>User</th>
                         <th>Campus</th>
                         <th>Office</th>
@@ -135,7 +135,7 @@ const SuperAdminDashboard = () => {
                     </thead>
 
                     <tbody>
-                      <tr className="[&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-4 [&>td]:py-2.5">
+                      <tr className="[&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-5 [&>td]:py-4">
                         <td>
                           {latestReport.data.unit_head.lastname},{" "}
                           {latestReport.data.unit_head.firstname}{" "}

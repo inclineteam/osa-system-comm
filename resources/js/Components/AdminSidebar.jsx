@@ -183,12 +183,11 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
       ],
     },
     {
-      type: NavType.BUTTON,
+      type: NavType.LINK,
       text: "Feedback",
+      urlPath: "feedback",
       icon: <i className="fi fi-rr-comment"></i>,
-      onClick: () => {
-        setShowFeedbackModal(true);
-      },
+      href: route("admin.feedbacks"),
     },
   ];
 
