@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
                 'designations' => [
                     'Guidance',
                     'Information and Orientation Service',
-                    'Alumni and Job Fair Service',
+                    'Alumni and Job Placement Services',
                     'Student Handbook Development',
                 ]
             ],
@@ -38,27 +38,29 @@ class DatabaseSeeder extends Seeder
                 'classification' => 'Institutional Student Program and Services',
                 'designations' => [
                     'Student Organization Activities',
-                    'Leadership Training Program',
+                    'Leadership Training Programs',
                     'Student Council Student Discipline',
-                    'Student Publication'
+                    'Student Publication',
+                    'Student Council / Government'
                 ]
             ],
             [
                 'classification' => 'Student Development Services',
                 'designations' => [
                     'Admission and Testing Service',
-                    'Scholarship',
-                    'Food Service',
-                    'Health Service',
+                    'Scholarship and Financial Assistance',
+                    'Economic Enterprise Development',
+                    'Food Services',
+                    'Health Services / University Nurse',
                     'Safety and Security',
-                    'Student Housing & Residential Service',
+                    'Student Housing & Residential Services',
                     'Mult-faith',
-                    'Institution Student Service',
-                    'Support for Student with Special Needs',
-                    'Cultural Program',
+                    'International Student Service',
+                    'Support for Student with Special Needs and Person with Disabilities',
+                    'Socio-Cultural Program',
                     'Sports',
                     'Community Involvement',
-                    'Research'
+                    'Research Monitoring and Evaluation Student'
                 ]
             ]
         ];

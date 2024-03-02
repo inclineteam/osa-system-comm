@@ -6,6 +6,7 @@ use App\Models\Objective;
 use App\Models\User;
 use App\Models\UserObjective;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ObjectiveController extends Controller
@@ -111,7 +112,7 @@ class ObjectiveController extends Controller
     // alluserobjectives
     public function allUserObjectives($id)
     {
-        $userObjectives = UserObjective::where('user_id', $id)->get();
+        $userObjectives = UserObjective::where('user_id', $id)->where("is_archived", 0)->get();
 
         foreach ($userObjectives as $userObjective) {
             $userObjective->objective;
@@ -131,5 +132,48 @@ class ObjectiveController extends Controller
         }
 
         return response()->json(['message' => 'User objective updated successfully'], 200);
+    }
+
+    // getAllUsersObjective
+    public function getUsersObjective(Request $request)
+    {
+        // Define quarters mapping
+        $quarters = [
+            '1' => [1, 2, 3],
+            '2' => [4, 5, 6],
+            '3' => [7, 8, 9],
+            '4' => [10, 11, 12]
+        ];
+
+
+        $year = $request->input('year');
+        $quarter = $request->input('quarter');
+
+        // Start query with base conditions
+        $query = UserObjective::query();
+
+
+
+        // If both year and quarter are provided, add additional conditions
+        if ($year && $quarter) {
+            $query->whereYear('created_at', $year)->whereIn(DB::raw('MONTH(created_at)'), $quarters[$quarter]);
+        }
+
+        // Fetch user objectives
+        $userObjectives = $query->with('user', 'objective')->get();
+
+        // Return JSON response
+        return response()->json($userObjectives);
+    }
+
+    // getUserArchiveObjective
+    public function getArchivedUserObjective($id, Request $request)
+    {
+
+        // get user objectives
+        $userObjectives = UserObjective::where('user_id', $id)->where("is_archived", 1)->with('objective')->get();
+
+        // Return JSON response
+        return response()->json($userObjectives);
     }
 }

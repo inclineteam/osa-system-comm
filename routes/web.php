@@ -73,6 +73,8 @@ Route::prefix('/admin')->group(function () {
     Route::post('/create', [AdminController::class, 'create'])->name('admin.create')->middleware('guest');
 });
 
+// 
+
 Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
     Route::get('/reminders', [AdminController::class, 'reminders'])->name('admin.reminders');
     Route::get('/generated-reports-annually', [
@@ -92,6 +94,19 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
     Route::put('/objectives/{id}', [ObjectiveController::class, 'update'])->name('admin.objectives.update');
 
     Route::get('/objectives/{id}/edit', [ObjectiveController::class, 'edit'])->name('admin.objectives.edit');
+
+    // userobjectives monitoring
+    Route::get('/user-objectives', function () {
+        return Inertia::render('Admin/ObjectiveMonitoring');
+    })->name('admin.user_objectives');
+
+    // userobjectives archives
+    Route::get('/user-objectives/archives', function () {
+        return Inertia::render('Admin/ObjectiveArchives');
+    })->name('admin.user_objectives.archives');
+
+    // members
+    Route::get('/members', [AdminController::class, 'members'])->name('admin.members');
 
     Route::get('/objectives/create', [ObjectiveController::class, 'create'])->name('admin.objectives.create');
     Route::get('/signout', [AdminController::class, 'signout'])->name('admin.signout');
@@ -154,12 +169,19 @@ Route::prefix('/unit-head')->middleware(['auth', 'role:super_admin|admin'])->gro
     Route::delete('/{id}', [UnitHeadController::class, 'delete'])->name('unit_head.delete');
     Route::patch('/{id}', [UnitHeadController::class, 'edit'])->name('unit_head.edit');
     Route::get('/reports', [UnitHeadController::class, 'reports'])->name('unit_head.reports');
+    // userobjectives archives
+
 });
+
+
 
 Route::prefix('/unit-head')->middleware(['auth', 'role:unit_head'])->group(function () {
     Route::get('/reports', [UnitHeadController::class, 'reports'])->name('unit_head.reports');
     Route::get('/reports/{id}/submission-bin', [UnitHeadController::class, 'submission_bin'])->name('unit_head.submission_bin');
     Route::get('/calendar', [UnitHeadController::class, 'calendar'])->name('unit_head.calendar');
+    Route::get('/user-objectives/archives', function () {
+        return Inertia::render('UnitHead/ObjectiveArchives');
+    })->name('unit_head.objectives.archives');
 });
 Route::get('/announcements', [UnitHeadController::class, 'announcements'])->name('unit_head.announcements')->middleware(['role:admin|unit_head']);
 

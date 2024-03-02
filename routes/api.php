@@ -54,6 +54,12 @@ Route::get('/users/left', [UsersController::class, 'leftUsersCount'])->name('use
 // get all user count but only those who is not labeled as is_deleted which will be labled as : total users count
 Route::get('/users/total', [UsersController::class, 'totalUsersCount'])->name('users.total.count');
 
+// get all users created within this day
+Route::get('/users/today', [UsersController::class, 'newUsers'])->name('users.new');
+
+// get all users who is labeled as is_deleted
+Route::get('/users/deleted', [UsersController::class, 'leftUsers'])->name('users.left');
+
 // total number of users submitted
 Route::get('/users/submitted', [UsersController::class, 'submittedUsersCount'])->name('users.submitted.count');
 
@@ -62,6 +68,9 @@ Route::get('/users/due', [UsersController::class, 'dueUsersCount'])->name('users
 
 // users that has reached the due date
 Route::get('/users/overdue', [UsersController::class, 'overdueUsersCount'])->name('users.overdue.count');
+
+// deactivate user
+Route::patch('/users/deactivate/{id}', [UsersController::class, 'deactivate'])->name('users.deactivate');
 
 Route::post('/image-upload', function (Request $request) {
     $image = $request->file('image');
@@ -146,6 +155,12 @@ Route::prefix('/objectives')->group(function () {
     // get all user objectives from UserObjective model
     Route::get('/{id}/all', [ObjectiveController::class, 'allUserObjectives'])->name('objectives.user.all');
     Route::put('/user', [ObjectiveController::class, 'updateUserObjective'])->name('objectives.user.update');
+
+    // get all users objectives from UserObjective model
+    Route::get('/all/user', [ObjectiveController::class, 'getUsersObjective'])->name('objectives.user.get');
+
+    // get specific user objectives from UserObjective model that is archived
+    Route::get('/{id}/archived', [ObjectiveController::class, 'getArchivedUserObjective'])->name('objectives.user.archived');
 })->middleware(['auth']);
 
 

@@ -54,6 +54,21 @@ const UnitHeadSidebar = ({ isActive, setShowFeedbackModal, activeLink }) => {
     },
     {
       type: NavType.DROPDOWN,
+      icon: <i class="fi fi-rr-calendar"></i>,
+      text: "Objectives",
+      key: "objectives",
+      opened: false,
+      navList: [
+        {
+          type: NavType.LINK,
+          text: "Archives",
+          href: route("unit_head.objectives.archives"),
+          urlPath: "objectives archives",
+        },
+      ],
+    },
+    {
+      type: NavType.DROPDOWN,
       text: (
         <span>
           Downloadable <small>(ISO 9001_2015)</small>

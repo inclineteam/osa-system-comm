@@ -157,6 +157,26 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
               urlPath: "feedback",
               href: route("admin.feedbacks"),
             },
+            {
+              type: NavType.LINK,
+              text: "Members",
+              urlPath: "members",
+              href: route("admin.members"),
+            },
+          ],
+        },
+        {
+          type: NavType.DROPDOWN,
+          text: "Objectives",
+          key: "objectives",
+          opened: false,
+          navList: [
+            {
+              type: NavType.LINK,
+              text: "Monitoring",
+              href: route("admin.user_objectives"),
+              urlPath: "objectives monitoring",
+            },
           ],
         },
         {

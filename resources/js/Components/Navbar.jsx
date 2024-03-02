@@ -138,6 +138,26 @@ const NavbarComponent = ({ isActive, setIsActive, headerTitle }) => {
                         Profile
                       </Link>
                     </Nav.Item>
+                    {/* check user is he/she is unit_head */}
+                    {userAuth?.role === "unit_head" && (
+                      <Nav.Item>
+                        <Link
+                          onClick={() => {
+                            axios
+                              .patch(
+                                route("users.deactivate", userAuth.user.id)
+                              )
+                              .then(() => {
+                                // signout
+                                window.location.href = route("admin.signout");
+                              });
+                          }}
+                          className="block py-1.5 text-slate-800 hover:bg-slate-100 rounded px-3"
+                        >
+                          Deactivate Account
+                        </Link>
+                      </Nav.Item>
+                    )}
                     <Nav.Item>
                       <Link
                         href={route("admin.signout")}

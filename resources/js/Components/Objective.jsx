@@ -26,9 +26,9 @@ const Objective = ({ user }) => {
         </p>
       </div>
       {objectives.length != 0 && objectives ? (
-        <div className="animate-fade-up overflow-hidden p-3 px-4 rounded-md border-slate-200 border relative">
-          <div className="absolute top-0 bottom-0 w-1 bg-blue-500 left-0"></div>
-          {objectives.map((objective) => (
+        objectives.map((objective, index) => (
+          <div className="animate-fade-up overflow-hidden p-3 px-4 rounded-md border-slate-200 border relative">
+            <div className="absolute top-0 bottom-0 w-1 bg-blue-500 left-0"></div>
             <div className="flex">
               {objective.is_completed == 0 &&
               objective.objective.objective_type == 0 ? (
@@ -64,11 +64,28 @@ const Objective = ({ user }) => {
               )}
 
               {objective.is_completed == 1 && (
-                <div className="flex  items-center w-[3rem] mr-2">
-                  <i
-                    onClick={() => {}}
-                    class="fi p-1 hover:bg-blue-500 hover:cursor-pointer hover:text-white border-blue-500 border-1 rounded-lg text-blue-500 fi-rr-box"
-                  ></i>
+                <div
+                  onClick={() => {
+                    axios
+                      .put(route("objectives.user.update"), {
+                        id: objective.id,
+                        is_archived: !objective.is_archived,
+                      })
+                      .then((res) => {
+                        if (res.statusText === "OK") {
+                          console.log(res.data);
+                          setObjectives((prev) => {
+                            // remove the objective from the list
+                            return prev.filter(
+                              (obj) => obj.id !== objective.id
+                            );
+                          });
+                        }
+                      });
+                  }}
+                  className="flex  items-center w-[3rem] mr-2"
+                >
+                  <i class="fi p-1 hover:bg-blue-500 hover:cursor-pointer hover:text-white border-blue-500 border-1 rounded-lg text-blue-500 fi-rr-box"></i>
                 </div>
               )}
               <div key={objective.id} className="w-full">
@@ -83,8 +100,8 @@ const Objective = ({ user }) => {
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))
       ) : (
         <div className="border-2 border-dashed border-slate-200 text-slate-500 text-sm py-6 text-center">
           There is no objectives posted
