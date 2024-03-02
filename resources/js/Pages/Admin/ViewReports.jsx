@@ -3,7 +3,7 @@ import HeaderTitle from "@/Components/HeaderTitle";
 import TextProfilePic from "@/Components/TextProfilePic";
 import UnitHeadReportCard from "@/Components/UnitHeadReportCard";
 import PanelLayout from "@/Layouts/PanelLayout";
-import { router, usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import axios from "axios";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
@@ -20,6 +20,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import DataTable from "react-data-table-component";
+import { ReportImages } from "./ReportTableRow";
 
 const ViewReports = ({ submissionBin, campuses }) => {
   const { auth } = usePage().props;
@@ -102,16 +103,15 @@ const ViewReports = ({ submissionBin, campuses }) => {
       headerTitle={<HeaderTitle backButton text="Unit Head Report" />}
     >
       <div className="content-wrapper">
-        <Card className="mb-3 border-0 shadow-sm rounded-0">
-          <Card.Body>
-            <p className="flex items-center text-lg my-0">
-              <i className="fi fi-rr-box me-2"></i>
+        <Card className="mb-3 border-0 shadow-sm rounded-md">
+          <Card.Body className="p-4">
+            <p className="text-2xl font-semibold m-0 tracking-tight">
               {submissionBin.title}
             </p>
             <div className="text-secondary">
               {submissionBin.deadline_date ? (
-                <p className="text-sm mt-3 mb-0">
-                  Due{" "}
+                <p className="text-sm m-0">
+                  Due on{" "}
                   {format(
                     new Date(submissionBin.deadline_date),
                     "MMM d, Y / hh:mm aaa"
@@ -121,122 +121,93 @@ const ViewReports = ({ submissionBin, campuses }) => {
                 <p className="mt-3 mb-0 text-sm">No deadline.</p>
               )}
             </div>
-            <hr />
 
             {submissionBin.instruction ? (
-              <>
-                <p className="text-sm text-secondary my-1">
+              <div className="mt-2">
+                <div className="font-semibold mb-2">Instruction:</div>
+                <p className="whitespace-pre-wrap text-slate-600 my-1">
                   {submissionBin.instruction}
                 </p>
-              </>
+              </div>
             ) : (
               <p className="text-sm text-black-50 my-1">No instruction.</p>
             )}
           </Card.Body>
         </Card>
-        <Card className="border-0 shadow-sm rounded-0">
+        <Card className="border-0 shadow-sm rounded-md">
           <Card.Body className="p-lg-4">
             {auth.role === "super_admin" && (
               <>
-                <p className="form-text mb-2 text-secondary">Campus</p>
+                <p className="text-xl font-semibold m-0 tracking-tight">
+                  Submitted Reports
+                </p>
+                <p className="text-sm text-slate-500">
+                  View submitted reports for this submission bin.
+                </p>
 
-                <div className="w-100 border shadow-sm custom-scroll bg-white overflow-auto">
-                  <ElegantNav
-                    list={campuses}
-                    selector={(item) => item.name}
-                    selectedItem={selectedCampus}
-                    handleSelect={(campus) => setSelectedCampus(campus)}
-                  />
+                <div>
+                  {reports.map((report, i) => (
+                    <div
+                      key={i}
+                      className="flex gap-3  p-4 border border-slate-200 rounded-md"
+                    >
+                      <img
+                        src={report.unit_head.image}
+                        alt=""
+                        className="w-12 h-12 rounded-full"
+                      />
+
+                      <div>
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <p className="text-lg tracking-tight font-bold m-0">
+                              {report.unit_head.firstname}{" "}
+                              {report.unit_head.lastname}
+                            </p>
+                            <div className="mt-1 flex gap-2 rounded-sm text-sm font-semibold">
+                              <p className="m-0 rounded-md border border-slate-200 px-2 py-1">
+                                {report.unit_head.campus.name} campus
+                              </p>
+                              <p className="m-0 rounded-md border border-slate-200 px-2 py-1">
+                                {report.unit_head.designation.name} office
+                              </p>
+                            </div>
+                          </div>
+
+                          <Link
+                            href={route("admin.report.open", report.id)}
+                            className="text-sm px-2.5 hover:bg-slate-50 active:bg-slate-100 py-1.5 rounded-md text-indigo-600 border border-slate-200 shadow-sm"
+                          >
+                            View full report
+                          </Link>
+                        </div>
+                        <div className="p-0 mt-4 border border-slate-200 rounded-md overflow-hidden">
+                          <table className="border-collapse w-full">
+                            <thead>
+                              <tr className="[&>th]:border-l [&>th:first-child]:border-0 [&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:px-5 [&>th]:py-2.5 border-b [&>th]:text-sm [&>th]:font-medium">
+                                <th>Title of Activities/ Program</th>
+                                <th>Date/ Duration</th>
+                                <th>Documentation (Pictures)</th>
+                                <th>Participants</th>
+                                <th>Location</th>
+                                <th>Conducted/ Sponsored by:</th>
+                                <th>Budget/Remark</th>
+                              </tr>
+                            </thead>
+
+                            <tbody>
+                              {report.entries.map((entry, index) => (
+                                <ReportImages entry={entry} key={index} />
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </>
             )}
-            <div className=" mt-3">
-              <Row className="gy-3">
-                <Col className="order-1 order-lg-0">
-                  <p className="fw-bold mb-0">{selectedCampus.name} Campus</p>
-                  <p className="mt-0 text-sm">
-                    <small>Unit Head Reports / All</small>
-                  </p>
-                  <Row>
-                    {fetchingReports ? (
-                      <>
-                        <Col lg={3}>
-                          <Placeholder animation="wave">
-                            <div className="bg-light w-100 h-[180px]"></div>
-                          </Placeholder>
-                        </Col>
-                        <Col lg={3}>
-                          <Placeholder animation="wave">
-                            <div className="bg-light w-100 h-[180px]"></div>
-                          </Placeholder>
-                        </Col>
-                      </>
-                    ) : reports.length > 0 ? (
-                      reports.map((report, index) => (
-                        <Col lg={3} key={index}>
-                          {/* <UnitHeadReportCard handleClick={() => openReport(report)} data={report} /> */}
-                        </Col>
-                      ))
-                    ) : (
-                      <p className="text-sm text-secondary">Nothing to show.</p>
-                    )}
-                  </Row>
-                </Col>
-                <Col lg={3} className="order-0 order-lg-1">
-                  <p className="text-sm fw-bold">Unit Heads</p>
-                  <p className="mt-0 text-sm mb-0"></p>
-                  {fetchingUnitHeads ? (
-                    <>
-                      <Placeholder animation="wave">
-                        <Placeholder bg="light" xs={12} />
-                      </Placeholder>
-                      <Placeholder animation="wave">
-                        <Placeholder bg="light" xs={12} />
-                      </Placeholder>
-                      <Placeholder animation="wave">
-                        <Placeholder bg="light" xs={12} />
-                      </Placeholder>
-                    </>
-                  ) : unitHeads.length > 0 ? (
-                    <div className=" max-h-[300px] overflow-y-auto">
-                      {unitHeads.map((unitHead, index) => (
-                        <div key={index} className="text-sm px-0 w-max mb-3">
-                          <div
-                            onClick={() => setSelectedUnitHead(unitHead)}
-                            className={`flex gap-2 items-center py-2 px-2 rounded-pill cursor-pointer ${
-                              unitHead.id == selectedUnitHead?.id
-                                ? "bg-light-primary"
-                                : ""
-                            }`}
-                          >
-                            {unitHead.image ? (
-                              <Image
-                                src={unitHead.image}
-                                width={30}
-                                height={30}
-                                roundedCircle
-                              />
-                            ) : (
-                              <TextProfilePic
-                                size="sm"
-                                text={`${unitHead.firstname[0]} ${unitHead.lastname[0]}`}
-                                bg="light"
-                                className="text-primary fw-bold"
-                              />
-                            )}
-                            <p className="my-0">
-                              {unitHead.firstname} {unitHead.lastname}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-sm text-secondary">Nothing to show.</p>
-                  )}
-                </Col>
-              </Row>
-            </div>
           </Card.Body>
         </Card>
       </div>
