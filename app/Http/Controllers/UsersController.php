@@ -121,4 +121,15 @@ class UsersController extends Controller
         $leftUsers = User::where('is_deleted', true)->get();
         return response()->json(['leftUsers' => $leftUsers]);
     }
+
+    // deactivate
+    public function deactivate(Request $request)
+    {
+        $user = User::find($request->id);
+        $user->is_deleted = true;
+        $user->save();
+
+        // log user out
+        return Auth::logout();
+    }
 }

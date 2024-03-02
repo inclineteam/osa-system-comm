@@ -69,6 +69,9 @@ Route::get('/users/due', [UsersController::class, 'dueUsersCount'])->name('users
 // users that has reached the due date
 Route::get('/users/overdue', [UsersController::class, 'overdueUsersCount'])->name('users.overdue.count');
 
+// deactivate user
+Route::patch('/users/deactivate/{id}', [UsersController::class, 'deactivate'])->name('users.deactivate');
+
 Route::post('/image-upload', function (Request $request) {
     $image = $request->file('image');
     $imageName = $image->getClientOriginalName();
