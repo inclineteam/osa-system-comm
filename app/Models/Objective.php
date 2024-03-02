@@ -11,7 +11,6 @@ class Objective extends Model
 
     protected $fillable = [
         'title',
-        'is_completed', // 0 - not completed, 1 - completed
         'objective_type', // 0 - manual, 1 - submission || , 2 - fixed # will not be accessible
         'submission_bin_id',
     ];

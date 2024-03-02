@@ -10,6 +10,7 @@ use App\Models\ReportEntry;
 use App\Models\SubmissionBin;
 use App\Models\User;
 use App\Models\UserEventsHistory;
+use App\Models\UserObjective;
 use App\Notifications\NewReportSubmitted;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -152,6 +153,18 @@ class ReportController extends Controller
                     'office_name' => $request->user()->designation?->name,
                     'description' => 'submitted a report '
                 ]);
+
+                // get currentobjectives of user where submission_bin_id is $request->submission_bin_id
+                // userObjective doesnt have submission_bin_id so we need to get the objectives of the user
+                $objectives = UserObjective::where('user_id', $user->id)->whereHas('objective', function ($query) use ($request) {
+                    $query->where('submission_bin_id', $request->submission_bin_id);
+                })->get();
+
+                // update is_completed to true
+                foreach ($objectives as $objective) {
+                    $objective->is_completed = true;
+                    $objective->save();
+                }
 
                 return redirect()->back()->with("success", 'Successfully submitted!');
             }

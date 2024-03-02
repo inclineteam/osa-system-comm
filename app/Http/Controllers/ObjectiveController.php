@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Objective;
+use App\Models\User;
+use App\Models\UserObjective;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -42,7 +44,7 @@ class ObjectiveController extends Controller
         if ($request->submission_bin_id != null) {
 
             $objective->title = $request->title;
-            $objective->is_completed = 0;
+
             $objective->objective_type = $request->objective_type;
             $objective->submission_bin_id = $request->submission_bin_id;
             $objective->save();
@@ -50,10 +52,22 @@ class ObjectiveController extends Controller
 
 
             $objective->title = $request->title;
-            $objective->is_completed = 0;
+
             $objective->objective_type = $request->objective_type;
             $objective->submission_bin_id = null;
             $objective->save();
+        }
+
+        // all unitHeads where they have a designation of unit head and not null
+        $unitHeads = User::whereNotNull('campus_id')->get();
+
+        foreach ($unitHeads as $unitHead) {
+            UserObjective::create([
+                'objective_id' => $objective->id,
+                'user_id' => $unitHead->id,
+                'is_completed' => false,
+                'is_archived' => false
+            ]);
         }
 
         return redirect()->route('admin.objectives');
@@ -92,5 +106,30 @@ class ObjectiveController extends Controller
         }
 
         return response()->json(['message' => 'Objective deleted successfully'], 200);
+    }
+
+    // alluserobjectives
+    public function allUserObjectives($id)
+    {
+        $userObjectives = UserObjective::where('user_id', $id)->get();
+
+        foreach ($userObjectives as $userObjective) {
+            $userObjective->objective;
+        }
+        return response()->json($userObjectives);
+    }
+
+    //update user objective
+    public function updateUserObjective(Request $request)
+    {
+        try {
+            $userObjective = UserObjective::find($request->id);
+            $userObjective->update($request->all());
+            $userObjective->save();
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error updating user objective' . $th->getMessage()], 500);
+        }
+
+        return response()->json(['message' => 'User objective updated successfully'], 200);
     }
 }

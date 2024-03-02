@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const Objective = () => {
+const Objective = ({ user }) => {
   const [objectives, setObjectives] = useState([]);
 
   useEffect(() => {
     const fetchObjectives = () => {
-      axios.get(route("objectives.all")).then((res) => {
+      axios.get(route("objectives.user.all", user.id)).then((res) => {
         if (res.statusText === "OK") {
           setObjectives(res.data);
           console.log(res.data);
@@ -30,13 +30,13 @@ const Objective = () => {
           <div className="absolute top-0 bottom-0 w-1 bg-blue-500 left-0"></div>
           {objectives.map((objective) => (
             <div className="flex">
-              {objective.is_completed == 0 && objective.objective_type == 0 ? (
+              {objective.is_completed == 0 &&
+              objective.objective.objective_type == 0 ? (
                 <div className="flex  items-center w-[3rem] mr-2">
                   <i
                     onClick={() => {
                       axios
-                        .put(route("admin.objectives.update"), {
-                          title: objective.title,
+                        .put(route("objectives.user.update"), {
                           id: objective.id,
                           is_completed: !objective.is_completed,
                         })
@@ -62,8 +62,17 @@ const Objective = () => {
               ) : (
                 ""
               )}
+
+              {objective.is_completed == 1 && (
+                <div className="flex  items-center w-[3rem] mr-2">
+                  <i
+                    onClick={() => {}}
+                    class="fi p-1 hover:bg-blue-500 hover:cursor-pointer hover:text-white border-blue-500 border-1 rounded-lg text-blue-500 fi-rr-box"
+                  ></i>
+                </div>
+              )}
               <div key={objective.id} className="w-full">
-                <p className="mb-0.5 font-bold">{objective.title}</p>
+                <p className="mb-0.5 font-bold">{objective.objective.title}</p>
                 <div className="flex mb-0.5 justify-between items-center">
                   <p className="text-xs text-slate-500">
                     {objective.is_completed ? "100%" : "0%"}
