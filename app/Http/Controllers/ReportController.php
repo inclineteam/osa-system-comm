@@ -236,6 +236,23 @@ class ReportController extends Controller
         return response()->json(['latestReport' => $latestReport]);
     }
 
+    public function campusLatest(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $campus = Campus::find($user->campus_id);
+        $latestReports = Report::latest('created_at')->get();
+
+        foreach ($latestReports as $latestReport) {
+            $latestReportUser = User::find($latestReport->user_id);
+            $latestReportCampus = Campus::find($latestReportUser->campus_id);
+
+            if ($latestReportCampus->name === $campus->name) {
+                return response()->json(['latestReport' => $latestReport]);
+            }
+
+        }
+    }
+
     public function forReview(Request $request)
     {
         $reports = Report::with(['unitHead', 'submission_bin'])->get();
@@ -308,6 +325,34 @@ class ReportController extends Controller
                     } else {
                         $data[$campus->name]['offices'][$report->designation->name] = $report->reports->count();
                     }
+                }
+            }
+        }
+
+        return response()->json(['data' => $data]);
+    }
+
+    public function campusSummary(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $campus = Campus::find($user->campus_id);
+        $data = [
+            'total' => 0,
+            'offices' => []
+        ];
+
+        $reports = User::where('campus_id', $campus->id)->get();
+
+        foreach ($reports as $key => $report) {
+            $data['total'] += $report->reports->count();
+
+            // check if report has a designation
+            if ($report->designation) {
+                // check if isset
+                if (isset($data['offices'][$report->designation->name])) {
+                    $data['offices'][$report->designation->name] += $report->reports->count();
+                } else {
+                    $data['offices'][$report->designation->name] = $report->reports->count();
                 }
             }
         }

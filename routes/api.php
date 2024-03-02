@@ -196,6 +196,7 @@ Route::prefix('/reminders')->group(function () {
 
 // report data : {campus1 : {total: 0, offices : {office1 : 1, office2 : 2}}}}}}}
 Route::get('/reports/summary', [ReportController::class, 'summary'])->name('reports.summary.index');
+Route::get('/reports/summary/{user_id}', [ReportController::class, 'campusSummary'])->name('reports.summary.campus');
 
 // api/admin/annual-reports
 Route::prefix('/admin/annual-reports')->group(function () {

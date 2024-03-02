@@ -206,6 +206,7 @@ Route::prefix('/reports')->middleware(['auth'])->group(function () {
     Route::patch('/{submission_bin_id}/unsubmit', [ReportController::class, 'unSubmitReport'])->name('reports.unsubmit');
     Route::get('/{report}/view', [ReportController::class, 'view'])->name('reports.view');
     Route::get('/latest', [ReportController::class, 'latest'])->name('reports.latest');
+    Route::get('/latest/{user_id}', [ReportController::class, 'campusLatest'])->name('reports.latest.campus');
     Route::patch('{id}/status/update', [ReportAttachmentController::class, 'updateStatus'])->name('reports.status.update');
 });
 
