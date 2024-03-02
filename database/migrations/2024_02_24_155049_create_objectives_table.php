@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('objectives', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->boolean('is_completed')->default(false);
             $table->integer('objective_type'); // 1 for submission functionality checking where it is automated, 2 for user manual checking where the user can the ability to mark it as completed,
 
             // constrain to submission bin for checking if the user has submitted the task : note that this is nullable so it will be pointed to a specific submission bin to check if the user has submitted the task

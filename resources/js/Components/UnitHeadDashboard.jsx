@@ -35,7 +35,7 @@ const UnitHeadDashboard = ({ auth }) => {
 
       <Row>
         <Col>
-          <Objective />
+          <Objective user={auth.user} />
         </Col>
       </Row>
     </div>

@@ -142,6 +142,10 @@ Route::prefix('/objectives')->group(function () {
     Route::delete('/{id}', [ObjectiveController::class, 'delete'])->name('admin.objectives.delete');
     // get all objectives
     Route::get('/all', [ObjectiveController::class, 'all'])->name('objectives.all');
+
+    // get all user objectives from UserObjective model
+    Route::get('/{id}/all', [ObjectiveController::class, 'allUserObjectives'])->name('objectives.user.all');
+    Route::put('/user', [ObjectiveController::class, 'updateUserObjective'])->name('objectives.user.update');
 })->middleware(['auth']);
 
 

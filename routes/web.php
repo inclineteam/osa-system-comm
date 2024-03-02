@@ -90,6 +90,7 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
     Route::get('/calendar', [CalendarEventController::class, 'index'])->name('calendar')->middleware(['auth']);
     Route::get('/objectives', [ObjectiveController::class, 'index'])->name('admin.objectives');
     Route::put('/objectives/{id}', [ObjectiveController::class, 'update'])->name('admin.objectives.update');
+
     Route::get('/objectives/{id}/edit', [ObjectiveController::class, 'edit'])->name('admin.objectives.edit');
 
     Route::get('/objectives/create', [ObjectiveController::class, 'create'])->name('admin.objectives.create');
