@@ -22,4 +22,10 @@ class UserObjective extends Model
     {
         return $this->belongsTo(Objective::class);
     }
+
+    // user
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -107,4 +107,18 @@ class UsersController extends Controller
             })->count();
         return response()->json(['overdueUsersCount' => $overdueUsersCount]);
     }
+
+    // newUsers
+    public function newUsers()
+    {
+        $newUsers = User::whereDate('created_at', now())->get();
+        return response()->json(['newUsers' => $newUsers]);
+    }
+
+    // leftUsers
+    public function leftUsers()
+    {
+        $leftUsers = User::where('is_deleted', true)->get();
+        return response()->json(['leftUsers' => $leftUsers]);
+    }
 }

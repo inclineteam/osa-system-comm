@@ -278,4 +278,11 @@ class AdminController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    // members page
+    public function members(Request $request)
+    {
+
+        return Inertia::render('Admin/Members');
+    }
 }
