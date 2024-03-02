@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewCalendarCreated;
 use App\Models\CalendarEvent;
 use App\Models\User;
 use App\Models\UserEventsHistory;
+use App\Notifications\NewCalendarEvent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Inertia\Inertia;
 
 class CalendarEventController extends Controller
@@ -21,36 +24,46 @@ class CalendarEventController extends Controller
 
     public function store(Request $request)
     {
-        $newEvent = new CalendarEvent([
-            'title' => $request->title,
-            'start' => $request->start,
-            'end' => $request->end,
-            'user_id' => $request->user_id,
-        ]);
-
-        $newEvent->save();
-
-        if ($request->expectsJson()) {
-            $user = User::find($request->user_id);
-            UserEventsHistory::create([
-                'user_name' => $user->name(),
-                'event_name' => 'Create Calendar Event',
-                'campus_name' => $user->campus?->name,
-                'office_name' => $user->designation?->name,
-                'description' => 'created a calendar event with title ' . $request->title
+        try {
+            $newEvent = new CalendarEvent([
+                'title' => $request->title,
+                'start' => $request->start,
+                'end' => $request->end,
+                'user_id' => $request->user_id,
             ]);
-            return response()->json(['event' => $newEvent]);
+
+            $newEvent->save();
+
+            if ($request->expectsJson()) {
+                $user = User::find($request->user_id);
+                UserEventsHistory::create([
+                    'user_name' => $user->name(),
+                    'event_name' => 'Create Calendar Event',
+                    'campus_name' => $user->campus?->name,
+                    'office_name' => $user->designation?->name,
+                    'description' => 'created a calendar event with title ' . $request->title
+                ]);
+
+
+
+                $users = User::whereHasRole(['unit_head', 'admin'])->get();
+                Notification::sendNow($users, new NewCalendarEvent($newEvent));
+
+                return response()->json(['event' => $newEvent]);
+            }
+
+            // UserEventsHistory::create([
+            //     'user_name' => $request->user()->name(),
+            //     'event_name' => 'Create Calendar Event',
+            //     'campus_name' => $request->user()->campus?->name,
+            //     'office_name' => $request->user()->designation?->name,
+            //     'description' => 'created a calendar event with title ' . $request->title
+            // ]);
+
+            return redirect()->back()->with('success', 'Successfully created!');
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
         }
-
-        // UserEventsHistory::create([
-        //     'user_name' => $request->user()->name(),
-        //     'event_name' => 'Create Calendar Event',
-        //     'campus_name' => $request->user()->campus?->name,
-        //     'office_name' => $request->user()->designation?->name,
-        //     'description' => 'created a calendar event with title ' . $request->title
-        // ]);
-
-        return redirect()->back()->with('success', 'Successfully created!');
     }
 
     public function destroy(Request $request)

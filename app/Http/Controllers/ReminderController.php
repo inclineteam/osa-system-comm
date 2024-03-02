@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reminder;
+use App\Models\User;
 use App\Models\UserEventsHistory;
+use App\Notifications\NewReminder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class ReminderController extends Controller
 {
@@ -24,6 +27,9 @@ class ReminderController extends Controller
             'office_name' => $request->user()->designation?->name,
             'description' => 'created a reminder with title ' . "$request->title"
         ]);
+
+        $users = User::whereHasRole(['unit_head', 'admin'])->get();
+        Notification::sendNow($users, new NewReminder($reminder));
 
         return redirect()->intended(route('admin.reminders'))->with('success', 'Successfully added reminder!');
     }

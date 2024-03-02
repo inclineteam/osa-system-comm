@@ -77,6 +77,7 @@ const NavbarComponent = ({ isActive, setIsActive, headerTitle }) => {
                                 <ThemeSwitch />
                             </Nav.Item> */}
               <NotificationsDropdown />
+
               <CalendarDropdown />
               <Dropdown align="end" as={NavItem} className="">
                 <DropdownToggle

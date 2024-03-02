@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\CalendarEvent;
 use App\Models\User;
 use App\Notifications\CalendarEventNotification;
+use App\Notifications\NewAnnouncement;
 use App\Notifications\NewCalendarEvent;
+use App\Notifications\NewReminder;
 use App\Notifications\NewReportApproved;
 use App\Notifications\NewReportSubmitted;
 use App\Notifications\NewSubmissionBin;
@@ -47,7 +49,8 @@ class NotificationController extends Controller
                 $data['notifications'] = $user->unreadNotifications()
                     ->whereIn('type', [
                         NewSubmissionBin::class,
-                        ReportStatusUpdated::class
+                        ReportStatusUpdated::class,
+
                     ])
                     ->get();
             }
@@ -65,7 +68,9 @@ class NotificationController extends Controller
             $data['notifications'] = $user->unreadNotifications()
                 ->whereIn('type', [
                     NewCalendarEvent::class,
-                    CalendarEventController::class
+                    CalendarEventController::class,
+                    NewReminder::class,
+                    NewAnnouncement::class,
                 ])
                 ->get();
         }

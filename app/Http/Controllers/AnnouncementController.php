@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
+use App\Models\User;
 use App\Models\UserEventsHistory;
+use App\Notifications\NewAnnouncement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Inertia\Inertia;
 
 class AnnouncementController extends Controller
@@ -54,6 +57,9 @@ class AnnouncementController extends Controller
             'office_name' => $request->user()->designation?->name,
             'description' => 'created announcement with title: ' . $request->title
         ]);
+
+        $users = User::whereHasRole(['admin', 'unit_head'])->get();
+        Notification::send($users, new NewAnnouncement($announcement));
 
         return redirect()->intended(route('admin.announcements'))->with('success', "Successfully added new accouncement!");
     }
