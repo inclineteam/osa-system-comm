@@ -14,7 +14,7 @@ export default function UnitHeadReportsChecklist({ offices }) {
     <PanelLayout defaultActiveLink="reports checklist">
       <div className="content-wrapper">
         <div className="p-4 border-b border-slate-300 rounded-lg shadow-sm bg-white">
-          <h1 className="text-xl font-bold mb-2 leading-none">
+          <h1 className="text-2xl font-semibold tracking-tight mb-2 leading-none">
             Reports checklist
           </h1>
           <p className="border-b border-slate-200 pb-4 leading-none mb-4 text-slate-500">
@@ -37,7 +37,6 @@ export default function UnitHeadReportsChecklist({ offices }) {
                         <th>Office</th>
                         <th>Campus</th>
                         <th>Submitted Reports</th>
-                        <th> </th>
                       </tr>
                     </thead>
 
@@ -54,16 +53,12 @@ export default function UnitHeadReportsChecklist({ offices }) {
                           <td>{report.unit_head.designation.name}</td>
                           <td>{report.unit_head.campus.name}</td>
                           <td>
-                            {" "}
                             <div
                               className={`inline-block mr-2 w-2 h-2 rounded-full ${
                                 statusColors[report.status]
                               }`}
                             ></div>
                             {report.status}
-                          </td>
-                          <td>
-                            <button>View</button>
                           </td>
                         </tr>
                       ))}

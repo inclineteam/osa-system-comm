@@ -11,7 +11,9 @@ export default function ForReviewReports({ auth, reportsForRejected }) {
     >
       <div className="content-wrapper">
         <div className="p-4 border-b border-slate-300 rounded-lg shadow-sm bg-white">
-          <h1 className="text-xl font-bold mb-2 leading-none">For rejected</h1>
+          <h1 className="text-2xl tracking-tight font-semibold mb-2 leading-none">
+            For rejected
+          </h1>
           <p className="leading-none mb-4 text-slate-500">
             See all the reports that was rejected.
           </p>

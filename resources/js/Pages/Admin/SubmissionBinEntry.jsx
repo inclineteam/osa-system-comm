@@ -13,7 +13,6 @@ export const SubmissionBinEntry = ({
     title: "",
     date: new Date(),
     documentation: [],
-    duration: "",
     participants: "",
     location: "",
     conducted_by: "",
@@ -58,38 +57,21 @@ export const SubmissionBinEntry = ({
               />
             </div>
 
-            <div className="flex gap-4">
-              <div class="flex-1">
-                <Form.Label className="text-secondary">
-                  <span className="text-sm text-danger me-1">*</span>
-                  Date
-                </Form.Label>
-                <div className="block w-full">
-                  <Form.Control
-                    type="date"
-                    value={data.date}
-                    onChange={(e) =>
-                      setData((prevData) => ({
-                        ...prevData,
-                        date: e.target.value,
-                      }))
-                    }
-                  />
-                </div>
-              </div>
-
-              <div class="flex-1">
-                <Form.Label className="text-secondary">
-                  <span className="text-sm text-danger me-1">*</span>
-                  Duration
-                </Form.Label>
+            <div>
+              <Form.Label className="text-secondary">
+                <span className="text-sm text-danger me-1">*</span>
+                Date/ Duration
+              </Form.Label>
+              <div className="block w-full">
                 <Form.Control
-                  type="text"
-                  required
-                  name="duration"
-                  id="duration"
-                  value={data.duration}
-                  onChange={handleChange}
+                  type="date"
+                  value={data.date}
+                  onChange={(e) =>
+                    setData((prevData) => ({
+                      ...prevData,
+                      date: e.target.value,
+                    }))
+                  }
                 />
               </div>
             </div>
