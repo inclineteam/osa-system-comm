@@ -25,7 +25,7 @@ class ReportController extends Controller
         $campus_id = $request->campus_id;
         $submission_bin_id = $request->submission_bin_id;
         $unit_heads = User::select('id')->where('campus_id', $campus_id);
-        $data['reports'] = Report::whereIn('user_id', $unit_heads)->where('submission_bin_id', $submission_bin_id)->where('user_id', $request->unit_head_id)->where('is_submitted', true)->get();
+        $data['reports'] = Report::with(['unitHead', 'entries'])->whereIn('user_id', $unit_heads)->where('submission_bin_id', $submission_bin_id)->where('user_id', $request->unit_head_id)->where('is_submitted', true)->get();
 
         return response()->json($data);
     }

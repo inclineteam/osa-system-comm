@@ -49,7 +49,7 @@ export const SubmissionBinEntryForm = ({ submissionBinId }) => {
           );
         }}
       >
-        <p className="tracking-tight text-2xl font-semibold m-0">
+        <p className="tracking-tight text-xl font-semibold m-0">
           Submit Report
         </p>
         <p className="text-sm text-slate-500 mb-4 m-0">

@@ -11,7 +11,7 @@ class Report extends Model
 {
     use HasFactory;
 
-    protected $with = ['unitHead', 'attachments'];
+    protected $with = ['unitHead', 'attachments', 'entries'];
 
     protected $fillable = [
         'user_id',

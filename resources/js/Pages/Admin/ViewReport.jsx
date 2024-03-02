@@ -93,7 +93,9 @@ const ViewReport = ({ report }) => {
             <Card className="border-0 shadow-sm rounded-xl p-2 mb-4">
               <Card.Body className="border-0 h-100">
                 <div className="flex justify-between items-center">
-                  <p className="text-xl font-bold mb-0">Submitted by</p>
+                  <p className="text-2xl font-semibold tracking-tight mb-0">
+                    Submitted by
+                  </p>
                   <div className="flex items-center">
                     {auth.role === "super_admin" ||
                       (auth.role === "admin" && (
@@ -129,7 +131,7 @@ const ViewReport = ({ report }) => {
                         </div>
                       ))}
 
-                    {auth.role === "admin" && report.status === "Pending" && (
+                    {report.status === "Pending" && (
                       <>
                         <button
                           onClick={() => approveReport(report.id)}
@@ -205,7 +207,9 @@ const ViewReport = ({ report }) => {
               <Card.Body className="h-100">
                 <div className="flex justify-between">
                   <div>
-                    <p className="text-xl font-bold mb-1">Reports</p>
+                    <p className="text-2xl font-semibold tracking-tight mb-1">
+                      Reports
+                    </p>
                     {report.is_submitted ? (
                       <>
                         {auth.role === "super_admin" ? (
