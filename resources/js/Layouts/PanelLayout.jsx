@@ -114,7 +114,7 @@ const PanelLayout = ({
         layout={auth?.role}
       />
       <main
-        className={`${isNavActive ? "" : "expanded"} content-body bg-gray-100 `}
+        className={`${isNavActive ? "" : "expanded"} content-body bg-slate-100`}
       >
         {children}
       </main>

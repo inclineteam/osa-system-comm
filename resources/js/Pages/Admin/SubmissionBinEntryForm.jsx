@@ -49,7 +49,12 @@ export const SubmissionBinEntryForm = ({ submissionBinId }) => {
           );
         }}
       >
-        <div className="font-semibold mb-2">Submit:</div>
+        <p className="tracking-tight text-2xl font-semibold m-0">
+          Submit Report
+        </p>
+        <p className="text-sm text-slate-500 mb-4 m-0">
+          Please save the entry before submitting.
+        </p>
         {entries.map((entry, i) => (
           <SubmissionBinEntry
             key={entry.id}

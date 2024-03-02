@@ -10,6 +10,7 @@ import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 import "react-datepicker/dist/react-datepicker.css";
 import Checkbox from "@/Components/Checkbox";
 import { SubmissionBinEntryForm } from "../Admin/SubmissionBinEntryForm";
+import dayjs from "dayjs";
 
 const SubmissionBin = ({ submissionBin, auth, report }) => {
   const [showFileModal, setShowFileModal] = useState(false);
@@ -29,6 +30,8 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
       return "secondary";
     }
   };
+
+  console.log(report);
 
   return (
     <PanelLayout
@@ -60,67 +63,151 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
         )}
       </ModalComponent>
       <div className="content-wrapper">
-        <p className="fs-6 text-primary">{auth.user?.campus?.name} Campus</p>
-        <hr />
         <Card className="rounded-3 border-0 shadow-sm ">
-          <Card.Body className="p-4">
-            <p className="flex items-center font-medium text-lg my-0">
-              <i className="fi fi-rr-box me-2"></i>
-              {submissionBin.title}
-            </p>
-            <div className="text-secondary">
-              {submissionBin.deadline_date ? (
-                <p className="text-sm mt-2 mb-0 text-rose-600 font-medium">
-                  Due{" "}
-                  {format(new Date(submissionBin.deadline_date), "MMM d, Y")}
+          <Card.Body className="p-0">
+            <div className="flex space-y-4 flex-col p-4 pb-2">
+              <div>
+                <p className="text-2xl font-semibold m-0 tracking-tight">
+                  {submissionBin.title}
                 </p>
+                <p className="m-0 text-slate-600">
+                  {auth.user.campus.name} campus,{" "}
+                  {submissionBin.deadline_date ? (
+                    <>
+                      Due on{" "}
+                      {format(
+                        new Date(submissionBin.deadline_date),
+                        "MMM d, Y"
+                      )}
+                    </>
+                  ) : (
+                    "No deadline"
+                  )}
+                </p>
+              </div>
+
+              {report ? (
+                <div>
+                  <span className="mr-4 items-center gap-2 w-max flex px-2.5 py-1 border border-slate-300 rounded-md">
+                    <i class="fi text-slate-800 fi-ss-check-circle"></i>
+                    <p className="text-slate-800 text-sm font-medium m-0">
+                      {report.remarks}
+                    </p>
+                  </span>
+                </div>
+              ) : null}
+            </div>
+            <div className="p-4 py-2">
+              <div className="font-semibold mb-2">Instruction:</div>
+
+              {submissionBin.instruction ? (
+                <>
+                  <p className="text-slate-600 my-1 whitespace-pre-wrap">
+                    {submissionBin.instruction}
+                  </p>
+                </>
               ) : (
-                <p className="my-1">No deadline.</p>
+                <p className="text-slate-600 mb-1">No instruction.</p>
               )}
             </div>
-            <hr />
 
-            <div className="font-semibold mb-2">Instruction:</div>
-
-            {submissionBin.instruction ? (
-              <>
-                <p className="text-slate-600 my-1 whitespace-pre-wrap">
-                  {submissionBin.instruction}
-                </p>
-              </>
-            ) : (
-              <p className="text-slate-600 my-1">No instruction.</p>
-            )}
-
-            <hr />
-            <div className="font-semibold mb-2">
-              Attached reference{" "}
-              {submissionBin.attachments.length > 1 ? "files" : "file"}:
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {submissionBin.attachments.length ? (
-                submissionBin.attachments.map((attachment) => (
-                  <a
-                    title={`Download this file`}
-                    target="_blank"
-                    download={true}
-                    href={attachment.uri}
-                    className="border-[1px] space-x-2 w-max flex border-slate-200 p-2 pr-4 hover:bg-slate-100 rounded-md text-indigo-600 font-semibold text-sm"
-                  >
-                    <FileIcon file={attachment} size="xs" />
-                    <span>{attachment.name}</span>
-                  </a>
-                ))
-              ) : (
-                <p className="mb-0">No attached file.</p>
-              )}
+            <hr className="border-t border-slate-400" />
+            <div className="p-4 pt-0">
+              <div className="font-semibold mb-2">
+                Attached reference{" "}
+                {submissionBin.attachments.length > 1 ? "files" : "file"}:
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {submissionBin.attachments.length ? (
+                  submissionBin.attachments.map((attachment) => (
+                    <a
+                      title={`Download this file`}
+                      target="_blank"
+                      download={true}
+                      href={attachment.uri}
+                      className="border-[1px] space-x-2 w-max flex border-slate-200 p-2 pr-4 hover:bg-slate-100 rounded-md text-indigo-600 font-semibold text-sm"
+                    >
+                      <FileIcon file={attachment} size="xs" />
+                      <span>{attachment.name}</span>
+                    </a>
+                  ))
+                ) : (
+                  <p className="mb-0 text-slate-500">No attached file.</p>
+                )}
+              </div>
             </div>
           </Card.Body>
         </Card>
         {/* report comments */}
         <Row className="!mt-8">
           <Col className="space-y-8">
-            <SubmissionBinEntryForm submissionBinId={submissionBin.id} />
+            {report ? (
+              <Card className="rounded-3 border-0 bg-white shadow-sm p-4">
+                <p className="tracking-tight text-2xl font-semibold m-0">
+                  Submitted Reports
+                </p>
+                <p className="text-sm text-slate-500 mb-4 m-0">
+                  Check your submitted reports
+                </p>
+
+                <div className="p-0 border border-slate-200 rounded-md overflow-hidden">
+                  <table className="border-collapse w-full">
+                    <thead>
+                      <tr className="[&>th]:border-l [&>th:first-child]:border-0 [&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:px-5 [&>th]:py-2.5 border-b [&>th]:text-sm [&>th]:font-medium">
+                        <th>Title of Activities/ Program</th>
+                        <th>Date/ Duration</th>
+                        <th>Documentation (Pictures)</th>
+                        <th>Participants</th>
+                        <th>Location</th>
+                        <th>Conducted/ Sponsored by:</th>
+                        <th className="text-center">Budget/Remark</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {report.entries.map((entry, index) => (
+                        <tr
+                          key={index}
+                          className="border-b [&>td]:border-l [&>td:first-child]:border-0 last:border-0 [&>td]:px-5 [&>td]:py-4 [&>td]:text-sm"
+                        >
+                          <td>{entry.title}</td>
+                          <td>
+                            {dayjs(entry.date).format("MMM. D, YYYY")} -{" "}
+                            {entry.duration}
+                          </td>
+                          <td className="flex flex-wrap gap-2">
+                            {JSON.parse(entry.documentation).map(
+                              (image, index) => (
+                                <img
+                                  key={index}
+                                  src={image}
+                                  alt="sss"
+                                  className="w-20 h-20 rounded-md object-cover"
+                                />
+                              )
+                            )}
+                          </td>
+                          <td>{entry.participants}</td>
+                          <td>{entry.location}</td>
+                          <td>{entry.conducted_by}</td>
+                          <td>
+                            <div className="flex justify-center">
+                              <input
+                                type="checkbox"
+                                checked={entry.budget === 1 ? true : false}
+                                disabled
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+            ) : (
+              <SubmissionBinEntryForm submissionBinId={submissionBin.id} />
+            )}
             <Card className="rounded-3 border-0 bg-white shadow-sm">
               <Card.Body>
                 <p className="my-1">Private Comments</p>
