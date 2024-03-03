@@ -41,6 +41,19 @@ class ReportController extends Controller
         return response()->json($data);
     }
 
+    public function search(Request $request)
+    {
+        $searchText = $request->text;
+        $data['searchText'] = $searchText;
+        // ->where('name', 'like', '%' . $searchText . '%')->orWhere('designation', 'like', '%' . $searchText . '%')
+        // $data['reports'] = Report::with(['unitHead'])->where('unit_head.name', 'like', '%' . $searchText . '%')->get();
+        $data['reports'] = Report::whereHas('unitHead', function ($query) use ($request) {
+            $query->where('firstname', 'like', "%{$request->text}%")->orWhere('lastname', 'like', "%{$request->text}%");
+        })->get();
+
+        return response()->json($data);
+    }
+
     public function addReport(Request $request)
     {
         $bin_id = $request->submission_bin_id;
@@ -103,10 +116,16 @@ class ReportController extends Controller
     public function submitReport(Request $request, SubmissionBin $submissionBin)
     {
         $user = $request->user();
-        $report = $report = Report::create([
-            'user_id' => $user->id,
-            'submission_bin_id' => $request->submission_bin_id,
-        ]);
+        $report = null;
+
+        if ($request->report) {
+            $report = Report::find($request->report['id']);
+        } else {
+            $report = Report::create([
+                'user_id' => $user->id,
+                'submission_bin_id' => $request->submission_bin_id,
+            ]);
+        }
 
         if ($report) {
             $report->is_submitted = true;
@@ -118,10 +137,14 @@ class ReportController extends Controller
                 $documentations = [];
 
                 foreach ($entry['documentation'] as $image) {
-                    $fileName = $image->getClientOriginalName();
-                    $image->move(public_path('reports'), $fileName);
-                    $fileUrl = "/reports/" . $fileName;
-                    $documentations[] = $fileUrl;
+                    if (gettype($image) === 'string') {
+                        $documentations[] = $image;
+                    } else {
+                        $fileName = $image->getClientOriginalName();
+                        $image->move(public_path('reports'), $fileName);
+                        $fileUrl = "/reports/" . $fileName;
+                        $documentations[] = $fileUrl;
+                    }
                 }
 
                 ReportEntry::create([

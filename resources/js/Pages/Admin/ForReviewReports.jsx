@@ -6,12 +6,41 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { ReportImages } from "./ReportTableRow";
 import { usePDF } from "react-to-pdf";
-import { Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
+import axios from "axios";
 
 export default function ForReviewReports({ reports }) {
   const [showExportPDF, setShowExportPDF] = useState(false);
   const { auth, appLogo } = usePage().props;
   const { toPDF, targetRef } = usePDF({ filename: "REPORT.pdf" });
+  const [searching, setSearching] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+  const [searchedFor, setSearchedFor] = useState("");
+  const [processing, setProcessing] = useState(false);
+
+  const closeSearching = () => {
+    setSearching(false);
+    setSearchText("");
+    setSearchResult([]);
+    setSearchedFor("");
+  };
+
+  const onSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchText.length > 0) {
+      setSearching(true);
+      setProcessing(true);
+      axios
+        .get(route("admin.reports.for-review.search", searchText))
+        .then((res) => {
+          setProcessing(false);
+          console.log("search:", res);
+          setSearchResult(res.data.reports);
+          setSearchedFor(res.data.searchText);
+        });
+    }
+  };
 
   return (
     <PanelLayout
@@ -120,14 +149,14 @@ export default function ForReviewReports({ reports }) {
               </button>
             </div>
           </div>
-          <Form className="mt-4">
+          <Form onSubmit={onSearchSubmit} className="mt-4">
             <div className="flex">
               <div className="relative flex-1">
                 <Form.Control
                   type="search"
                   required
-                  // value={searchText}
-                  // onChange={(e) => setSearchText(e.target.value)}
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
                   className="rounded-lg !rounded-r-none placeholder:!text-slate-500 focus:border-indigo-500 focus:ring focus:ring-indigo-500/30 border-[1px] ps-5"
                   placeholder="Search"
                 />
@@ -135,57 +164,139 @@ export default function ForReviewReports({ reports }) {
                   <i className="fi fi-rr-search leading-none text-secondary"></i>
                 </div>
               </div>
-              <button className="px-3 py-2 font-semibold text-sm rounded-r-lg bg-slate-200">
+              <button
+                type="submit"
+                className="px-3 py-2 font-semibold text-sm rounded-r-lg bg-slate-200"
+              >
                 Find
               </button>
             </div>
           </Form>
-          <div className="mt-4 border border-slate-200 rounded-md overflow-hidden">
-            <table className="w-full">
-              <thead>
-                <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-5 [&>th]:py-2.5 border-b [&>th]:text-sm [&>th]:font-medium">
-                  <th>Name</th>
-                  <th>Date Submitted</th>
-                  <th>Campus</th>
-                  <th>Office</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
 
-              <tbody>
-                {reports.reports.map((report) => (
-                  <tr
-                    key={report.id}
-                    className="border-b border-slate-200 last:border-0 [&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-5 [&>td]:py-4"
-                  >
-                    <td>
-                      {report.unit_head.firstname} {report.unit_head.lastname}
-                    </td>
-                    <td>{dayjs(report.created_at).format("MMM. D, YYYY")}</td>
-                    <td>{report.unit_head.campus.name}</td>
-                    <td>{report.unit_head.designation.name}</td>
-                    <td>
-                      <div
-                        className={`inline-block mr-2 w-2 h-2 rounded-full ${
-                          statusColors[report.status]
-                        }`}
-                      ></div>
-                      {report.status}
-                    </td>
-                    <td>
-                      <Link
-                        href={route("admin.report.open", report.id)}
-                        className="hover:underline"
-                      >
-                        View Reports
-                      </Link>
-                    </td>
+          {!searching ? (
+            <div className="mt-4 border border-slate-200 rounded-md overflow-hidden">
+              <table className="w-full">
+                <thead>
+                  <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-5 [&>th]:py-2.5 border-b [&>th]:text-sm [&>th]:font-medium">
+                    <th>Name</th>
+                    <th>Date Submitted</th>
+                    <th>Campus</th>
+                    <th>Office</th>
+                    <th>Status</th>
+                    <th>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+
+                <tbody>
+                  {reports.reports.map((report) => (
+                    <tr
+                      key={report.id}
+                      className="border-b border-slate-200 last:border-0 [&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-5 [&>td]:py-4"
+                    >
+                      <td>
+                        {report.unit_head.firstname} {report.unit_head.lastname}
+                      </td>
+                      <td>{dayjs(report.created_at).format("MMM. D, YYYY")}</td>
+                      <td>{report.unit_head.campus.name}</td>
+                      <td>{report.unit_head.designation.name}</td>
+                      <td>
+                        <div
+                          className={`inline-block mr-2 w-2 h-2 rounded-full ${
+                            statusColors[report.status]
+                          }`}
+                        ></div>
+                        {report.status}
+                      </td>
+                      <td>
+                        <Link
+                          href={route("admin.report.open", report.id)}
+                          className="hover:underline"
+                        >
+                          View Reports
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <>
+              <Button
+                onClick={closeSearching}
+                disabled={processing}
+                variant="outline-success"
+                className="mt-4 rounded-pill mb-3 text-sm"
+                type="button"
+              >
+                {!processing ? (
+                  <>
+                    <span className="text-sm">
+                      Search Result: {searchedFor}
+                    </span>
+                    <i className="bx bx-x"></i>
+                  </>
+                ) : (
+                  <span className="text-sm">Searching...</span>
+                )}
+              </Button>
+
+              {searchResult.length ? (
+                <div className="mt-4 border border-slate-200 rounded-md overflow-hidden">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-5 [&>th]:py-2.5 border-b [&>th]:text-sm [&>th]:font-medium">
+                        <th>Name</th>
+                        <th>Date Submitted</th>
+                        <th>Campus</th>
+                        <th>Office</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {searchResult &&
+                        searchResult.map((report) => (
+                          <tr
+                            key={report.id}
+                            className="border-b border-slate-200 last:border-0 [&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-5 [&>td]:py-4"
+                          >
+                            <td>
+                              {report.unit_head.firstname}{" "}
+                              {report.unit_head.lastname}
+                            </td>
+                            <td>
+                              {dayjs(report.created_at).format("MMM. D, YYYY")}
+                            </td>
+                            <td>{report.unit_head.campus.name}</td>
+                            <td>{report.unit_head.designation.name}</td>
+                            <td>
+                              <div
+                                className={`inline-block mr-2 w-2 h-2 rounded-full ${
+                                  statusColors[report.status]
+                                }`}
+                              ></div>
+                              {report.status}
+                            </td>
+                            <td>
+                              <Link
+                                href={route("admin.report.open", report.id)}
+                                className="hover:underline"
+                              >
+                                View Reports
+                              </Link>
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p className="text-center">Nothing found.</p>
+              )}
+            </>
+          )}
         </div>
       </div>
     </PanelLayout>

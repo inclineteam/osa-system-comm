@@ -8,21 +8,21 @@ export const SubmissionBinEntry = ({
   addDataInEntries,
   id,
   entryCount,
+  entry,
 }) => {
   const [data, setData] = useState({
-    title: "",
-    date: new Date(),
-    documentation: [],
-    participants: "",
-    location: "",
-    conducted_by: "",
-    budget: false,
+    title: entry.title,
+    date: entry.date,
+    documentation:
+      typeof entry.documentation === "string"
+        ? JSON.parse(entry.documentation)
+        : [],
+    participants: entry.participants,
+    location: entry.location,
+    conducted_by: entry.conducted_by,
+    budget: entry.budget,
   });
   const [hide, setHide] = useState(false);
-
-  const handleYearChange = (date) => {
-    setData((prevData) => ({ ...prevData, date }));
-  };
 
   const handleChange = (e) => {
     setData((prevData) => ({ ...prevData, [e.target.name]: e.target.value }));
@@ -33,11 +33,15 @@ export const SubmissionBinEntry = ({
     setHide(true);
   };
 
+  const ge = (img) => {
+    return typeof img === "object" ? URL.createObjectURL(img) : img;
+  };
+
   return (
     <div>
       <div className="border p-4 rounded-md space-y-4">
         <header className="font-semibold text-base mb-4">
-          Entry {entryCount}{" "}
+          Entry {entryCount}
           {hide && `- ${data.title ? data.title : "Untitled"}`}
         </header>
         {!hide ? (
@@ -101,8 +105,9 @@ export const SubmissionBinEntry = ({
                         >
                           &times;
                         </button>
+
                         <img
-                          src={URL.createObjectURL(previewImage)}
+                          src={ge(previewImage)}
                           alt="Preview"
                           className="rounded-xl w-40 h-40 object-cover"
                         />
