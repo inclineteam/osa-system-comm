@@ -1,8 +1,10 @@
+"use client";
 import HeaderTitle from "@/Components/HeaderTitle";
 import PanelLayout, { LayoutType } from "@/Layouts/PanelLayout";
 import { useRef } from "react";
 import { Accordion } from "react-bootstrap";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
+import XLSX from "xlsx/dist/xlsx.full.min.js";
 
 export default function AnnualReport({ report }) {
   console.log(report.data);
@@ -10,6 +12,42 @@ export default function AnnualReport({ report }) {
   const print = useReactToPrint({
     content: () => ref.current,
   });
+
+  const generateExcel = () => {
+    const wb = XLSX.utils.book_new();
+    const wsData = [
+      [
+        "Year",
+        "Quarter",
+        "Unit Head",
+        "Campus",
+        "Office",
+        "Status",
+        "Timely Manner",
+      ],
+    ];
+
+    // Add data rows
+    Object.entries(report.data).forEach(([location, data]) => {
+      Object.entries(data.quarters).forEach(([quarter, quarterData]) => {
+        quarterData.reports.forEach((report) => {
+          wsData.push([
+            report.date_submitted.substr(0, 4), // Year
+            quarter, // Quarter
+            report.unit_head.firstname + " " + report.unit_head.lastname, // Unit Head
+            location, // Campus
+            report.unit_head.designation.name, // Office
+            report.status, // Status
+            report.timely_matter, // Timely Manner
+          ]);
+        });
+      });
+    });
+
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
+    XLSX.utils.book_append_sheet(wb, ws, "Annual Report");
+    XLSX.writeFile(wb, "annual_report.xlsx");
+  };
 
   return (
     <PanelLayout
@@ -36,12 +74,20 @@ export default function AnnualReport({ report }) {
               </p>
             </div>
 
-            <button
+            {/* <button
               onClick={print}
               className="bg-indigo-600 space-x-1 items-center flex text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
             >
               <i class="fi fi-rr-print mr-1"></i>{" "}
               <span className="tracking-wide">Print annual report</span>
+            </button> */}
+
+            <button
+              onClick={generateExcel}
+              className="bg-green-600 space-x-1 items-center flex text-white px-3 py-2 text-sm font-medium shadow hover:bg-green-400 rounded-md"
+            >
+              <i className="fi fi-rr-download mr-1"></i>{" "}
+              <span className="tracking-wide">Generate Excel</span>
             </button>
           </div>
           <div className="" ref={ref}>
@@ -49,7 +95,6 @@ export default function AnnualReport({ report }) {
               <div
                 className="rounded-md overflow-hidden border mb-4 border-slate-200"
                 key={location}
-                // className="mb-10"
               >
                 <div className="p-4 border-b border-slate-200 bg-slate-50">
                   <div>
@@ -65,22 +110,13 @@ export default function AnnualReport({ report }) {
                     </p>
                   </div>
                 </div>
-                {/* check length of data.quarters */}
                 <div className="px-4 pb-4">
                   {Object.entries(data.quarters).length ? (
                     Object.entries(data.quarters).map(
                       ([quarter, quarterData]) => (
                         <div key={quarter}>
-                          {/* check quarter initials if st, nd or th */}
                           <p className="mb-2 mt-4 font-bold">
-                            {quarter == 1
-                              ? "1st"
-                              : quarter == 2
-                              ? "2nd"
-                              : quarter == 3
-                              ? "3rd"
-                              : quarter + "th"}{" "}
-                            Quarter
+                            {quarterData.label} Quarter
                           </p>
                           <p className="mt-0">
                             <span className="text-slate-600 inline-block px-2 bg-slate-100 border border-slate-200 rounded-md text-lg">
@@ -91,7 +127,6 @@ export default function AnnualReport({ report }) {
                               this quarter
                             </span>
                           </p>
-                          {/* quarterData.offices */}
                           <div className="border border-slate-200 rounded-md overflow-hidden">
                             <table className="w-full">
                               <thead>

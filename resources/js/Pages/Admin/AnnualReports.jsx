@@ -45,7 +45,8 @@ export default function AnnualReport({ auth }) {
       .then((data) => {
         // reloadpage
         toast.success("Report successfully generated.");
-        window.location.reload();
+        console.log(data.data);
+        //window.location.reload();
       })
       .catch((error) => console.error("Error submitting report:", error));
   };
