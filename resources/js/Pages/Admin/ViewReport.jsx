@@ -67,13 +67,7 @@ const ViewReport = ({ report }) => {
         <HeaderTitle
           text={report.submission_bin.title}
           backButton
-          backButtonLink={
-            auth.role === "admin"
-              ? route("admin.reports.for-review", [
-                  report.unit_head.campus.name,
-                ])
-              : route("admin.reports.checklist")
-          }
+          backButtonLink={route("admin.reports.for-review")}
         />
       }
       defaultActiveLink="submission-bins"
@@ -265,36 +259,32 @@ const ViewReport = ({ report }) => {
                     </div>
                   ) : (
                     <>
-                      {report.status === "Approved" ? (
-                        <div className="row g-3">
-                          {report.entries.length == 0 && (
-                            <p>No submission yet.</p>
-                          )}
-                          <div className="p-0 mt-4 border border-slate-200 rounded-md overflow-hidden">
-                            <table className="border-collapse w-full">
-                              <thead>
-                                <tr className="[&>th]:border-l [&>th:first-child]:border-0 [&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:px-5 [&>th]:py-2.5 border-b [&>th]:text-sm [&>th]:font-medium">
-                                  <th>Title of Activities/ Program</th>
-                                  <th>Date/ Duration</th>
-                                  <th>Documentation (Pictures)</th>
-                                  <th>Participants</th>
-                                  <th>Location</th>
-                                  <th>Conducted/ Sponsored by:</th>
-                                  <th>Budget/Remark</th>
-                                </tr>
-                              </thead>
+                      <div className="row g-3">
+                        {report.entries.length == 0 && (
+                          <p>No submission yet.</p>
+                        )}
+                        <div className="p-0 mt-4 border border-slate-200 rounded-md overflow-hidden">
+                          <table className="border-collapse w-full">
+                            <thead>
+                              <tr className="[&>th]:border-l [&>th:first-child]:border-0 [&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:px-5 [&>th]:py-2.5 border-b [&>th]:text-sm [&>th]:font-medium">
+                                <th>Title of Activities/ Program</th>
+                                <th>Date/ Duration</th>
+                                <th>Documentation (Pictures)</th>
+                                <th>Participants</th>
+                                <th>Location</th>
+                                <th>Conducted/ Sponsored by:</th>
+                                <th>Budget/Remark</th>
+                              </tr>
+                            </thead>
 
-                              <tbody>
-                                {report.entries.map((entry, index) => (
-                                  <ReportImages entry={entry} key={index} />
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
+                            <tbody>
+                              {report.entries.map((entry, index) => (
+                                <ReportImages entry={entry} key={index} />
+                              ))}
+                            </tbody>
+                          </table>
                         </div>
-                      ) : (
-                        <p>No submission yet.</p>
-                      )}
+                      </div>
                     </>
                   )}
                 </div>

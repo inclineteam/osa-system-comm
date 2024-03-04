@@ -3,21 +3,31 @@ import { Card, Form, FormCheck } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { SubmissionBinEntry } from "./SubmissionBinEntry";
 import { router } from "@inertiajs/react";
+import { useEffect } from "react";
 
-export const SubmissionBinEntryForm = ({ submissionBinId }) => {
-  const [entries, setEntries] = useState([
-    {
-      id: crypto.randomUUID(),
-      title: "",
-      date: new Date(),
-      duration: "",
-      participants: "",
-      location: "",
-      conducted_by: "",
-      budget: false,
-    },
-  ]);
+export const SubmissionBinEntryForm = ({ submissionBinId, report }) => {
+  const [entries, setEntries] = useState([]);
   const [entriesCount, setEntriesCount] = useState(1);
+
+  useEffect(() => {
+    if (report)
+      report.entries.forEach((entry) => {
+        setEntries((prevEntries) => [
+          ...prevEntries,
+          {
+            id: crypto.randomUUID(),
+            title: entry.title,
+            date: entry.date,
+            duration: "",
+            participants: entry.participants,
+            documentation: entry.documentation,
+            location: entry.location,
+            conducted_by: entry.conducted_by,
+            budget: entry.budget,
+          },
+        ]);
+      });
+  }, []);
 
   const addDataInEntries = (data, id) => {
     setEntries(
@@ -45,7 +55,7 @@ export const SubmissionBinEntryForm = ({ submissionBinId }) => {
           e.preventDefault();
           router.post(
             route("reports.submit", { submission_bin_id: submissionBinId }),
-            { entries }
+            { report: report ?? null, entries }
           );
         }}
       >
@@ -58,6 +68,7 @@ export const SubmissionBinEntryForm = ({ submissionBinId }) => {
         {entries.map((entry, i) => (
           <SubmissionBinEntry
             key={entry.id}
+            entry={entry}
             deleteDataInEntries={deleteDataInEntries}
             addDataInEntries={addDataInEntries}
             id={entry.id}
@@ -75,6 +86,7 @@ export const SubmissionBinEntryForm = ({ submissionBinId }) => {
                 title: "",
                 date: new Date(),
                 duration: "",
+                documentation: [],
                 participants: "",
                 location: "",
                 conducted_by: "",

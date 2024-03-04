@@ -23,15 +23,19 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
     setShowFileModal(true);
   };
 
-  const getStatusColor = () => {
-    if (report.status.toLowerCase() == "approved") {
-      return "success";
-    } else if (report.status.toLowerCase() === "rejected") {
-      return "danger fw-bold";
-    } else {
-      return "secondary";
-    }
+  const statusColors = {
+    Pending: "text-slate-800",
+    Rejected: "text-rose-600",
+    Approved: "text-green-700",
   };
+
+  const statusIcons = {
+    Pending: "fi-ss-check-circle",
+    Rejected: "fi-ss-circle-xmark",
+    Approved: "fi-ss-check-circle",
+  };
+
+  // fi-sr-circle-xmark
 
   console.log(report);
 
@@ -66,16 +70,24 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
 
               {report ? (
                 <div>
-                  <span className="mr-4 items-center gap-2.5 w-max flex pl-3.5 pr-2.5 py-1.5 border border-slate-300 rounded-md">
-                    <i class="fi mt-0.5 text-slate-800 fi-ss-check-circle"></i>
+                  <span className="mr-4 items-start gap-2.5 w-max flex pl-3.5 pr-2.5 py-1.5 border border-slate-300 rounded-md">
+                    <i
+                      class={`fi mt-0.5 ${statusIcons[report.status]} ${
+                        statusColors[report.status]
+                      }`}
+                    ></i>
                     <div>
-                      <p className="text-slate-800 text-sm font-bold m-0">
+                      <p
+                        className={`text-sm font-bold m-0 ${
+                          statusColors[report.status]
+                        }`}
+                      >
                         {report.status}
                       </p>
-                      <p className="text-slate-800 text-sm font-medium m-0">
-                        {report.remarks}
-                      </p>
                     </div>
+                    <p className="text-slate-500 text-sm font-medium m-0">
+                      - {report.remarks}
+                    </p>
                   </span>
                 </div>
               ) : null}
@@ -124,10 +136,13 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
         {/* report comments */}
         <Row className="!mt-8">
           <Col className="space-y-8">
-            {report ? (
+            {report && report.status !== "Rejected" ? (
               <Card className="rounded-3 border-0 bg-white shadow-sm p-4">
                 <p className="tracking-tight text-2xl font-semibold m-0">
-                  Submitted Reports
+                  {report && report.status === "Rejected"
+                    ? "Edit your"
+                    : "Submitted"}{" "}
+                  reports
                 </p>
                 <p className="text-sm text-slate-500 mb-4 m-0">
                   Check your submitted reports
@@ -156,7 +171,10 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
                 </div>
               </Card>
             ) : (
-              <SubmissionBinEntryForm submissionBinId={submissionBin.id} />
+              <SubmissionBinEntryForm
+                report={report}
+                submissionBinId={submissionBin.id}
+              />
             )}
             <Card className="rounded-3 border-0 bg-white shadow-sm">
               <Card.Body>

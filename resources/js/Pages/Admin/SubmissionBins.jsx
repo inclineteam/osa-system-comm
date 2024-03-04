@@ -389,9 +389,7 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports }) => {
                             <div className="flex justify-end items-center gap-4">
                               <div className="text-center">
                                 <p className="fs-3 fw-bold text-primary">
-                                  {auth.role === "super_admin"
-                                    ? item.approved_reports?.length ?? 0
-                                    : item.reports?.length ?? 0}
+                                  {item.reports?.length ?? 0}
                                 </p>
                                 <p className="text-sm mb-0">Submitted</p>
                               </div>

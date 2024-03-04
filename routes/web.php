@@ -135,6 +135,7 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
         Route::get('/reports/{campus_id}/{designation_id}/view/filtered', [AdminController::class, 'viewFilteredReports'])->name('admin.reports.view.filtered');
         Route::get('/reports/unit-head/{report_id}/view', [AdminController::class, 'viewReport'])->name('admin.report.open');
         Route::get('/reports/for-review', [ReportController::class, 'forReview'])->name('admin.reports.for-review')->middleware('role:admin|super_admin');
+        Route::get('/reports/{text}/search', [ReportController::class, 'search'])->name('admin.reports.for-review.search');
         Route::get('/reports/checklist', [ReportController::class, 'showChecklist'])->name('admin.reports.checklist')->middleware('role:admin|super_admin');
         Route::get('/reports/for-review/{campus}', [ReportController::class, 'campusForReview'])->name('admin.reports.for-review.campus')->middleware('role:admin|super_admin');
         Route::get('/reports/for-rejected', [ReportController::class, 'forRejected'])->name('admin.reports.for-rejected')->middleware('role:admin|super_admin');
