@@ -25,7 +25,7 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
     {
       type: NavType.DROPDOWN,
       text: "PLAN",
-      icon: <i class="fi fi-rr-document-signed"></i>,
+      icon: <i className="fi fi-rr-document-signed"></i>,
       key: "plan",
       opened: false,
       navList: [
@@ -75,7 +75,7 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
     {
       type: NavType.DROPDOWN,
       text: "DO",
-      icon: <i class="fi fi-rr-calendar-lines-pen"></i>,
+      icon: <i className="fi fi-rr-calendar-lines-pen"></i>,
       key: "do",
       opened: false,
       navList: [
@@ -108,7 +108,7 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
     {
       type: NavType.DROPDOWN,
       text: "CHECK",
-      icon: <i class="fi fi-rr-memo-circle-check"></i>,
+      icon: <i className="fi fi-rr-memo-circle-check"></i>,
       key: "check",
       opened: false,
       navList: [

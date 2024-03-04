@@ -12,7 +12,7 @@ const UnitHeadSidebar = ({ isActive, setShowFeedbackModal, activeLink }) => {
     {
       type: NavType.LINK,
       text: "Dashboard",
-      icon: <i class="fi fi-rr-chart-line-up"></i>,
+      icon: <i className="fi fi-rr-chart-line-up"></i>,
       href: route("dashboard"),
       urlPath: "dashboard",
     },
@@ -26,7 +26,7 @@ const UnitHeadSidebar = ({ isActive, setShowFeedbackModal, activeLink }) => {
     {
       type: NavType.LINK,
       text: "Calendar",
-      icon: <i class="fi fi-rr-calendar"></i>,
+      icon: <i className="fi fi-rr-calendar"></i>,
       href: route("unit_head.calendar"),
       urlPath: "calendar",
     },
@@ -54,7 +54,7 @@ const UnitHeadSidebar = ({ isActive, setShowFeedbackModal, activeLink }) => {
     },
     {
       type: NavType.DROPDOWN,
-      icon: <i class="fi fi-rr-calendar"></i>,
+      icon: <i className="fi fi-rr-calendar"></i>,
       text: "Objectives",
       key: "objectives",
       opened: false,

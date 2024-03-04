@@ -94,7 +94,7 @@ export const SubmissionBinEntryForm = ({ submissionBinId, report }) => {
               },
             ]);
           }}
-          class="bg-slate-100 my-4 rounded-md font-medium text-slate-600 py-2 w-full hover:bg-slate-200 outline outline-2 active:bg-slate-300 outline-transparent focus:outline-indigo-600"
+          className="bg-slate-100 my-4 rounded-md font-medium text-slate-600 py-2 w-full hover:bg-slate-200 outline outline-2 active:bg-slate-300 outline-transparent focus:outline-indigo-600"
         >
           Add Entry
         </button>

@@ -117,7 +117,7 @@ function CreateObjectives() {
               }
               className=" w-max transition bg-indigo-600 mb-3 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md flex"
             >
-              <i class="fi fi-rs-add-document text-base mr-2"></i>
+              <i className="fi fi-rs-add-document text-base mr-2"></i>
               <span>Create Objective</span>
             </button>
           </div>

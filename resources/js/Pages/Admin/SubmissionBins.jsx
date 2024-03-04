@@ -215,7 +215,7 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports }) => {
                       </div>
                     </CustomToggle>
                   </Card.Header>
-                  <Accordion.Collapse class="meow" eventKey={index}>
+                  <Accordion.Collapse className="meow" eventKey={index}>
                     <>
                       <Card.Body className="p-4">
                         <div className="flex justify-between">

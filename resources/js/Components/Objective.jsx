@@ -56,7 +56,7 @@ const Objective = ({ user }) => {
                           }
                         });
                     }}
-                    class="fi p-1 hover:bg-emerald-500 hover:cursor-pointer hover:text-white border-emerald-500 border-1 rounded-lg text-emerald-500 fi-br-check"
+                    className="fi p-1 hover:bg-emerald-500 hover:cursor-pointer hover:text-white border-emerald-500 border-1 rounded-lg text-emerald-500 fi-br-check"
                   ></i>
                 </div>
               ) : (
@@ -85,7 +85,7 @@ const Objective = ({ user }) => {
                   }}
                   className="flex  items-center w-[3rem] mr-2"
                 >
-                  <i class="fi p-1 hover:bg-blue-500 hover:cursor-pointer hover:text-white border-blue-500 border-1 rounded-lg text-blue-500 fi-rr-box"></i>
+                  <i className="fi p-1 hover:bg-blue-500 hover:cursor-pointer hover:text-white border-blue-500 border-1 rounded-lg text-blue-500 fi-rr-box"></i>
                 </div>
               )}
               <div key={objective.id} className="w-full">
