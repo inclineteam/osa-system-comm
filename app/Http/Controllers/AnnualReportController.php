@@ -31,69 +31,76 @@ class AnnualReportController extends Controller
     public function generateReport(Request $request)
     {
         try {
-            // get report data
+            // Get report data
             $data = [];
             $year = $request['data']['year'];
             $user = User::find($request['data']['user']);
 
+            // Get all campuses
             $campuses = Campus::all();
 
+            // Loop through each campus
             foreach ($campuses as $campus) {
-
                 $data[$campus->name] = [
                     'total' => 0,
-                    'quarters' => []
+                    'quarters' => [
+                        '1Q' => ['total' => 0, 'offices' => [], 'reports' => []],
+                        '2Q' => ['total' => 0, 'offices' => [], 'reports' => []],
+                        '3Q' => ['total' => 0, 'offices' => [], 'reports' => []],
+                        '4Q' => ['total' => 0, 'offices' => [], 'reports' => []],
+                    ]
                 ];
 
-                $reports = User::where('campus_id', $campus->id)->get();
+                // Get all users in the campus
+                $users = User::where('campus_id', $campus->id)->get();
 
-                foreach ($reports as $report) {
-                    // format $report->created_at to year
-                    $reportYear = $report->created_at->format('Y');
+                // Loop through each user
+                foreach ($users as $user) {
+                    // Loop through each user's reports
+                    foreach ($user->reports as $report) {
+                        // Check if report's year matches the requested year
+                        if ($report->created_at->format('Y') != $year) {
+                            continue;
+                        }
 
-                    // check if $reportYear is equal to $year
-                    if ($reportYear != $year) {
-                        continue;
-                    }
+                        // Calculate quarter based on report's creation month
+                        $quarter = ceil($report->created_at->format('m') / 3);
 
-                    // calculate quarter
-                    $quarter = ceil($report->created_at->format('m') / 3);
+                        // Increment total reports for the quarter
+                        $data[$campus->name]['quarters'][$quarter . 'Q']['total']++;
 
-                    // initialize $data array
-                    // $data[$campus->name]["quarters"][$quarter] = [
-                    //     'total' => 0,
-                    //     'offices' => []
-                    // ];
+                        // Increment total reports for the campus
+                        $data[$campus->name]['total']++;
 
-                    if (isset($data[$campus->name]["quarters"][$quarter]['total'])) {
-                        $data[$campus->name]["quarters"][$quarter]['total'] += $report->reports->count();
-                    } else {
-                        $data[$campus->name]["quarters"][$quarter]['total'] = $report->reports->count();
-                    }
+                        // Add the report to the corresponding quarter
+                        $data[$campus->name]['quarters'][$quarter . 'Q']['reports'][] = [
+                            'id' => $report->id,
+                            'status' => $report->status,
+                            'remarks' => $report->remarks,
+                            'date_submitted' => $report->date_submitted,
+                            'unit_head' => $user,
+                            'is_submitted' => $report->is_submitted,
+                            'is_archived' => $report->is_archived,
+                            'created_at' => $report->created_at,
+                            'updated_at' => $report->updated_at,
+                            'submission_bin_id' => $report->submission_bin_id,
+                            'entries' => $report->entries,
+                            'attachments' => $report->attachments,
+                            'timely_matter' => $this->checkTimeliness($report),
+                        ];
 
-                    // overall total
-                    $data[$campus->name]['total'] += $report->reports->count();
-
-                    // check if report has a designation
-                    if ($report->designation) {
-                        // check if isset
-                        if (isset($data[$campus->name]["quarters"][$quarter]['offices'])) {
-                            $data[$campus->name]["quarters"][$quarter]['offices'][$report->designation->name] =
-                                ($data[$campus->name]["quarters"][$quarter]['offices'][$report->designation->name] ?? 0) +
-                                $report->reports->count();
-                        } else {
-                            $data[$campus->name]["quarters"][$quarter]['offices'] = [];
-                            $data[$campus->name]["quarters"][$quarter]['offices'][$report->designation->name] =
-                                ($data[$campus->name]["quarters"][$quarter]['offices'][$report->designation->name] ?? 0) +
-                                $report->reports->count();
+                        // Add the report to the corresponding office count
+                        if ($user->designation) {
+                            $officeName = $user->designation->name;
+                            $data[$campus->name]['quarters'][$quarter . 'Q']['offices'][$officeName] =
+                                ($data[$campus->name]['quarters'][$quarter . 'Q']['offices'][$officeName] ?? 0) + 1;
                         }
                     }
                 }
             }
 
-            // get current logged in user
-
-            $annualReport = AnnualReport::create([
+            // Save the generated report and log the event
+            AnnualReport::create([
                 'generated_by' => $user->firstname . ' ' . $user->lastname,
                 'generated_at' => now(),
                 'data' => json_encode($data),
@@ -107,11 +114,23 @@ class AnnualReportController extends Controller
                 'description' => 'Generated annual report for year ' . $year . '.',
             ]);
 
-            return response()->json(['message' => 'Report generated successfully!']);
+            return response()->json(['message' => 'Report generated successfully!', 'data' => $data]);
         } catch (\Throwable $th) {
             dd($th);
         }
     }
+
+    // Helper function to check the timeliness of a report submission
+    private function checkTimeliness($report)
+    {
+        $submissionBin = $report->submission_bin;
+        $deadline = $submissionBin->deadline_date . ' ' . $submissionBin->deadline_time;
+        $dateSubmitted = $report->date_submitted;
+
+        return strtotime($dateSubmitted) <= strtotime($deadline) ? 'On-time' : 'Late';
+    }
+
+
 
 
 
