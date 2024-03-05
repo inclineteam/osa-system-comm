@@ -78,7 +78,7 @@ export default function AnnualReport({ report }) {
               onClick={print}
               className="bg-indigo-600 space-x-1 items-center flex text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md"
             >
-              <i class="fi fi-rr-print mr-1"></i>{" "}
+              <i className="fi fi-rr-print mr-1"></i>{" "}
               <span className="tracking-wide">Print annual report</span>
             </button> */}
 

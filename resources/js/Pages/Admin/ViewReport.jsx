@@ -176,7 +176,7 @@ const ViewReport = ({ report }) => {
 
                     <div className="mt-3 flex gap-3">
                       <div className="w-max transition rounded-md text-slate-800 text-center flex flex-col items-center justify-center px-6 py-3 border-[1px] border-slate-200">
-                        <i class="fi fi-rr-cabin text-2xl mb-3 text-slate-500"></i>
+                        <i className="fi fi-rr-cabin text-2xl mb-3 text-slate-500"></i>
                         <span className="font-bold uppercase">
                           {report.unit_head.campus.name}
                         </span>

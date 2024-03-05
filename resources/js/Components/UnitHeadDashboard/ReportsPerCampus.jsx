@@ -36,7 +36,7 @@ const ReportsPerCampus = () => {
         Total reports
       </p>
       {campuses ? (
-        <div class="grid xl:grid-cols-2 gap-4">
+        <div className="grid xl:grid-cols-2 gap-4">
           {campuses.map((campus) => (
             <div
               key={campus.id}

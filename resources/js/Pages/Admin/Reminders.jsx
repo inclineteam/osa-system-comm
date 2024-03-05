@@ -127,7 +127,7 @@ const Reminders = ({ auth, reminders }) => {
                         key={index}
                         className="flex mt-1 align-items-center gy-3"
                       >
-                        <Col class="p-0">
+                        <Col className="p-0">
                           <p className=" fw-bold fs-5 mb-0">{item.title}</p>
                           <p className="mt-0 mb-2 text-sm text-secondary">
                             <small>

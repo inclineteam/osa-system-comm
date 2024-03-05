@@ -157,7 +157,7 @@ const ViewReports = ({ submissionBin, campuses }) => {
                         className="w-12 h-12 rounded-full"
                       />
 
-                      <div>
+                      <div className="flex-1">
                         <div className="flex items-start justify-between">
                           <div>
                             <p className="text-lg tracking-tight font-bold m-0">

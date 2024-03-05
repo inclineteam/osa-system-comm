@@ -167,7 +167,7 @@ const Profile = ({ auth }) => {
                   <p className="mb-0 text-sm text-secondary">
                     Change Photo (2x2 ID Pic):
                   </p>
-                  <p class="text-sm mt-1 mb-2 text-rose-500 font-medium">
+                  <p className="text-sm mt-1 mb-2 text-rose-500 font-medium">
                     *Limit 2mb and 1024 x 1024 max resolution
                   </p>
                   <button

@@ -46,7 +46,7 @@ export default function ForReviewReports({ auth, reportsForRejected }) {
                         </div>
                         <p className="ml-1 mb-0 font-normal text-sm text-slate-500">
                           Submitted his report on{" "}
-                          <span class="font-semibold">
+                          <span className="font-semibold">
                             "{report.submission_bin.title}"
                           </span>
                         </p>

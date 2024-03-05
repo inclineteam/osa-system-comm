@@ -123,7 +123,7 @@ const Welcome = () => {
           <div className="pt-4">
             <div className="col-md-6 bg-black/70  p-6 rounded-lg mx-auto">
               <div className="text-center">
-                <p class="text-xl text-white">Welcome to</p>
+                <p className="text-xl text-white">Welcome to</p>
                 <Image
                   src="/images/logo.png"
                   fluid
