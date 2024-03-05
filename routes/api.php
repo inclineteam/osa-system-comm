@@ -200,12 +200,15 @@ Route::prefix('/reminders')->group(function () {
 // report data : {campus1 : {total: 0, offices : {office1 : 1, office2 : 2}}}}}}}
 Route::get('/reports/summary', [ReportController::class, 'summary'])->name('reports.summary.index');
 Route::get('/reports/summary/{user_id}', [ReportController::class, 'campusSummary'])->name('reports.summary.campus');
+Route::put('/reports/unit-head/{report_id}/archive', [AdminController::class, 'archive'])->name('admin.report.archive');
 
 // api/admin/annual-reports
 Route::prefix('/admin/annual-reports')->group(function () {
     Route::get('/', [AnnualReportController::class, 'getAllAnnualReports'])->name('admin.annual_reports.index');
     Route::get('/{id}', [AnnualReportController::class, 'getAnnualReport'])->name('admin.annual_reports.show');
-    Route::post('/', [AnnualReportController::class, 'generateReport'])->name('admin.annual_reports.create');
+
+    // get specific annual report
+    Route::post('/generate', [AnnualReportController::class, 'getSpecificReports'])->name('admin.annual_reports.generate');
     Route::delete('/{id}', [AnnualReportController::class, 'deleteAnnualReport'])->name('admin.annual_reports.delete');
 });
 

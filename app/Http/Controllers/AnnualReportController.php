@@ -81,6 +81,7 @@ class AnnualReportController extends Controller
                             'unit_head' => $user,
                             'is_submitted' => $report->is_submitted,
                             'is_archived' => $report->is_archived,
+
                             'created_at' => $report->created_at,
                             'updated_at' => $report->updated_at,
                             'submission_bin_id' => $report->submission_bin_id,
@@ -119,6 +120,87 @@ class AnnualReportController extends Controller
             dd($th);
         }
     }
+
+    public function getSpecificReports(Request $request)
+    {
+        try {
+            // Get report data
+            $data = [];
+            $year = $request['year'];
+            $campusId = $request['campus'];
+            $quarter = $request['quarter'];
+            $user = User::find($request['user']);
+
+            // Get the specified campus
+            $campus = Campus::find($campusId);
+
+            // Initialize data for the specified campus
+            $data[$campus->name] = [
+                'total' => 0,
+                'quarters' => [
+                    $quarter . 'Q' => ['total' => 0, 'offices' => [], 'reports' => []],
+                ]
+            ];
+
+            // Get all users in the specified campus
+            $users = User::where('campus_id', $campusId)->get();
+
+            // Loop through each user
+            foreach ($users as $user) {
+                // Loop through each user's reports
+                foreach ($user->reports as $report) {
+                    // Check if report's year matches the requested year
+                    if ($report->created_at->format('Y') != $year) {
+                        continue;
+                    }
+
+                    // Calculate quarter based on report's creation month
+                    $reportQuarter = ceil($report->created_at->format('m') / 3);
+
+                    // Check if report's quarter matches the requested quarter
+                    if ($reportQuarter != $quarter) {
+                        continue;
+                    }
+
+                    // Increment total reports for the specified quarter
+                    $data[$campus->name]['quarters'][$quarter . 'Q']['total']++;
+
+                    // Increment total reports for the specified campus
+                    $data[$campus->name]['total']++;
+
+                    // Add the report to the corresponding quarter
+                    $data[$campus->name]['quarters'][$quarter . 'Q']['reports'][] = [
+                        'id' => $report->id,
+                        'status' => $report->status,
+                        'remarks' => $report->remarks,
+                        'date_submitted' => $report->date_submitted,
+                        'unit_head' => $user,
+                        'is_submitted' => $report->is_submitted,
+                        'is_archived' => $report->is_archived,
+                        'created_at' => $report->created_at,
+                        'quarter' => $reportQuarter,
+                        'updated_at' => $report->updated_at,
+                        'submission_bin_id' => $report->submission_bin_id,
+                        'entries' => $report->entries,
+                        'attachments' => $report->attachments,
+                        'timely_matter' => $this->checkTimeliness($report),
+                    ];
+
+                    // Add the report to the corresponding office count
+                    if ($user->designation) {
+                        $officeName = $user->designation->name;
+                        $data[$campus->name]['quarters'][$quarter . 'Q']['offices'][$officeName] =
+                            ($data[$campus->name]['quarters'][$quarter . 'Q']['offices'][$officeName] ?? 0) + 1;
+                    }
+                }
+            }
+
+            return response()->json(['message' => 'Report generated successfully!', 'data' => json_decode(json_encode($data))]);
+        } catch (\Throwable $th) {
+            dd($th);
+        }
+    }
+
 
     // Helper function to check the timeliness of a report submission
     private function checkTimeliness($report)

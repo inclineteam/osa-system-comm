@@ -9,7 +9,7 @@ import DataTable from "react-data-table-component";
 import { set } from "date-fns";
 import XLSX from "xlsx/dist/xlsx.full.min.js";
 
-export default function AnnualReport({ auth }) {
+export default function ArchivedReports({ auth }) {
   const [selectedYear, setSelectedYear] = useState(new Date());
   const [selectedQuarter, setSelectedQuarter] = useState(null);
   const [selectedCampus, setSelectedCampus] = useState(null);
@@ -21,19 +21,35 @@ export default function AnnualReport({ auth }) {
   });
 
   useEffect(() => {
-    // axios
-    //   .get(route("admin.annual_reports.index"))
-    //   .then((response) => {
-    //     const responseData = response.data || {};
-    //     setReports({ data: responseData.reports || [], loading: false });
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error fetching reports:", error);
-    //     setReports({ data: [], loading: false });
-    //   });
-
     if (report?.check === true) {
-      setReports({ data: report.data, loading: false, check: false });
+      // Filter out reports that are not archived
+      const filteredReports = {};
+      Object.keys(report.data).forEach((location) => {
+        const locationData = report.data[location];
+        const filteredQuarters = {};
+        Object.keys(locationData.quarters).forEach((quarter) => {
+          const quarterData = locationData.quarters[quarter];
+          const filteredReports = quarterData.reports.filter(
+            (report) => report.is_archived
+          );
+          if (filteredReports.length > 0) {
+            filteredQuarters[quarter] = {
+              ...quarterData,
+              reports: filteredReports,
+            };
+          }
+        });
+        if (Object.keys(filteredQuarters).length > 0) {
+          filteredReports[location] = {
+            ...locationData,
+            quarters: filteredQuarters,
+          };
+        }
+      });
+
+      console.log(filteredReports);
+
+      setReports({ data: filteredReports, loading: false, check: false });
       console.log(report);
     }
 
@@ -74,45 +90,6 @@ export default function AnnualReport({ auth }) {
       console.error("Error fetching reports:", error);
       setReports(null); // Clear the report state on error
     }
-  };
-
-  const generateExcel = () => {
-    const wb = XLSX.utils.book_new();
-
-    const wsData = [
-      [
-        "Year",
-        "Quarter",
-        "Unit Head",
-        "Campus",
-        "Office",
-        "Status",
-        "Timely Manner",
-      ],
-    ];
-
-    // // Add data rows
-    Object.entries(report.data).forEach(([location, data]) => {
-      Object.entries(data.quarters).forEach(([quarter, quarterData]) => {
-        console.log(quarterData.reports);
-        // return;
-        quarterData.reports.forEach((report) => {
-          wsData.push([
-            report.date_submitted.substr(0, 4), // Year
-            report.quarter, // Quarter
-            report.unit_head.firstname + " " + report.unit_head.lastname, // Unit Head
-            report.unit_head.campus.name, // Campus
-            report.unit_head.designation.classification.name, // Office
-            report.status, // Status
-            report.timely_matter, // Timely Manner
-          ]);
-        });
-      });
-    });
-
-    const ws = XLSX.utils.aoa_to_sheet(wsData);
-    XLSX.utils.book_append_sheet(wb, ws, "Annual Report");
-    XLSX.writeFile(wb, "annual_report.xlsx");
   };
 
   const customStyles = {
@@ -185,11 +162,10 @@ export default function AnnualReport({ auth }) {
         <div className="bg-white p-6">
           <div className="flex bg-white flex-col">
             <h1 className="text-xl font-bold mb-2 leading-none">
-              Generate annual report
+              Archived Reports
             </h1>
             <p className="border-b border-slate-200 pb-4 leading-none mb-4 text-slate-500">
-              Generate a detailed report regarding the submitted reports for
-              you.
+              Get archived reports by year, quarter, and campus.
             </p>
             <div className="flex">
               <div className="flex flex-col mr-2">
@@ -251,7 +227,7 @@ export default function AnnualReport({ auth }) {
               className="mt-4 w-max transition bg-indigo-600 mb-3 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md flex"
             >
               <i className="fi fi-rs-add-document text-base mr-2"></i>
-              <span>Generate</span>
+              <span>Get Reports</span>
             </button>
           </div>
 
@@ -271,15 +247,6 @@ export default function AnnualReport({ auth }) {
               </div>
             ))}
           </div>
-          {report.data.length != 0 && (
-            <button
-              onClick={generateExcel}
-              className="bg-green-600 mt-4 space-x-1 items-center flex text-white px-3 py-2 text-sm font-medium shadow hover:bg-green-400 rounded-md"
-            >
-              <i className="fi fi-rr-download mr-1"></i>{" "}
-              <span className="tracking-wide">Generate Excel</span>
-            </button>
-          )}
         </div>
       </div>
     </PanelLayout>

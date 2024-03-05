@@ -116,7 +116,13 @@ export default function AnnualReport({ report }) {
                       ([quarter, quarterData]) => (
                         <div key={quarter}>
                           <p className="mb-2 mt-4 font-bold">
-                            {quarterData.label} Quarter
+                            {quarter.replace("Q", "")}
+                            {quarter.replace("Q", "") == 1
+                              ? "st"
+                              : quarter.replace("Q", "") == 2
+                              ? "nd"
+                              : "rd"}{" "}
+                            Quarter
                           </p>
                           <p className="mt-0">
                             <span className="text-slate-600 inline-block px-2 bg-slate-100 border border-slate-200 rounded-md text-lg">

@@ -19,6 +19,8 @@ export default function ForReviewReports({ reports }) {
   const [searchedFor, setSearchedFor] = useState("");
   const [processing, setProcessing] = useState(false);
 
+  console.log("reports:", reports);
+
   const closeSearching = () => {
     setSearching(false);
     setSearchText("");
@@ -188,35 +190,64 @@ export default function ForReviewReports({ reports }) {
                 </thead>
 
                 <tbody>
-                  {reports.reports.map((report) => (
-                    <tr
-                      key={report.id}
-                      className="border-b border-slate-200 last:border-0 [&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-5 [&>td]:py-4"
-                    >
-                      <td>
-                        {report.unit_head.firstname} {report.unit_head.lastname}
-                      </td>
-                      <td>{dayjs(report.created_at).format("MMM. D, YYYY")}</td>
-                      <td>{report.unit_head.campus.name}</td>
-                      <td>{report.unit_head.designation.name}</td>
-                      <td>
-                        <div
-                          className={`inline-block mr-2 w-2 h-2 rounded-full ${
-                            statusColors[report.status]
-                          }`}
-                        ></div>
-                        {report.status}
-                      </td>
-                      <td>
-                        <Link
-                          href={route("admin.report.open", report.id)}
-                          className="hover:underline"
-                        >
-                          View Reports
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
+                  {reports.reports.map((report) =>
+                    // check if the report is already archived then dont show
+                    report.is_archived == 0 ? (
+                      <tr
+                        key={report.id}
+                        className="border-b border-slate-200 last:border-0 [&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-5 [&>td]:py-4"
+                      >
+                        <td>
+                          {report.unit_head.firstname}{" "}
+                          {report.unit_head.lastname}
+                        </td>
+                        <td>
+                          {dayjs(report.created_at).format("MMM. D, YYYY")}
+                        </td>
+                        <td>{report.unit_head.campus.name}</td>
+                        <td>{report.unit_head.designation.name}</td>
+                        <td>
+                          <div
+                            className={`inline-block mr-2 w-2 h-2 rounded-full ${
+                              statusColors[report.status]
+                            }`}
+                          ></div>
+                          {report.status}
+                        </td>
+                        <td className="flex flex-col">
+                          <Link
+                            href={route("admin.report.open", report.id)}
+                            className="hover:underline"
+                          >
+                            View Reports
+                          </Link>
+                          {report.status == "Approved" ? (
+                            <Link
+                              onClick={() => {
+                                axios
+                                  .put(route("admin.report.archive", report.id))
+                                  .then((res) => {
+                                    console.log("archive:", res);
+                                    // if (res.status === 200) {
+                                    //   // remove from list
+                                    //   //  reload
+                                    //   window.location.reload();
+                                    // }
+                                  });
+                              }}
+                              className="hover:underline mt-2"
+                            >
+                              Archive
+                            </Link>
+                          ) : (
+                            ""
+                          )}
+                        </td>
+                      </tr>
+                    ) : (
+                      ""
+                    )
+                  )}
                 </tbody>
               </table>
             </div>

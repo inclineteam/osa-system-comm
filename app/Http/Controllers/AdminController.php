@@ -285,4 +285,20 @@ class AdminController extends Controller
 
         return Inertia::render('Admin/Members');
     }
+
+    // archive
+    public function archive(Request $request, $report_id)
+    {
+        $report = Report::find($report_id);
+        $report->is_archived = !$report->is_archived;
+        $report->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    // archiveReports
+    public function archiveReports(Request $request)
+    {
+        return Inertia::render('Admin/ArchivedReports');
+    }
 }

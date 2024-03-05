@@ -187,15 +187,15 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
           navList: [
             {
               type: NavType.LINK,
-              text: "Unit heads reports checklist",
-              href: route("admin.reports.checklist"),
-              urlPath: "reports checklist",
+              text: "To Generate Reports",
+              href: route("admin.generated-reports"),
+              urlPath: "generated reports annually",
             },
             {
               type: NavType.LINK,
-              text: "Generated reports annually",
-              href: route("admin.generated-reports"),
-              urlPath: "generated reports annually",
+              text: "Archived Reports",
+              href: route("admin.reports.archive"),
+              urlPath: "archived repors",
             },
           ],
         },
@@ -203,7 +203,7 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
     },
     {
       type: NavType.LINK,
-      text: "Settings",
+      text: "SETTINGS",
       icon: <i className="fi fi-rr-settings"></i>,
       href: route("admin.settings"),
       urlPath: "settings",
