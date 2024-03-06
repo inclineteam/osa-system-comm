@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AppSettings;
+use App\Models\User;
 use App\Models\UserEventsHistory;
 use Illuminate\Http\Request;
 
@@ -13,6 +14,15 @@ class AppSettingsController extends Controller
     {
         $appSettings->logo = $request->logo;
         $appSettings->policy = $request->policy;
+        if ($request->policy !== $appSettings->policy) {
+            $unitHeads = User::all();
+
+            foreach ($unitHeads as $unitHead) {
+                $unitHead->has_read_policy = false;
+                $unitHead->save();
+            }
+        }
+
         $appSettings->save();
 
         // UserEventsHistory

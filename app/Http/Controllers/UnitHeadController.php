@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewUnitHeadMail;
 use App\Models\Announcement;
 use App\Models\CalendarEvent;
 use App\Models\Report;
 use App\Models\SubmissionBin;
 use App\Models\User;
 use App\Models\UserEventsHistory;
+use App\Notifications\NewUnitHeadNotif;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -36,7 +38,10 @@ class UnitHeadController extends Controller
             'designation_id' => $request->designation_id,
         ]);
 
+
         $user->addRole('unit_head');
+
+        $user->notify(new NewUnitHeadNotif($user));
 
         UserEventsHistory::create([
             'user_name' => $request->user()->name(),
@@ -98,6 +103,11 @@ class UnitHeadController extends Controller
         $data['report'] = Report::with(['attachments', 'entries'])->where('submission_bin_id', $submissionBin->id)->where('user_id', $request->user()->id)->first();
 
         return Inertia::render('UnitHead/SubmissionBin', $data);
+    }
+
+    public function feedback()
+    {
+        return Inertia::render('UnitHead/UnitHeadFeedback');
     }
 
     public function announcements()

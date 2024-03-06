@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
+use App\Models\SubmissionBin;
 use App\Models\User;
+use App\Notifications\SubmitReportNotif;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -36,8 +39,28 @@ class UsersController extends Controller
             if (!$user->image) {
                 $user->image = $request->image;
             }
+
             $user->save();
 
+            $submission_bins = SubmissionBin::all();
+            $unitHeads = User::whereHasRole('unit_head')->get();
+
+            foreach ($submission_bins as $submission_bin) {
+                $reports = $submission_bin->reports()->get();
+                $deadline = Carbon::parse($submission_bin->deadline_date);
+
+                if (Carbon::today()->addDays(7) > $deadline) {
+                    foreach ($unitHeads as $unitHead) {
+                        foreach ($reports as $report) {
+                            if ($user->id === $unitHead->id) {
+                                if ($unitHead->id !== $report->user_id) {
+                                    $user->notify(new SubmitReportNotif($submission_bin, $unitHead));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             // Auth::guard('api')->login($user, true);
             Auth::login($user, true);
