@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('image');
             $table->string('signature');
             $table->date('date');
+            $table->boolean('is_resubmitted');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('submission_bin_id');
         });

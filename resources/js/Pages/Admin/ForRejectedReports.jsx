@@ -27,7 +27,7 @@ export default function ForReviewReports({ auth, reportsForRejected }) {
                     <th>Date Submitted</th>
                     <th>Campus</th>
                     <th>Office</th>
-                    {/* <th>Action</th> */}
+                    <th>Action</th>
                   </tr>
                 </thead>
 
@@ -43,14 +43,14 @@ export default function ForReviewReports({ auth, reportsForRejected }) {
                       <td>{dayjs(report.created_at).format("MMM. D, YYYY")}</td>
                       <td>{report.unit_head.campus.name}</td>
                       <td>{report.unit_head.designation.name}</td>
-                      {/* <td>
+                      <td>
                         <Link
                           href={route("admin.report.open", report.id)}
                           className="hover:underline"
                         >
                           View Reports
                         </Link>
-                      </td> */}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

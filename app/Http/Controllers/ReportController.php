@@ -120,6 +120,8 @@ class ReportController extends Controller
 
         if ($request->report) {
             $report = Report::find($request->report['id']);
+            $report->is_resubmitted = true;
+            $report->status = 'Resubmitted';
         } else {
             $report = Report::create([
                 'user_id' => $user->id,

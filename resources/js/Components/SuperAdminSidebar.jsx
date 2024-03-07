@@ -124,12 +124,6 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
               href: route("admin.reports.for-review"),
               urlPath: "for review",
             },
-            {
-              type: NavType.LINK,
-              text: "For Rejected",
-              href: route("admin.reports.for-rejected"),
-              urlPath: "for rejected",
-            },
           ],
         },
         {
