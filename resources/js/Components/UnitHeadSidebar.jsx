@@ -45,12 +45,11 @@ const UnitHeadSidebar = ({ isActive, setShowFeedbackModal, activeLink }) => {
       urlPath: "reminders",
     },
     {
-      type: NavType.BUTTON,
+      type: NavType.LINK,
       text: "Feedback",
       icon: <i className="fi fi-rr-comment"></i>,
-      onClick: () => {
-        setShowFeedbackModal(true);
-      },
+      href: route("unit_head.feedback"),
+      urlPath: "feedback",
     },
     {
       type: NavType.DROPDOWN,

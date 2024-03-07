@@ -8,30 +8,28 @@ import Objective from "./Objective";
 const UnitHeadDashboard = ({ auth }) => {
   return (
     <div>
-      <Row>
-        <Col>
+      <div className="flex gap-6 flex-wrap">
+        <div className="xl:flex-1">
           <LatestReminder />
-        </Col>
-        <Col>
-          <div className="mb-4 relative overflow-hidden border-b border-slate-300 shadow-sm bg-white rounded-lg p-4">
-            <p>Welcome,</p>
-            <h1 className="text-3xl font-semibold">
-              {auth.user.firstname} {auth.user.lastname}
-            </h1>
+        </div>
+        <div className="xl:flex-1 w-full w-full mb-4 flex flex-col justify-center relative overflow-hidden border-b border-slate-300 shadow-sm bg-white rounded-lg p-4">
+          <p>Welcome,</p>
+          <h1 className="text-3xl font-semibold">
+            {auth.user.firstname} {auth.user.lastname}
+          </h1>
 
-            <div className="flex font-semibold items-center">
-              {auth.user.campus.name}{" "}
-              <div className="w-1 h-1 rounded-full mx-3 bg-slate-200"></div>{" "}
-              {auth.user.designation.name}
-            </div>
-
-            <div className="right-0 top-0 absolute w-20 h-20 blur-3xl bg-green-500"></div>
+          <div className="flex font-semibold items-center">
+            {auth.user.campus.name}{" "}
+            <div className="w-1 h-1 rounded-full mx-3 bg-slate-200"></div>{" "}
+            {auth.user.designation.name}
           </div>
-        </Col>
-        <Col>
+
+          <div className="right-0 top-0 absolute w-20 h-20 blur-3xl bg-green-500"></div>
+        </div>
+        <div className="xl:flex-1 w-full">
           <LatestAnnouncement />
-        </Col>
-      </Row>
+        </div>
+      </div>
 
       <Row>
         <Col>

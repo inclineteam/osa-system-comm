@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class SubmissionBin extends Model
 {
     use HasFactory;
-    protected $with = ['reports', 'attachments'];
+    protected $with = ['reports', 'attachments', 'unsubmitted_reports'];
 
     protected $fillable = [
         'status',
@@ -29,6 +29,11 @@ class SubmissionBin extends Model
     public function reports(): HasMany
     {
         return $this->hasMany(Report::class, 'submission_bin_id', 'id')->where('is_submitted', true);
+    }
+
+    public function unsubmitted_reports(): HasMany
+    {
+        return $this->hasMany(Report::class, 'submission_bin_id', 'id')->where('is_submitted', false);
     }
 
     public function approved_reports(): HasMany

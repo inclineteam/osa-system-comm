@@ -92,9 +92,9 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
         },
         {
           type: NavType.LINK,
-          text: "Add Unit Head",
-          href: route("admin.unit_heads.create"),
-          urlPath: "add_unit_head",
+          text: "Manage Unit Heads",
+          href: route("admin.unit_heads.records"),
+          urlPath: "unit-heads/records",
         },
       ],
     },

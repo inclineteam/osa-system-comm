@@ -16,6 +16,7 @@ use App\Models\SuperAdmin;
 use App\Models\UnitHead;
 use App\Models\User;
 use App\Models\UserEventsHistory;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
@@ -138,8 +139,11 @@ class AdminController extends Controller
             $data['submission_bins'] = SubmissionBin::limit(10)->orderByDesc('id')->get();
         } else {
             $data['submission_bins'] = SubmissionBin::with(['approved_reports'])->limit(5)->orderByDesc('id')->get();
+
         }
+
         $data['rows'] = count(SubmissionBin::all());
+
         return Inertia::render('Admin/SubmissionBins', $data);
     }
 
