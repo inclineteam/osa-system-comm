@@ -126,14 +126,16 @@ class ReportController extends Controller
             $report = Report::create([
                 'user_id' => $user->id,
                 'submission_bin_id' => $request->submission_bin_id,
+                'is_resubmitted' => false
             ]);
+            $report->status = 'Pending';
         }
 
         if ($report) {
             $report->is_submitted = true;
-            $report->status = 'Pending';
             $report->date_submitted = Carbon::now()->toDateTimeString();
 
+            ReportEntry::where('report_id', $report->id)->delete();
 
             foreach ($request->entries as $entry) {
                 $documentations = [];

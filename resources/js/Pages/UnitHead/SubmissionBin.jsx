@@ -14,6 +14,20 @@ import dayjs from "dayjs";
 import Flickity from "react-flickity-component";
 import { ReportImages } from "../Admin/ReportTableRow";
 
+export const statusColors = {
+  Pending: "text-slate-800",
+  Resubmitted: "text-blue-600",
+  Rejected: "text-rose-600",
+  Approved: "text-green-700",
+};
+
+export const statusIcons = {
+  Pending: "fi-ss-check-circle",
+  Resubmitted: "fi-ss-check-circle",
+  Rejected: "fi-ss-circle-xmark",
+  Approved: "fi-ss-check-circle",
+};
+
 const SubmissionBin = ({ submissionBin, auth, report }) => {
   const [showFileModal, setShowFileModal] = useState(false);
   const [viewFile, setViewFile] = useState(null);
@@ -21,18 +35,6 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
   const showFile = (file) => {
     setViewFile(file);
     setShowFileModal(true);
-  };
-
-  const statusColors = {
-    Pending: "text-slate-800",
-    Rejected: "text-rose-600",
-    Approved: "text-green-700",
-  };
-
-  const statusIcons = {
-    Pending: "fi-ss-check-circle",
-    Rejected: "fi-ss-circle-xmark",
-    Approved: "fi-ss-check-circle",
   };
 
   // fi-sr-circle-xmark

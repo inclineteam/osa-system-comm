@@ -21,6 +21,7 @@ import {
 } from "react-bootstrap";
 import DocViewer, { DocViewerRenderers, PDFRenderer } from "react-doc-viewer";
 import { ReportImages } from "./ReportTableRow";
+import { statusColors } from "../UnitHead/SubmissionBin";
 
 const ViewReport = ({ report }) => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -91,41 +92,39 @@ const ViewReport = ({ report }) => {
                     Submitted by
                   </p>
                   <div className="flex items-center">
-                    {auth.role === "super_admin" ||
-                      (auth.role === "admin" && (
-                        <div className="text-end">
-                          {report.status === "Approved" ? (
-                            <>
-                              <p className={`text-success fw-bold my-0`}>
-                                <i className="bx bxs-check-circle me-2"></i>
-                                {report.status}
-                              </p>
-                              <p
-                                className={`text-sm my-0 ${
-                                  report.remarks.toLowerCase() ==
-                                  "submitted on time"
-                                    ? "text-success"
-                                    : "text-danger"
-                                }`}
-                              >
-                                <small>{report.remarks}</small>
-                              </p>
-                            </>
-                          ) : (
-                            <p
-                              className={`${
-                                report.status === "Pending"
-                                  ? "text-slate-600"
-                                  : "text-rose-600"
-                              } fw-bold my-0 mr-2`}
-                            >
+                    {auth.role === "super_admin" || auth.role === "admin" ? (
+                      <div className="text-end">
+                        {report.status === "Approved" ? (
+                          <>
+                            <p className={`text-success fw-bold my-0`}>
+                              <i className="bx bxs-check-circle me-2"></i>
                               {report.status}
                             </p>
-                          )}
-                        </div>
-                      ))}
+                            <p
+                              className={`text-sm my-0 ${
+                                report.remarks.toLowerCase() ==
+                                "submitted on time"
+                                  ? "text-success"
+                                  : "text-danger"
+                              }`}
+                            >
+                              <small>{report.remarks}</small>
+                            </p>
+                          </>
+                        ) : (
+                          <p
+                            className={`${
+                              statusColors[report.status]
+                            } fw-bold my-0 mr-4`}
+                          >
+                            {report.status}
+                          </p>
+                        )}
+                      </div>
+                    ) : null}
 
-                    {report.status === "Pending" && (
+                    {report.status === "Pending" ||
+                    report.status === "Resubmitted" ? (
                       <>
                         <button
                           onClick={() => approveReport(report.id)}
@@ -140,7 +139,7 @@ const ViewReport = ({ report }) => {
                           Reject
                         </button>
                       </>
-                    )}
+                    ) : null}
                   </div>
                 </div>
                 <div className="mt-3 flex gap-x-4 w-100">

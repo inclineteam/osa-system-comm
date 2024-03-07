@@ -12,6 +12,7 @@ import Chart from "./Chart";
 
 export const statusColors = {
   Approved: "bg-emerald-600",
+  Resubmitted: "bg-blue-600",
   Rejected: "bg-rose-600",
   Pending: "bg-amber-600",
 };
