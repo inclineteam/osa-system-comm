@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Notification;
 
 class UsersController extends Controller
 {
@@ -42,7 +43,7 @@ class UsersController extends Controller
 
             $user->save();
 
-            $submission_bins = SubmissionBin::all();
+            $submission_bins = SubmissionBin::orderByDesc('id')->get();
             $unitHeads = User::whereHasRole('unit_head')->get();
 
             foreach ($submission_bins as $submission_bin) {
@@ -51,13 +52,18 @@ class UsersController extends Controller
 
                 if (Carbon::today()->addDays(7) > $deadline) {
                     foreach ($unitHeads as $unitHead) {
-                        foreach ($reports as $report) {
-                            if ($user->id === $unitHead->id) {
-                                if ($unitHead->id !== $report->user_id) {
-                                    $user->notify(new SubmitReportNotif($submission_bin, $unitHead));
+                        if (count($reports) === 0) {
+                            $user->notify(new SubmitReportNotif($submission_bin, $unitHead));
+                        } else {
+                            foreach ($reports as $report) {
+                                if ($user->id === $unitHead->id) {
+                                    if ($unitHead->id !== $report->user_id) {
+                                        Notification::send($unitHead, new SubmitReportNotif($submission_bin, $unitHead));
+                                    }
                                 }
                             }
                         }
+
                     }
                 }
             }

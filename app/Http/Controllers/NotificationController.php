@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SubmitReportMail;
 use App\Models\CalendarEvent;
 use App\Models\User;
 use App\Notifications\CalendarEventNotification;
@@ -12,6 +13,7 @@ use App\Notifications\NewReportApproved;
 use App\Notifications\NewReportSubmitted;
 use App\Notifications\NewSubmissionBin;
 use App\Notifications\ReportStatusUpdated;
+use App\Notifications\SubmitReportNotif;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notification;
 
@@ -50,7 +52,7 @@ class NotificationController extends Controller
                     ->whereIn('type', [
                         NewSubmissionBin::class,
                         ReportStatusUpdated::class,
-
+                        SubmitReportNotif::class
                     ])
                     ->get();
             }

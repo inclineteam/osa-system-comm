@@ -60,7 +60,11 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
                     <>
                       Due on{" "}
                       {format(
-                        new Date(submissionBin.deadline_date),
+                        new Date(
+                          submissionBin.deadline_date +
+                            " " +
+                            submissionBin.deadline_time
+                        ),
                         "MMM d, Y / hh:mm aaa"
                       )}
                     </>

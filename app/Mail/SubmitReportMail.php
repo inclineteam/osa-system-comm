@@ -52,7 +52,7 @@ class SubmitReportMail extends Mailable
                 'logo' => AppSettings::first()->logo,
                 'unit_head' => $this->unitHead,
                 'submission_bin' => $this->submission,
-                'deadline_date' => Carbon::parse($this->submission->deadline_date . $this->submission->deadline_time)
+                'deadline_date' => Carbon::parse($this->submission->deadline_date . $this->submission->deadline_time)->format('MMM d, Y / hh:mm aaa')
             ]
         );
     }

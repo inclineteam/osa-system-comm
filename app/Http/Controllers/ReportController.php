@@ -283,6 +283,7 @@ class ReportController extends Controller
     public function forReview(Request $request)
     {
         $reports = Report::with(['unitHead', 'submission_bin', 'entries'])->get();
+        $campus = Campus::all();
         $data = [
             'reports' => [],
             'entries' => [],
@@ -309,13 +310,13 @@ class ReportController extends Controller
 
         // ddd($data);
 
-        return Inertia::render('Admin/ForReviewReports', ['reports' => $data]);
+        return Inertia::render('Admin/ForReviewReports', ['reports' => $data, 'campuses' => $campus]);
     }
 
     public function campusForReview(Request $request)
     {
         $data = [];
-        $reports = Report::where('status', 'Pending')->with(['unitHead', 'submission_bin'])->get();
+        $reports = Report::with(['unitHead', 'submission_bin'])->get();
         $data['campus'] = $request->campus;
 
         foreach ($reports as $report) {
