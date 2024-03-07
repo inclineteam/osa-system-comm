@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             [
                 'classification' => 'Student Welfare Service',
                 'designations' => [
-                    'Guidance',
+                    'Guidance and Counseling / Admission and Testing Services',
                     'Information and Orientation Service',
                     'Alumni and Job Placement Services',
                     'Student Handbook Development',
@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
             [
                 'classification' => 'Student Development Services',
                 'designations' => [
-                    'Admission and Testing Service',
+
                     'Scholarship and Financial Assistance',
                     'Economic Enterprise Development',
                     'Food Services',

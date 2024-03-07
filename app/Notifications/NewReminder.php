@@ -38,9 +38,8 @@ class NewReminder extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->line('A new reminder has been created.')
+            ->action('View Reminders', url(route('admin.reminders')));
     }
 
 

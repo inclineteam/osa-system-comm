@@ -17,7 +17,8 @@ class NewCalendarEvent extends Notification
      */
     public function __construct(
         public CalendarEvent $calendarEvent,
-    ) {}
+    ) {
+    }
 
     /**
      * Get the notification's delivery channels.
@@ -35,9 +36,8 @@ class NewCalendarEvent extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->line('A new calendar event has been created.')
+            ->action('View Calendar', url(route('unit_head.calendar')));
     }
 
     /**
@@ -50,7 +50,7 @@ class NewCalendarEvent extends Notification
         return [
             //
             'id' => $this->calendarEvent->id,
-            'link'=>url(route('calendar')),
+            'link' => url(route('calendar')),
             'title' => $this->calendarEvent->title,
         ];
     }

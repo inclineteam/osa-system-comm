@@ -32,14 +32,23 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
         $request->session()->regenerate();
-        $home='/admin/dashboard';
 
-        switch($request->get('type')){
+        // check if user is is_deleted then logout
+        if (auth()->user()->is_deleted == 1) {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return redirect()->route('login')->with('error', 'Your account has been deactivated. Please contact the administrator.');
+        }
+
+        $home = '/admin/dashboard';
+
+        switch ($request->get('type')) {
             case 'super_admin':
-                $home='/admin/dashboard';
+                $home = '/admin/dashboard';
                 break;
             case 'admin':
-                $home='/admin/dashboard';
+                $home = '/admin/dashboard';
                 break;
         }
 

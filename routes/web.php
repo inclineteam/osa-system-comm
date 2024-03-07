@@ -64,7 +64,7 @@ Route::get('/', function () {
         return redirect()->intended(route('admin.register'));
     }
     return Inertia::render('Welcome');
-})->middleware(['guest']);
+})->middleware(['guest'])->name('welcome');
 
 // super admin
 Route::prefix('/admin')->group(function () {

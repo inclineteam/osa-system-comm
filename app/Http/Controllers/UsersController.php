@@ -41,6 +41,15 @@ class UsersController extends Controller
 
             // Auth::guard('api')->login($user, true);
             Auth::login($user, true);
+
+            // check if user is is_deleted then logout
+            if (auth()->user()->is_deleted == 1) {
+                Auth::guard('web')->logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return redirect()->route('welcome')->with('error', 'sorry that account has been deactivated. Please contact the administrator.');
+            }
+
             return redirect()->intended(route('admin.dashboard'))->with('success', 'You successfully signed in!');
         }
     }
