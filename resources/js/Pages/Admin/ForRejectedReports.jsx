@@ -19,44 +19,43 @@ export default function ForReviewReports({ auth, reportsForRejected }) {
           </p>
 
           {reportsForRejected.length > 0 ? (
-            reportsForRejected.map((report) => (
-              <div
-                key={report.id}
-                className="border-t last:!pb-0 border-slate-200 py-3"
-              >
-                <div className="space-x-1">
-                  <div>
-                    <div className="flex space-x-3 items-start">
-                      <img
-                        src={report.unit_head.image}
-                        alt="Avatar"
-                        className="mt-1 w-8 h-8 rounded-full"
-                      />
-                      <div>
-                        <div className="w-max px-1 py-0.5 rounded-md group-hover:bg-slate-200 duration-75">
-                          <p className="text-slate-800 w-max mb-0 font-semibold">
-                            {report.unit_head.firstname}{" "}
-                            {report.unit_head.lastname}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <p className="font-semibold ml-1 mb-0 text-sm text-slate-500">
-                            {report.unit_head.campus.name}
-                          </p>
-                        </div>
-                        <p className="ml-1 mb-0 font-normal text-sm text-slate-500">
-                          Submitted his report on{" "}
-                          <span className="font-semibold">
-                            "{report.submission_bin.title}"
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  {/* <p className="flex-1 mb-0">{userEvent.description}</p> */}
-                </div>
-              </div>
-            ))
+            <div className="mt-4 border border-slate-200 rounded-md overflow-hidden">
+              <table className="w-full">
+                <thead>
+                  <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-5 [&>th]:py-2.5 border-b [&>th]:text-sm [&>th]:font-medium">
+                    <th>Name</th>
+                    <th>Date Submitted</th>
+                    <th>Campus</th>
+                    <th>Office</th>
+                    {/* <th>Action</th> */}
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {reportsForRejected.map((report) => (
+                    <tr
+                      key={report.id}
+                      className="border-b border-slate-200 last:border-0 [&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-5 [&>td]:py-4"
+                    >
+                      <td>
+                        {report.unit_head.firstname} {report.unit_head.lastname}
+                      </td>
+                      <td>{dayjs(report.created_at).format("MMM. D, YYYY")}</td>
+                      <td>{report.unit_head.campus.name}</td>
+                      <td>{report.unit_head.designation.name}</td>
+                      {/* <td>
+                        <Link
+                          href={route("admin.report.open", report.id)}
+                          className="hover:underline"
+                        >
+                          View Reports
+                        </Link>
+                      </td> */}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           ) : (
             <div className="text-sm py-10 text-center rounded-lg text-slate-500 border-2 border-dashed border-slate-200">
               No rejected reports.
