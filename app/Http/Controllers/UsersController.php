@@ -63,7 +63,6 @@ class UsersController extends Controller
                                 }
                             }
                         }
-
                     }
                 }
             }
@@ -169,5 +168,14 @@ class UsersController extends Controller
 
         // log user out
         return Auth::logout();
+    }
+
+    public function activate(Request $request)
+    {
+        $user = User::find($request->id);
+        $user->is_deleted = false;
+        $user->save();
+
+        return response()->json(['success' => true]);
     }
 }

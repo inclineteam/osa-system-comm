@@ -72,6 +72,9 @@ Route::get('/users/overdue', [UsersController::class, 'overdueUsersCount'])->nam
 // deactivate user
 Route::patch('/users/deactivate/{id}', [UsersController::class, 'deactivate'])->name('users.deactivate');
 
+// activate user
+Route::patch('/users/activate/{id}', [UsersController::class, 'activate'])->name('users.activate');
+
 Route::post('/image-upload', function (Request $request) {
     $image = $request->file('image');
     $imageName = $image->getClientOriginalName();
