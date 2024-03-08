@@ -25,7 +25,7 @@ export default function CampusForReviewReports({ offices, campus }) {
     >
       <div className="content-wrapper">
         <div className="p-4 border-b border-slate-300 rounded-lg shadow-sm bg-white">
-          <h1 className="text-xl font-bold mb-2 leading-none">
+          <h1 className="text-2xl font-semibold tracking-tight mb-2 leading-none">
             For review reports for {campus}
           </h1>
           <p className="border-b border-slate-200 pb-4 leading-none mb-4 text-slate-500">
@@ -39,41 +39,46 @@ export default function CampusForReviewReports({ offices, campus }) {
                   <i className="text-slate-500 fi-rr-city text-xl mr-2"></i>
                   <p className="font-bold mb-0">{officeItem} Office</p>
                 </div>
-                {offices[officeItem].map((report, i) => (
-                  <Link
-                    href={route("admin.report.open", [report.id])}
-                    className="border-b group border-slate-200 block py-3"
-                  >
-                    <div>
-                      <div className="space-x-1">
-                        <div>
-                          <div className="flex space-x-3 items-center">
-                            <img
-                              src={report.unit_head.image}
-                              alt="Avatar"
-                              className="w-8 h-8 rounded-full"
-                            />
-                            <div>
-                              <div className="w-max px-1 py-0.5 rounded-md group-hover:bg-slate-200 duration-75">
-                                <p className="text-slate-800 w-max mb-0 font-semibold">
-                                  {report.unit_head.firstname}{" "}
-                                  {report.unit_head.lastname}
-                                </p>
-                              </div>
-                              <p className="ml-1 mb-0 font-normal text-sm text-slate-500">
-                                Submitted his report on{" "}
-                                <span className="font-semibold">
-                                  "{report.submission_bin.title}"
-                                </span>
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                        {/* <p className="flex-1 mb-0">{userEvent.description}</p> */}
-                      </div>
-                    </div>
-                  </Link>
-                ))}
+                <div className="mt-4 border border-slate-200 rounded-md overflow-hidden">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-5 [&>th]:py-2.5 border-b [&>th]:text-sm [&>th]:font-medium">
+                        <th>Name</th>
+                        <th>Date Submitted</th>
+                        <th>Campus</th>
+                        <th>Office</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {offices[officeItem].map((report) => (
+                        <tr
+                          key={report.id}
+                          className="border-b border-slate-200 last:border-0 [&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-5 [&>td]:py-4"
+                        >
+                          <td>
+                            {report.unit_head.firstname}{" "}
+                            {report.unit_head.lastname}
+                          </td>
+                          <td>
+                            {dayjs(report.created_at).format("MMM. D, YYYY")}
+                          </td>
+                          <td>{report.unit_head.campus.name}</td>
+                          <td>{report.unit_head.designation.name}</td>
+                          <td>
+                            <Link
+                              href={route("admin.report.open", report.id)}
+                              className="hover:underline"
+                            >
+                              View Reports
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             ))
           ) : (

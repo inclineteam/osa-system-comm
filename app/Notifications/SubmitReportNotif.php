@@ -24,7 +24,7 @@ class SubmitReportNotif extends Notification implements ShouldQueue
    */
   public function __construct(public SubmissionBin $submission, public User $unitHead)
   {
-    //
+    $this->afterCommit();
   }
 
   /**

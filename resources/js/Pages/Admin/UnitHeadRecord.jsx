@@ -1,7 +1,7 @@
 import TextProfilePic from '@/Components/TextProfilePic'
 import PanelLayout from '@/Layouts/PanelLayout'
 import { MultipartHeader } from '@/constants/constants'
-import { Link } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react'
 import axios from 'axios'
 import React from 'react'
 import { useState } from 'react'
@@ -13,6 +13,8 @@ import Swal from 'sweetalert2'
 const UnitHeadRecord = ({ unitHeads }) => {
     const [rows, setRows] = useState([...unitHeads])
     const [selectedRows, setSelectedRows] = useState([]);
+    const { auth } = usePage().props
+
     const columns = [
 
         {
@@ -86,6 +88,7 @@ const UnitHeadRecord = ({ unitHeads }) => {
     }
     const deleteRows = () => {
         var formData = new FormData();
+        formData.append('user_id', auth.user.id)
         for (let row of selectedRows) {
             formData.append('id[]', row.id);
             axios.post(route('unit_heads.delete.many'), formData, MultipartHeader)

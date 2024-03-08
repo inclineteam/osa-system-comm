@@ -120,18 +120,22 @@ class ReportController extends Controller
 
         if ($request->report) {
             $report = Report::find($request->report['id']);
+            $report->is_resubmitted = true;
+            $report->status = 'Resubmitted';
         } else {
             $report = Report::create([
                 'user_id' => $user->id,
                 'submission_bin_id' => $request->submission_bin_id,
+                'is_resubmitted' => false
             ]);
+            $report->status = 'Pending';
         }
 
         if ($report) {
             $report->is_submitted = true;
-            $report->status = 'Pending';
             $report->date_submitted = Carbon::now()->toDateTimeString();
 
+            ReportEntry::where('report_id', $report->id)->delete();
 
             foreach ($request->entries as $entry) {
                 $documentations = [];
@@ -279,6 +283,7 @@ class ReportController extends Controller
     public function forReview(Request $request)
     {
         $reports = Report::with(['unitHead', 'submission_bin', 'entries'])->get();
+        $campus = Campus::all();
         $data = [
             'reports' => [],
             'entries' => [],
@@ -305,13 +310,13 @@ class ReportController extends Controller
 
         // ddd($data);
 
-        return Inertia::render('Admin/ForReviewReports', ['reports' => $data]);
+        return Inertia::render('Admin/ForReviewReports', ['reports' => $data, 'campuses' => $campus]);
     }
 
     public function campusForReview(Request $request)
     {
         $data = [];
-        $reports = Report::where('status', 'Pending')->with(['unitHead', 'submission_bin'])->get();
+        $reports = Report::with(['unitHead', 'submission_bin'])->get();
         $data['campus'] = $request->campus;
 
         foreach ($reports as $report) {
