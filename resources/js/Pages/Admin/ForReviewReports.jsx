@@ -19,8 +19,6 @@ export default function ForReviewReports({ reports, campuses }) {
   const [searchedFor, setSearchedFor] = useState("");
   const [processing, setProcessing] = useState(false);
 
-  console.log("reports:", reports);
-
   const closeSearching = () => {
     setSearching(false);
     setSearchText("");
@@ -53,12 +51,14 @@ export default function ForReviewReports({ reports, campuses }) {
       {auth.role === "super_admin" ? (
         <div className="px-10">
           <div className="content-wrapper mt-20 rounded-xl bg-white max-w-7xl mx-auto w-full">
-            <h1 className="text-2xl font-semibold tracking-tight mb-2 leading-none">
-              Choose a campus
-            </h1>
-            <p className="border-b border-slate-200 pb-4 leading-none mb-4 text-slate-500">
-              Click on the campus to view all of its reports.
-            </p>
+            <div>
+              <h1 className="text-2xl font-semibold tracking-tight mb-2 leading-none">
+                Choose a campus
+              </h1>
+              <p className="border-b border-slate-200 pb-4 leading-none mb-4 text-slate-500">
+                Click on the campus to view all of its reports.
+              </p>
+            </div>
             <div className="flex flex-wrap gap-4">
               {campuses.map((campus) => (
                 <Link
@@ -217,66 +217,71 @@ export default function ForReviewReports({ reports, campuses }) {
                     </thead>
 
                     <tbody>
-                      {reports.reports.map((report) =>
+                      {reports.reports.map((report) => (
                         // check if the report is already archived then dont show
-                        report.is_archived == 0 ? (
-                          <tr
-                            key={report.id}
-                            className="border-b border-slate-200 last:border-0 [&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-5 [&>td]:py-4"
-                          >
-                            <td>
-                              {report.unit_head.firstname}{" "}
-                              {report.unit_head.lastname}
-                            </td>
-                            <td>
-                              {dayjs(report.created_at).format("MMM. D, YYYY")}
-                            </td>
-                            <td>{report.unit_head.campus.name}</td>
-                            <td>{report.unit_head.designation.name}</td>
-                            <td>
-                              <div
-                                className={`inline-block mr-2 w-2 h-2 rounded-full ${
-                                  statusColors[report.status]
-                                }`}
-                              ></div>
-                              {report.status}
-                            </td>
-                            <td className="flex flex-col">
-                              <Link
-                                href={route("admin.report.open", report.id)}
-                                className="hover:underline"
-                              >
-                                View Reports
-                              </Link>
-                              {report.status == "Approved" ? (
+                        <>
+                          {report.is_archived == 0 ? (
+                            <tr
+                              key={report.id}
+                              className="border-b border-slate-200 last:border-0 [&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-5 [&>td]:py-4"
+                            >
+                              <td>
+                                {report.unit_head.firstname}{" "}
+                                {report.unit_head.lastname}
+                              </td>
+                              <td>
+                                {dayjs(report.created_at).format(
+                                  "MMM. D, YYYY"
+                                )}
+                              </td>
+                              <td>{report.unit_head.campus.name}</td>
+                              <td>{report.unit_head.designation.name}</td>
+                              <td>
+                                <div
+                                  className={`inline-block mr-2 w-2 h-2 rounded-full ${
+                                    statusColors[report.status]
+                                  }`}
+                                ></div>
+                                {report.status}
+                              </td>
+                              <td className="flex flex-col">
                                 <Link
-                                  onClick={() => {
-                                    axios
-                                      .put(
-                                        route("admin.report.archive", report.id)
-                                      )
-                                      .then((res) => {
-                                        console.log("archive:", res);
-                                        // if (res.status === 200) {
-                                        //   // remove from list
-                                        //   //  reload
-                                        //   window.location.reload();
-                                        // }
-                                      });
-                                  }}
-                                  className="hover:underline mt-2"
+                                  href={route("admin.report.open", report.id)}
+                                  className="hover:underline"
                                 >
-                                  Archive
+                                  View Reports
                                 </Link>
-                              ) : (
-                                ""
-                              )}
-                            </td>
-                          </tr>
-                        ) : (
-                          ""
-                        )
-                      )}
+                                {report.status == "Approved" ? (
+                                  <Link
+                                    onClick={() => {
+                                      axios
+                                        .put(
+                                          route(
+                                            "admin.report.archive",
+                                            report.id
+                                          )
+                                        )
+                                        .then((res) => {
+                                          console.log("archive:", res);
+                                          // if (res.status === 200) {
+                                          //   // remove from list
+                                          //   //  reload
+                                          //   window.location.reload();
+                                          // }
+                                        });
+                                    }}
+                                    className="hover:underline mt-2"
+                                  >
+                                    Archive
+                                  </Link>
+                                ) : (
+                                  ""
+                                )}
+                              </td>
+                            </tr>
+                          ) : null}
+                        </>
+                      ))}
                     </tbody>
                   </table>
                 </div>
