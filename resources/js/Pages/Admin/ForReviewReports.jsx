@@ -51,26 +51,28 @@ export default function ForReviewReports({ reports, campuses }) {
       defaultActiveLink="for review"
     >
       {auth.role === "super_admin" ? (
-        <div className="content-wrapper mt-20 rounded-xl bg-white max-w-7xl mx-auto w-full">
-          <h1 className="text-2xl font-semibold tracking-tight mb-2 leading-none">
-            Choose a campus
-          </h1>
-          <p className="border-b border-slate-200 pb-4 leading-none mb-4 text-slate-500">
-            Click on the campus to view all of its reports.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            {campuses.map((campus) => (
-              <Link
-                key={campus.id}
-                href={route("admin.reports.for-review.campus", [
-                  encodeURIComponent(campus.name),
-                ])}
-                className="w-full lg:flex-1 uppercase group hover:text-indigo-600 hover:border-indigo-300 rounded-md text-lg font-semibold text-slate-600 flex flex-col p-6 border-[1px] border-slate-300 shadow-sm"
-              >
-                <i class="fi fi-rr-cabin text-3xl mb-3 text-slate-400 group-hover:text-indigo-400"></i>
-                <span>{campus.name}</span>
-              </Link>
-            ))}
+        <div className="px-10">
+          <div className="content-wrapper mt-20 rounded-xl bg-white max-w-7xl mx-auto w-full">
+            <h1 className="text-2xl font-semibold tracking-tight mb-2 leading-none">
+              Choose a campus
+            </h1>
+            <p className="border-b border-slate-200 pb-4 leading-none mb-4 text-slate-500">
+              Click on the campus to view all of its reports.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              {campuses.map((campus) => (
+                <Link
+                  key={campus.id}
+                  href={route("admin.reports.for-review.campus", [
+                    encodeURIComponent(campus.name),
+                  ])}
+                  className="w-full lg:flex-1 uppercase group hover:text-indigo-600 hover:border-indigo-300 rounded-md text-lg font-semibold text-slate-600 flex flex-col p-6 border-[1px] border-slate-300 shadow-sm"
+                >
+                  <i class="fi fi-rr-cabin text-3xl mb-3 text-slate-400 group-hover:text-indigo-400"></i>
+                  <span>{campus.name}</span>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       ) : (
