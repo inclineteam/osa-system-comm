@@ -118,21 +118,21 @@ class UnitHeadController extends Controller
     public function deleteMany(Request $request)
     {
         $ids = $request->id;
+        $user = User::find($request->user_id);
 
-        foreach ($ids as $key => $id) {
-            $unitHead = User::find($id);
-            $unitHead->delete();
+        foreach ($ids as $id) {
+            User::find($id)->delete();
         }
 
         UserEventsHistory::create([
-            'user_name' => $request->user()->name(),
+            'user_name' => $user->name(),
             'event_name' => 'Delete Unit Heads',
-            'campus_name' => $request->user()->campus?->name,
-            'office_name' => $request->user()->designation?->name,
+            'campus_name' => $user->campus?->name,
+            'office_name' => $user->designation?->name,
             'description' => 'deleted unit head/s'
         ]);
 
-        return response()->json(['success' => true]);
+        return Inertia::render('Admin/UnitHeadRecord');
     }
     public function calendar(Request $request)
     {

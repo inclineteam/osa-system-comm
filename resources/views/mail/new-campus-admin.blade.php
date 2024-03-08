@@ -1,7 +1,7 @@
 <x-mail::message>
-# Welcome to OSA SYSTEM, {{$unit_head->firstname}}!
+# Welcome to OSA SYSTEM, {{$campus_admin->firstname}}!
 
-You've been added as an unit head in {{$unit_head->campus->name}}.
+You've been added as a campus admin of {{$campus_admin->campus->name}}.
 <hr/>
 
 #

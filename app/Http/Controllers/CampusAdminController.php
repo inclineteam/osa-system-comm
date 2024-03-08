@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\UserEventsHistory;
+use App\Notifications\NewCampusAdminNotif;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -31,6 +32,8 @@ class CampusAdminController extends Controller
         ]);
 
         $campus_admin->addRole('admin');
+
+        $campus_admin->notify(new NewCampusAdminNotif($campus_admin));
 
         UserEventsHistory::create([
             'user_name' => $request->user()->name(),
