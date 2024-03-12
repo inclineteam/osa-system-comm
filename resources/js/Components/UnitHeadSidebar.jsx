@@ -54,8 +54,8 @@ const UnitHeadSidebar = ({ isActive, setShowFeedbackModal, activeLink }) => {
     {
       type: NavType.DROPDOWN,
       icon: <i className="fi fi-rr-calendar"></i>,
-      text: "Objectives",
-      key: "objectives",
+      text: "Targets",
+      key: "targets",
       opened: false,
       navList: [
         {

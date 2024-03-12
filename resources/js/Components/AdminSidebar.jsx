@@ -64,10 +64,10 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
         },
         {
           type: NavType.LINK,
-          text: "Objectives",
+          text: "Targets",
           icon: <i className="fi fi-rr-note"></i>,
           href: route("admin.objectives"),
-          urlPath: "objectives",
+          urlPath: "targets",
         },
       ],
     },

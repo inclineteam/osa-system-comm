@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import DataTable from "react-data-table-component";
 import { set } from "date-fns";
 import XLSX from "xlsx/dist/xlsx.full.min.js";
+import { Link } from "@inertiajs/react";
 
 export default function ArchivedReports({ auth }) {
   const [selectedYear, setSelectedYear] = useState(new Date());
@@ -150,6 +151,17 @@ export default function ArchivedReports({ auth }) {
       name: "Timely Manner",
       selector: (row) => row.timely_matter,
       sortable: true,
+    },
+    {
+      name: "Action",
+      cell: (row) => (
+        <Link
+          href={route("admin.report.open", row.id)}
+          className="hover:underline"
+        >
+          View Reports
+        </Link>
+      ),
     },
   ];
 

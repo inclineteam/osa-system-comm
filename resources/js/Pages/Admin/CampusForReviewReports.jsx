@@ -37,7 +37,7 @@ export default function CampusForReviewReports({ offices, campus }) {
             ))
           ) : (
             <div className="text-slate-500 border-2 rounded-md border-dashed border-slate-200 py-8 text-center">
-              There are currently no reports submitted for this campus.
+              There are currently no reports submitted for this campus
             </div>
           )}
         </div>

@@ -47,7 +47,7 @@ function CreateObjective({ auth }) {
         <div className="container-fluid">
           <Card className="border-0 shadow-sm p-2 p-lg-3">
             <Card.Body>
-              <p className="form-text">New Objective</p>
+              <p className="form-text">New Target</p>
               <hr />
               <Form onSubmit={(e) => handleSubmit(e)}>
                 <div className="mb-3">

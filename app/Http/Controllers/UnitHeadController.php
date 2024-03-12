@@ -29,6 +29,8 @@ class UnitHeadController extends Controller
             'email.regex' => 'This email is not a google account.'
         ]);
 
+
+
         $user = User::create([
             'email' => $request->email,
             'firstname' => $request->firstname,

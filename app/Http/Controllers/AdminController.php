@@ -139,7 +139,6 @@ class AdminController extends Controller
             $data['submission_bins'] = SubmissionBin::limit(10)->orderByDesc('id')->get();
         } else {
             $data['submission_bins'] = SubmissionBin::with(['approved_reports'])->limit(5)->orderByDesc('id')->get();
-
         }
 
         $data['rows'] = count(SubmissionBin::all());
@@ -185,6 +184,9 @@ class AdminController extends Controller
     {
         $data['classifications'] = Classification::with(['designations'])->get();
         $data['unitHead'] = User::find($request->id);
+
+        $data['unitHead']->designation;
+        $data['unitHead']->designation->classification;
         return Inertia::render('Admin/EditUnitHead', $data);
     }
 

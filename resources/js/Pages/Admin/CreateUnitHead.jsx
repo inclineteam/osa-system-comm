@@ -18,6 +18,8 @@ const CreateUnitHead = ({ auth, classifications, campuses }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log(data);
+
     post(route("unit_head.create"));
   };
 

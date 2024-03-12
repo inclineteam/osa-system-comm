@@ -22,11 +22,11 @@ function CreateObjectives() {
 
   const columns = [
     {
-      name: "Objective",
+      name: "Target",
       cell: (row) => <span>{row.title}</span>,
     },
     {
-      name: "Objective Type",
+      name: "Target Type",
       // if 0 -> self check, if 1 -> submission use ternary operator it must check if the objective_type is 0 or 1 because there is also a possibility of 2 -> system event
       cell: (row) => (
         <span>{row.objective_type === 0 ? "Self Check" : "Submission"}</span>
@@ -104,10 +104,10 @@ function CreateObjectives() {
         <div className="bg-white p-6">
           <div className="flex bg-white flex-col">
             <h1 className="text-xl font-bold mb-2 leading-none">
-              Create Objective
+              Create Target
             </h1>
             <p className=" leading-none text-slate-500">
-              Generate a objective for users to complete.
+              Generate a target for users to complete.
             </p>
 
             <button
@@ -118,17 +118,17 @@ function CreateObjectives() {
               className=" w-max transition bg-indigo-600 mb-3 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md flex"
             >
               <i className="fi fi-rs-add-document text-base mr-2"></i>
-              <span>Create Objective</span>
+              <span>Create Target</span>
             </button>
           </div>
 
           <hr className="my-8 border-slate-400" />
 
           <h1 className="mt-4 text-xl font-bold mb-2 leading-none">
-            All objectives
+            All targets
           </h1>
           <p className="border-b border-slate-200 pb-4 leading-none mb-4 text-slate-500">
-            Check out all the created Objectives
+            Check out all the created targets
           </p>
 
           <div className="mt-4  rounded-md overflow-hidden">

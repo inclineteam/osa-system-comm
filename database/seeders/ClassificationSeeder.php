@@ -16,52 +16,54 @@ class ClassificationSeeder extends Seeder
         //
         $rows = [
             [
-                'classification'=>'Student Welfare Service',
-                'designations'=>[
-                    'Guidance',
+                'classification' => 'Student Welfare Service',
+                'designations' => [
+                    'Guidance and Counseling / Admission and Testing Services',
                     'Information and Orientation Service',
-                    'Alumni and Job Fair Service',
+                    'Alumni and Job Placement Services',
                     'Student Handbook Development',
                 ]
             ],
             [
-                'classification'=>'Institutional Student Program and Services',
-                'designations'=>[
+                'classification' => 'Institutional Student Program and Services',
+                'designations' => [
                     'Student Organization Activities',
-                    'Leadership Training Program',
+                    'Leadership Training Programs',
                     'Student Council Student Discipline',
-                    'Student Publication'
+                    'Student Publication',
+                    'Student Council / Government'
                 ]
             ],
             [
-                'classification'=>'Student Development Services',
-                'designations'=>[
-                    'Admission and Testing Service',
-                    'Scholarship',
-                    'Food Service',
-                    'Health Service',
+                'classification' => 'Student Development Services',
+                'designations' => [
+
+                    'Scholarship and Financial Assistance',
+                    'Economic Enterprise Development',
+                    'Food Services',
+                    'Health Services / University Nurse',
                     'Safety and Security',
-                    'Student Housing & Residential Service',
+                    'Student Housing & Residential Services',
                     'Mult-faith',
-                    'Institution Student Service',
-                    'Support for Student with Special Needs',
-                    'Cultural Program',
+                    'International Student Service',
+                    'Support for Student with Special Needs and Person with Disabilities',
+                    'Socio-Cultural Program',
                     'Sports',
                     'Community Involvement',
-                    'Research'
+                    'Research Monitoring and Evaluation Student'
                 ]
             ]
         ];
 
         foreach ($rows as $key => $row) {
             $classification_id = DB::table('classifications')->insert([
-                'name'=>$row['classification']
+                'name' => $row['classification']
             ]);
 
             foreach ($row['designations'] as $designation) {
                 DB::table('designations')->insert([
-                    'classification_id'=>$classification_id,
-                    'name'=>$designation
+                    'classification_id' => $classification_id,
+                    'name' => $designation
                 ]);
             }
         }

@@ -5,17 +5,15 @@ const Objective = ({ user }) => {
   const [objectives, setObjectives] = useState([]);
 
   useEffect(() => {
-    const fetchObjectives = () => {
-      axios.get(route("objectives.user.all", user.id)).then((res) => {
-        if (res.statusText === "OK") {
-          setObjectives(res.data);
-          console.log(res.data);
-        }
-      });
-    };
+    axios.get(route("objectives.user.all", user.id)).then((res) => {
+      if (res.statusText === "OK") {
+        setObjectives(res.data);
+        console.log("res.data", res.data);
+      }
+    });
 
-    fetchObjectives();
-  }, []);
+    console.log("objectives", objectives);
+  }, [objectives]);
 
   return (
     <div className="mb-4 bg-white shadow-sm border-b border-slate-300 rounded-lg p-4">
