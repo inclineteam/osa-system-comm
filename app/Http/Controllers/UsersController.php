@@ -53,7 +53,9 @@ class UsersController extends Controller
                 if (Carbon::today()->addDays(7) > $deadline) {
                     foreach ($unitHeads as $unitHead) {
                         if (count($reports) === 0) {
-                            $user->notify(new SubmitReportNotif($submission_bin, $unitHead));
+                            if ($user->id === $unitHead->id) {
+                                $user->notify(new SubmitReportNotif($submission_bin, $unitHead));
+                            }
                         } else {
                             foreach ($reports as $report) {
                                 if ($user->id === $unitHead->id) {
