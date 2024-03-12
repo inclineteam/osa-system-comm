@@ -16,22 +16,22 @@ class DesignationSeeder extends Seeder
         //
         DB::table('designations')->insert([
             [
-                'classification_id'=>1,
+                'classification_id' => 1,
                 'name' => 'Guidance',
             ],
             [
-                'classification_id'=>1,
-                'name' => 'Information and Orientaion Service',
+                'classification_id' => 1,
+                'name' => 'Information and Orientation Service',
             ],
             [
-                'classification_id'=>1,
+                'classification_id' => 1,
                 'name' => 'Alumni and Job Fair Service',
             ],
             [
-                'classification_id'=>1,
+                'classification_id' => 1,
                 'name' => 'Student Handbook Development',
             ],
-            
+
         ]);
     }
 }
