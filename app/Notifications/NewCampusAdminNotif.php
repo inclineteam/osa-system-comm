@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use App\Mail\NewCommentMail;
-use App\Mail\NewcampusAdminMail;
+use App\Mail\NewCampusAdminMail;
 use App\Models\ReportComment;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -39,7 +39,7 @@ class NewCampusAdminNotif extends Notification implements ShouldQueue
    */
   public function toMail(object $notifiable): Mailable
   {
-    return(new NewcampusAdminMail($this->campusAdmin))
+    return(new NewCampusAdminMail($this->campusAdmin))
       ->to($notifiable->email);
   }
 
