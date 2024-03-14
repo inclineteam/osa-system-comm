@@ -68,7 +68,10 @@ const ViewReport = ({ report }) => {
         <HeaderTitle
           text={report.submission_bin.title}
           backButton
-          backButtonLink={route("admin.reports.for-review")}
+          backButtonLink={route(
+            "admin.reports.for-review.campus",
+            report.unit_head.campus.name
+          )}
         />
       }
       defaultActiveLink="submission-bins"

@@ -146,12 +146,12 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
               urlPath: "user events history",
             },
             // TODO: change to notification history link
-            {
-              type: NavType.LINK,
-              text: "Notification history",
-              href: route("admin.notifications_history"),
-              urlPath: "notification history",
-            },
+            // {
+            //   type: NavType.LINK,
+            //   text: "Notification history",
+            //   href: route("admin.notifications_history"),
+            //   urlPath: "notification history",
+            // },
             {
               type: NavType.LINK,
               text: "Feedback",

@@ -52,6 +52,13 @@ const UnitHeadSidebar = ({ isActive, setShowFeedbackModal, activeLink }) => {
       urlPath: "feedback",
     },
     {
+      type: NavType.LINK,
+      text: "Notification history",
+      icon: <i className="fi fi-rr-calendar"></i>,
+      href: route("admin.notifications_history"),
+      urlPath: "notification history",
+    },
+    {
       type: NavType.DROPDOWN,
       icon: <i className="fi fi-rr-calendar"></i>,
       text: "Targets",

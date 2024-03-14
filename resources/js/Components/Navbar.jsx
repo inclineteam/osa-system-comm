@@ -73,12 +73,14 @@ const NavbarComponent = ({ isActive, setIsActive, headerTitle }) => {
               </p>
             </div>
             <Nav className="ms-auto align-items-center lg:gap-3 md:gap-3 gap-0">
-              {/* <Nav.Item>
-                                <ThemeSwitch />
-                            </Nav.Item> */}
-              <NotificationsDropdown />
+              {userAuth?.role === "unit_head" && (
+                <>
+                  <NotificationsDropdown />
 
-              <CalendarDropdown />
+                  <CalendarDropdown />
+                </>
+              )}
+
               <Dropdown align="end" as={NavItem} className="">
                 <DropdownToggle
                   bsPrefix="nav-profile-toggler"
