@@ -12,7 +12,7 @@ const UnitHeadDashboard = ({ auth }) => {
         <div className="xl:flex-1">
           <LatestReminder />
         </div>
-        <div className="xl:flex-1 w-full w-full mb-4 flex flex-col justify-center relative overflow-hidden border-b border-slate-300 shadow-sm bg-white rounded-lg p-4">
+        <div className="xl:flex-1 w-full mb-4 flex flex-col justify-center relative overflow-hidden border-b border-slate-300 shadow-sm bg-white rounded-lg p-4">
           <p>Welcome,</p>
           <h1 className="text-3xl font-semibold">
             {auth.user.firstname} {auth.user.lastname}
@@ -30,12 +30,6 @@ const UnitHeadDashboard = ({ auth }) => {
           <LatestAnnouncement />
         </div>
       </div>
-
-      <Row>
-        <Col>
-          <Objective user={auth.user} />
-        </Col>
-      </Row>
     </div>
   );
 };

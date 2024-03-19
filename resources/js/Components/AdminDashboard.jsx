@@ -51,17 +51,21 @@ const SuperAdminDashboard = () => {
     };
 
     const fetchNewUsers = () => {
-      axios.get(route("users.new.count")).then((res) => {
-        console.log("new users", res.data);
-        setNewUsers(res.data.newUsersCount);
-      });
+      axios
+        .get(route("campus.users.new.count", auth.user.campus_id))
+        .then((res) => {
+          console.log("new users", res.data);
+          setNewUsers(res.data.newUsersCount);
+        });
     };
 
     const fetchTotalUsers = () => {
-      axios.get(route("users.total.count")).then((res) => {
-        console.log("total users", res.data);
-        setTotalUsers(res.data.totalUsersCount);
-      });
+      axios
+        .get(route("campus.users.total.count", auth.user.campus_id))
+        .then((res) => {
+          console.log("total users", res.data);
+          setTotalUsers(res.data.totalUsersCount);
+        });
     };
 
     const fetchLeftUsers = () => {
@@ -202,7 +206,7 @@ const SuperAdminDashboard = () => {
                 {campuses
                   .filter((campus) => campus.id === auth.user.campus_id)
                   .map((campus, index) => (
-                    <Col key={index} lg={6} md={6} xs={6}>
+                    <Col key={index} lg={6} md={6} xs={12}>
                       <Card className={`dashboard-card shadow-sm`}>
                         <Card.Body className="p-4 flex justify-between">
                           <div>
@@ -230,7 +234,7 @@ const SuperAdminDashboard = () => {
                       </Card>
                     </Col>
                   ))}
-                <Col lg={6} md={6} xs={6}>
+                <Col lg={6} md={6} xs={12}>
                   <Card className={`dashboard-card shadow-sm`}>
                     <Card.Body className="p-4 flex justify-between">
                       <div>
@@ -238,7 +242,7 @@ const SuperAdminDashboard = () => {
                           Total users
                         </p>
                         <p className="mt-0 mb-0 text-sm text-slate-500">
-                          of all campuses
+                          of your campus.
                         </p>
                         <div className="flex items-end">
                           <div
@@ -255,7 +259,8 @@ const SuperAdminDashboard = () => {
                     </Card.Body>
                   </Card>
                 </Col>
-                <Col lg={6} md={6} xs={6}>
+                <Col></Col>
+                <Col lg={6} md={6} xs={12}>
                   <Card className={`dashboard-card shadow-sm`}>
                     <Card.Body className="p-4 flex justify-between">
                       <div>
@@ -263,7 +268,7 @@ const SuperAdminDashboard = () => {
                           New users
                         </p>
                         <p className="mt-0 mb-0 text-sm text-slate-500">
-                          of all campuses
+                          on your campus
                         </p>
                         <div className="flex items-end">
                           <div
@@ -280,7 +285,7 @@ const SuperAdminDashboard = () => {
                     </Card.Body>
                   </Card>
                 </Col>
-                <Col lg={6} md={6} xs={6}>
+                <Col lg={6} md={6} xs={12}>
                   <Card className={`dashboard-card shadow-sm`}>
                     <Card.Body className="p-4 flex justify-between">
                       <div className="">
@@ -302,7 +307,7 @@ const SuperAdminDashboard = () => {
                     </Card.Body>
                   </Card>
                 </Col>
-                <Col lg={6} md={6} xs={6}>
+                <Col lg={6} md={6} xs={12}>
                   <Card
                     className={`dashboard-card shadow-sm border-l-[5rem] border-l-black`}
                   >
@@ -326,7 +331,7 @@ const SuperAdminDashboard = () => {
                     </Card.Body>
                   </Card>
                 </Col>
-                <Col lg={6} md={6} xs={6}>
+                <Col lg={6} md={6} xs={12}>
                   <Card
                     className={`dashboard-card shadow-sm border-l-[5rem] border-l-black`}
                   >
@@ -350,7 +355,7 @@ const SuperAdminDashboard = () => {
                     </Card.Body>
                   </Card>
                 </Col>
-                <Col lg={6} md={6} xs={6}>
+                <Col lg={6} md={6} xs={12}>
                   <Card
                     className={`dashboard-card shadow-sm border-l-[5rem] border-l-black`}
                   >

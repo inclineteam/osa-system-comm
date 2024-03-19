@@ -315,17 +315,22 @@ class ReportController extends Controller
 
     public function campusForReview(Request $request)
     {
-        $data = [];
-        $reports = Report::with(['unitHead', 'submission_bin'])->get();
+        $data = [
+            'campus' => [],
+            'reports' => [],
+            'entries' => [],
+        ];
+        $reports = Report::with(['unitHead', 'submission_bin', 'entries'])->get();
         $data['campus'] = $request->campus;
 
         foreach ($reports as $report) {
-            if ($request->campus === $report->unitHead->campus->name) {
-                $data['offices'][$report->unitHead->designation->name][] = $report;
+            if ($report->unitHead->campus->name === $request->campus) {
+                $data['reports'][] = $report;
+                array_push($data['entries'], ...$report->entries);
             }
         }
 
-        if (!isset($data['offices'])) {
+        if (!isset ($data['offices'])) {
             $data['offices'] = [];
         }
 
@@ -373,7 +378,7 @@ class ReportController extends Controller
                 // check if report has a designation
                 if ($report->designation) {
                     // check if isset
-                    if (isset($data[$campus->name]['offices'][$report->designation->name])) {
+                    if (isset ($data[$campus->name]['offices'][$report->designation->name])) {
                         $data[$campus->name]['offices'][$report->designation->name] += $report->reports->count();
                     } else {
                         $data[$campus->name]['offices'][$report->designation->name] = $report->reports->count();
@@ -402,7 +407,7 @@ class ReportController extends Controller
             // check if report has a designation
             if ($report->designation) {
                 // check if isset
-                if (isset($data['offices'][$report->designation->name])) {
+                if (isset ($data['offices'][$report->designation->name])) {
                     $data['offices'][$report->designation->name] += $report->reports->count();
                 } else {
                     $data['offices'][$report->designation->name] = $report->reports->count();
@@ -453,11 +458,38 @@ class ReportController extends Controller
     {
         $data = [];
         $reports = Report::with(['unitHead', 'submission_bin'])->get();
-        foreach ($reports as $report) {
-            $data['offices'][$report->unitHead->designation->name][] = $report;
+
+        if (auth()->user()->hasRole('admin')) {
+            foreach ($reports as $report) {
+                if ($report->unitHead->campus->name === auth()->user()->campus->name) {
+                    $data['offices'][$report->unitHead->designation->name][] = $report;
+                }
+            }
+        } else {
+            foreach ($reports as $report) {
+                $data['offices'][$report->unitHead->designation->name][] = $report;
+            }
         }
 
-        if (!isset($data['offices'])) {
+        if (!isset ($data['offices'])) {
+            $data['offices'] = [];
+        }
+
+        return Inertia::render('Admin/UnitHeadReportsChecklist', $data);
+    }
+
+    public function showCampusChecklist(Request $request)
+    {
+        $data = [];
+        $reports = Report::with(['unitHead', 'submission_bin'])->get();
+        foreach ($reports as $report) {
+            if ($report->unitHead->campus->name === $request->campus_name) {
+                $data['offices'][$report->unitHead->designation->name][] = $report;
+            }
+        }
+
+
+        if (!isset ($data['offices'])) {
             $data['offices'] = [];
         }
 

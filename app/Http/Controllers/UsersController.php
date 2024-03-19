@@ -97,6 +97,13 @@ class UsersController extends Controller
         return response()->json(['newUsersCount' => $newUsersCount]);
     }
 
+    public function campusOnlyNewUsersCount(Request $request)
+    {
+        $newUsersCount = User::where('campus_id', $request->campus_id)->whereDate('created_at', now())->count();
+
+        return response()->json(['newUsersCount' => $newUsersCount]);
+    }
+
     // left users count
     public function leftUsersCount()
     {
@@ -108,6 +115,12 @@ class UsersController extends Controller
     public function totalUsersCount()
     {
         $totalUsersCount = User::where('is_deleted', false)->count();
+        return response()->json(['totalUsersCount' => $totalUsersCount]);
+    }
+
+    public function campusOnlyTotalUsersCount(Request $request)
+    {
+        $totalUsersCount = User::where('campus_id', $request->campus_id)->where('is_deleted', false)->count();
         return response()->json(['totalUsersCount' => $totalUsersCount]);
     }
 

@@ -6,10 +6,10 @@ import { usePDF } from "react-to-pdf";
 import ModalComponent from "./ModalComponent";
 import { ReportImages } from "@/Pages/Admin/ReportTableRow";
 
-export const CampusForReviewTable = ({ officeItem, offices }) => {
+export const CampusForReviewTable = ({ report }) => {
   const [showExportPDF, setShowExportPDF] = useState(false);
-  const { auth, appLogo } = usePage().props;
   const { toPDF, targetRef } = usePDF({ filename: "REPORT.pdf" });
+  const { auth, appLogo } = usePage().props;
   const officesArr = Object.keys(offices);
 
   const [totalReports, setTotalReports] = useState(() => {
@@ -30,19 +30,14 @@ export const CampusForReviewTable = ({ officeItem, offices }) => {
 
   return (
     <div className="mt-4">
-      <div className="pt-2 flex justify-between items-start border-zinc-200">
-        <div className="flex">
-          <i className="text-slate-500 fi-rr-city text-xl mr-2"></i>
-          <p className="font-bold mb-0">{officeItem} Office</p>
-        </div>
-
+      {/* <div className="pt-2 flex justify-between items-start border-zinc-200">
         <button
           onClick={() => setShowExportPDF(true)}
           className="px-2.5 py-1 font-medium shadow-sm shadow-slate-400/10 border border-slate-200 rounded-md text-sm"
         >
           Export Data
         </button>
-      </div>
+      </div> */}
       <div className="mt-4 border border-slate-200 rounded-md overflow-hidden">
         <table className="w-full">
           <thead>
@@ -57,9 +52,9 @@ export const CampusForReviewTable = ({ officeItem, offices }) => {
 
           <tbody>
             {totalReports !== 0 ? (
-              offices[officeItem].map((report) => (
+              offices.map((report) => (
                 <>
-                  <ModalComponent
+                  {/* <ModalComponent
                     className={"rounded-0 bg-transparent"}
                     bodyClassname="p-0 overflow-auto"
                     show={showExportPDF}
@@ -145,7 +140,7 @@ export const CampusForReviewTable = ({ officeItem, offices }) => {
                         </div>
                       </div>
                     </div>
-                  </ModalComponent>
+                  </ModalComponent> */}
 
                   {report.is_archived === 0 ? (
                     <tr

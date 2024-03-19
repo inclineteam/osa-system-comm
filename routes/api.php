@@ -48,11 +48,15 @@ Route::prefix('/classifications')->group(function () {
 // get user count which is only created within this day which will be labled as : new users count
 Route::get('/users/new', [UsersController::class, 'newUsersCount'])->name('users.new.count');
 
+Route::get('/users/new/campus/{campus_id}', [UsersController::class, 'campusOnlyNewUsersCount'])->name('campus.users.new.count');
+
 // get user count for those who is labeled as is_deleted which will be labled as : left users count
 Route::get('/users/left', [UsersController::class, 'leftUsersCount'])->name('users.left.count');
 
 // get all user count but only those who is not labeled as is_deleted which will be labled as : total users count
 Route::get('/users/total', [UsersController::class, 'totalUsersCount'])->name('users.total.count');
+
+Route::get('/users/total/campus/{campus_id}', [UsersController::class, 'campusOnlyTotalUsersCount'])->name('campus.users.total.count');
 
 // get all users created within this day
 Route::get('/users/today', [UsersController::class, 'newUsers'])->name('users.new');
