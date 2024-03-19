@@ -5,15 +5,13 @@ const Objective = ({ user }) => {
   const [objectives, setObjectives] = useState([]);
 
   useEffect(() => {
-    axios.get(route("objectives.user.all", user.id)).then((res) => {
-      if (res.statusText === "OK") {
+    axios
+      .get(route("objectives.user.all", user.id))
+      .then((res) => {
         setObjectives(res.data);
-        console.log("res.data", res.data);
-      }
-    });
-
-    console.log("objectives", objectives);
-  }, [objectives]);
+      })
+      .catch((error) => console.error("Error fetching objectives:", error));
+  }, []); // Empty dependency array means this effect runs once after the initial render
 
   return (
     <div className="mb-4 bg-white shadow-sm border-b border-slate-300 rounded-lg p-4">

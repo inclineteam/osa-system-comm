@@ -190,6 +190,7 @@ const UnitHeadRecord = ({ unitHeads }) => {
               }
               columns={columns}
               data={rows}
+              paginationRowsPerPageOptions={[5, 10, 15, 20, 25, 30, 100]}
               pagination
             />
           </Card.Body>
