@@ -13,7 +13,7 @@ function CreateObjective({ auth, classifications }) {
     submission_bin_id: null,
     objective_type: "",
   });
-
+  const [requirements, setRequirements] = useState([]);
   const [submissionBins, setSubmissionBins] = useState([]);
 
   // get all submission bins
@@ -64,6 +64,27 @@ function CreateObjective({ auth, classifications }) {
                   />
                 </div>
 
+                <div className="mb-3">
+                  <Form.Label className="text-secondary">
+                    Designation:
+                  </Form.Label>
+                  <Form.Select
+                    value={classificationIndex}
+                    onChange={(e) => setClassificationIndex(e.target.value)}
+                  >
+                    {classifications &&
+                      classifications.map((c, index) => (
+                        <optgroup key={index} label={c.name}>
+                          {c.designations.map((desig, i) => (
+                            <option value={i} key={i}>
+                              {desig.name}
+                            </option>
+                          ))}
+                        </optgroup>
+                      ))}
+                  </Form.Select>
+                </div>
+
                 {/* objective type radio button here 2 types : 0 - self checkout, 1 - submission */}
                 <div className="mb-3">
                   <Form.Label className="text-secondary">
@@ -73,6 +94,7 @@ function CreateObjective({ auth, classifications }) {
                     <Form.Check
                       type="radio"
                       label="Self Checkout"
+                      defaultChecked
                       name="objective_type"
                       value="0"
                       onChange={(e) =>
@@ -92,7 +114,7 @@ function CreateObjective({ auth, classifications }) {
                 </div>
 
                 {/* if it is submissipe */}
-                {data.objective_type == 1 && (
+                {data.objective_type == 1 ? (
                   <div className="mb-3">
                     <Form.Label className="text-secondary">
                       Submission Bin:
@@ -115,30 +137,12 @@ function CreateObjective({ auth, classifications }) {
                       ))}
                     </Form.Select>
                   </div>
+                ) : (
+                  <RequirementsEntryForm
+                    requirements={requirements}
+                    setRequirements={setRequirements}
+                  />
                 )}
-
-                <div className="mb-3">
-                  <Form.Label className="text-secondary">
-                    Designation:
-                  </Form.Label>
-                  <Form.Select
-                    value={classificationIndex}
-                    onChange={(e) => setClassificationIndex(e.target.value)}
-                  >
-                    {classifications &&
-                      classifications.map((c, index) => (
-                        <optgroup key={index} label={c.name}>
-                          {c.designations.map((desig, i) => (
-                            <option value={i} key={i}>
-                              {desig.name}
-                            </option>
-                          ))}
-                        </optgroup>
-                      ))}
-                  </Form.Select>
-                </div>
-
-                <RequirementsEntryForm />
 
                 <div className="text-end mt-3 flex items-center justify-end gap-3">
                   <Link

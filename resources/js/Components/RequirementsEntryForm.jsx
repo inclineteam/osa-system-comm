@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 
-export const RequirementsEntryForm = () => {
-  const [requirements, setRequirements] = useState([]);
+export const RequirementsEntryForm = ({ requirements, setRequirements }) => {
   const [requirement, setRequirement] = useState("");
 
   return (
