@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classification;
 use App\Models\Objective;
 use App\Models\User;
 use App\Models\UserObjective;
@@ -27,7 +28,9 @@ class ObjectiveController extends Controller
     // create
     public function create()
     {
-        return Inertia::render('Admin/CreateObjective');
+        $data['classifications'] = Classification::with(['designations'])->get();
+
+        return Inertia::render('Admin/CreateObjective', $data);
     }
 
     // storeObjective

@@ -6,7 +6,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 
-function CreateObjective({ auth }) {
+function CreateObjective({ auth, classifications }) {
+  const [classificationIndex, setClassificationIndex] = useState(0);
   const { data, setData, processing, post } = useForm({
     title: "",
     submission_bin_id: null,
@@ -115,6 +116,27 @@ function CreateObjective({ auth }) {
                     </Form.Select>
                   </div>
                 )}
+
+                <div className="mb-3">
+                  <Form.Label className="text-secondary">
+                    Designation:
+                  </Form.Label>
+                  <Form.Select
+                    value={classificationIndex}
+                    onChange={(e) => setClassificationIndex(e.target.value)}
+                  >
+                    {classifications &&
+                      classifications.map((c, index) => (
+                        <optgroup key={index} label={c.name}>
+                          {c.designations.map((desig, i) => (
+                            <option value={i} key={i}>
+                              {desig.name}
+                            </option>
+                          ))}
+                        </optgroup>
+                      ))}
+                  </Form.Select>
+                </div>
 
                 <RequirementsEntryForm />
 
