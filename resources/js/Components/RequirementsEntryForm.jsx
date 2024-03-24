@@ -46,7 +46,6 @@ export const RequirementsEntryForm = ({ requirements, setRequirements }) => {
             value={requirement}
             onChange={(e) => setRequirement(e.target.value)}
             placeholder="Enter requirement"
-            required
           />
         </div>
 

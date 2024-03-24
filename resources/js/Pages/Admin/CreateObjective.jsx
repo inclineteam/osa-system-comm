@@ -1,17 +1,17 @@
 import { RequirementsEntryForm } from "@/Components/RequirementsEntryForm";
 import PanelLayout, { LayoutType } from "@/Layouts/PanelLayout";
-import { Link, useForm } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 
 function CreateObjective({ auth, classifications }) {
-  const [classificationIndex, setClassificationIndex] = useState(0);
+  const [classificationIndex, setClassificationIndex] = useState(null);
   const { data, setData, processing, post } = useForm({
     title: "",
     submission_bin_id: null,
-    objective_type: "",
+    objective_type: 0,
   });
   const [requirements, setRequirements] = useState([]);
   const [submissionBins, setSubmissionBins] = useState([]);
@@ -24,7 +24,7 @@ function CreateObjective({ auth, classifications }) {
     axios
       .get(route("submission-bins.not-closed"))
       .then((res) => {
-        console.log("test", res.data);
+        console.log("testasdasd", res.data);
         setSubmissionBins(res.data);
       })
       .catch((error) => console.log("error getting submission bins ", error));
@@ -36,7 +36,12 @@ function CreateObjective({ auth, classifications }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    post(route("objectives.store"));
+
+    router.post(route("objectives.store"), {
+      ...data,
+      requirements,
+      classificationIndex,
+    });
   };
 
   return (
@@ -69,12 +74,16 @@ function CreateObjective({ auth, classifications }) {
                     Designation:
                   </Form.Label>
                   <Form.Select
-                    value={classificationIndex}
-                    onChange={(e) => setClassificationIndex(e.target.value)}
+                    onChange={(e) =>
+                      setClassificationIndex(parseInt(e.target.value) + 1)
+                    }
                   >
+                    <option>select classification</option>
                     {classifications &&
                       classifications.map((c, index) => (
-                        <optgroup key={index} label={c.name}>
+                        // select classification
+
+                        <optgroup key={index + 1} label={c.name}>
                           {c.designations.map((desig, i) => (
                             <option value={i} key={i}>
                               {desig.name}
@@ -88,7 +97,7 @@ function CreateObjective({ auth, classifications }) {
                 {/* objective type radio button here 2 types : 0 - self checkout, 1 - submission */}
                 <div className="mb-3">
                   <Form.Label className="text-secondary">
-                    Objective Type:
+                    Target Type:
                   </Form.Label>
                   <div className="d-flex gap-3">
                     <Form.Check
@@ -121,7 +130,7 @@ function CreateObjective({ auth, classifications }) {
                     </Form.Label>
                     <Form.Select
                       required
-                      value={data.submission_bin_id}
+                      defaultValue={""}
                       onChange={(e) =>
                         setData("submission_bin_id", e.target.value)
                       }

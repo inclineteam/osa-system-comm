@@ -30,6 +30,7 @@ const UnitHeadDashboard = ({ auth }) => {
           <LatestAnnouncement />
         </div>
       </div>
+      <Objective user={auth.user} />
     </div>
   );
 };

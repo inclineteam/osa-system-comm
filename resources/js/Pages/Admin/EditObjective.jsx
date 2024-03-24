@@ -1,12 +1,24 @@
+import { RequirementsEntryForm } from "@/Components/RequirementsEntryForm";
 import PanelLayout, { LayoutType } from "@/Layouts/PanelLayout";
-import { Link, useForm } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 import axios from "axios";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 
-function EditObjective({ auth, objective }) {
+function EditObjective({
+  auth,
+  objective,
+  restructuredEntries,
+  classifications,
+}) {
+  const [classificationIndex, setClassificationIndex] = useState(
+    objective.designation_id
+  );
+
+  console.log("objective", classificationIndex);
+
   const { data, setData, processing, put } = useForm({
     title: objective.title,
     submission_bin_id: objective.submission_bin_id,
@@ -14,6 +26,7 @@ function EditObjective({ auth, objective }) {
     id: objective.id,
   });
 
+  const [requirements, setRequirements] = useState(restructuredEntries);
   const [submissionBins, setSubmissionBins] = useState([]);
 
   const fetchSubmissionBins = () => {
@@ -32,7 +45,12 @@ function EditObjective({ auth, objective }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    put(route("admin.objectives.update", objective.id));
+    // put(route("admin.objectives.update", objective.id), );
+    router.put(route("admin.objectives.update", objective.id), {
+      ...data,
+      requirements,
+      classificationIndex,
+    });
   };
 
   return (
@@ -57,6 +75,32 @@ function EditObjective({ auth, objective }) {
                     onChange={(e) => setData("title", e.target.value)}
                     placeholder="Enter title here..."
                   />
+                </div>
+
+                <div className="mb-3">
+                  <Form.Label className="text-secondary">
+                    Designation:
+                  </Form.Label>
+                  <Form.Select
+                    defaultValue={classificationIndex - 1}
+                    onChange={(e) =>
+                      setClassificationIndex(parseInt(e.target.value) + 1)
+                    }
+                  >
+                    <option>select classification</option>
+                    {classifications &&
+                      classifications.map((c, index) => (
+                        // select classification
+
+                        <optgroup key={index} label={c.name}>
+                          {c.designations.map((desig, i) => (
+                            <option value={i} key={i}>
+                              {desig.name}
+                            </option>
+                          ))}
+                        </optgroup>
+                      ))}
+                  </Form.Select>
                 </div>
 
                 {/* objective type radio button here 2 types : 0 - self checkout, 1 - submission */}
@@ -89,7 +133,7 @@ function EditObjective({ auth, objective }) {
                 </div>
 
                 {/* if it is submissipe */}
-                {data.objective_type == 1 && (
+                {data.objective_type == 1 ? (
                   <div className="mb-3">
                     <Form.Label className="text-secondary">
                       Submission Bin:
@@ -110,6 +154,11 @@ function EditObjective({ auth, objective }) {
                       ))}
                     </Form.Select>
                   </div>
+                ) : (
+                  <RequirementsEntryForm
+                    requirements={requirements}
+                    setRequirements={setRequirements}
+                  />
                 )}
 
                 <div className="text-end mt-3 flex items-center justify-end gap-3">

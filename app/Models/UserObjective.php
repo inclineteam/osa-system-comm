@@ -23,6 +23,12 @@ class UserObjective extends Model
         return $this->belongsTo(Objective::class);
     }
 
+    // // entries
+    // public function entries()
+    // {
+    //     return $this->hasMany(UserCheckoutEntry::class);
+    // }
+
     // user
     public function user()
     {

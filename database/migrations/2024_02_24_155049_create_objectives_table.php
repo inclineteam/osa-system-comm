@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('objectives', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->integer('objective_type'); // 1 for submission functionality checking where it is automated, 2 for user manual checking where the user can the ability to mark it as completed,
+            //    designation id
+            $table->foreignId('designation_id')->constrained('designations');
 
+            $table->integer('objective_type'); // 1 for submission functionality checking where it is automated, 2 for user manual checking where the user can the ability to mark it as completed,
             // constrain to submission bin for checking if the user has submitted the task : note that this is nullable so it will be pointed to a specific submission bin to check if the user has submitted the task
             $table->foreignId('submission_bin_id')->nullable()->constrained('submission_bins')->nullOnDelete();
             $table->timestamps();

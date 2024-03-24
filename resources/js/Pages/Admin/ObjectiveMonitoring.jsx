@@ -59,6 +59,51 @@ const ObjectiveMonitoring = () => {
       ),
     },
     {
+      name: "Activities / Programme",
+      cell: (row) => (
+        <span>
+          {row.entries.length === 0
+            ? row.objective.title
+            : row.entries.map((entry, index) => {
+                console.log(entry);
+                // Return the JSX for each entry here
+                return (
+                  <div key={index}>
+                    {/* Example: Display entry description */}
+                    <p>
+                      {index + 1}.) {entry.objective_entry.description}
+                    </p>
+                  </div>
+                );
+              })}
+        </span>
+      ),
+    },
+    {
+      name: "Targets",
+      cell: (row) => (
+        <span>
+          {row.entries.length === 0
+            ? row.is_completed
+              ? "Completed"
+              : "In Progress"
+            : row.entries.map((entry, index) => {
+                console.log(row.is_completed);
+                // Return the JSX for each entry here
+                return (
+                  <div key={index}>
+                    {/* Example: Display entry description */}
+                    <p>
+                      {index + 1}.) {entry.objective_entry.description} -{" "}
+                      {entry.status === 1 ? "Completed" : "In Progress"}
+                    </p>
+                  </div>
+                );
+              })}
+        </span>
+      ),
+    },
+    {
       name: "Campus",
       cell: (row) => <>{row.user.campus.name}</>,
     },
@@ -66,14 +111,26 @@ const ObjectiveMonitoring = () => {
       name: "Designation",
       cell: (row) => <>{row.user.designation.name}</>,
     },
-    {
-      name: "Objective Title",
-      cell: (row) => <>{row.objective.title}</>,
-    },
+    // {
+    //   name: "Objective Title",
+    //   cell: (row) => <>{row.objective.title}</>,
+    // },
     {
       name: "Objective Status",
       cell: (row) => (
-        <span>{row.is_completed == 1 ? "Completed" : "In-Progress"}</span>
+        <span>
+          {
+            // check if entries is empty
+            row.entries.length === 0
+              ? row.is_completed
+                ? "Completed"
+                : "In Progress"
+              : // check if all entries are completed
+              row.entries.every((entry) => entry.status == 1)
+              ? "Completed"
+              : "In Progress"
+          }
+        </span>
       ),
     },
     // completed_at
@@ -85,6 +142,16 @@ const ObjectiveMonitoring = () => {
             ? new Date(row.updated_at).toLocaleDateString("en-US")
             : "N/A"}
         </>
+      ),
+    },
+    // action : approve, reject
+    {
+      name: "Action",
+      cell: (row) => (
+        <div className="flex flex-col">
+          <Link className="btn btn-primary mb-1">Approve</Link>
+          <Link className="btn btn-danger mb-1">Reject</Link>
+        </div>
       ),
     },
   ];

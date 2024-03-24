@@ -34,7 +34,11 @@ function CreateObjectives() {
     },
     {
       name: "Submission Bin",
-      cell: (row) => <span>{row.submission_bin_id}</span>,
+      cell: (row) => <span>{row.submission_bin?.title}</span>,
+    },
+    {
+      name: "Designation",
+      cell: (row) => <span>{row.designation.name}</span>,
     },
     {
       name: "Actions",

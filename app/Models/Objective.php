@@ -13,5 +13,32 @@ class Objective extends Model
         'title',
         'objective_type', // 0 - manual, 1 - submission || , 2 - fixed # will not be accessible
         'submission_bin_id',
+        'designation_id',
     ];
+
+    public function entries()
+    {
+        return $this->hasMany(ObjectiveEntry::class);
+    }
+
+    //    designation
+    public function designation()
+    {
+        return $this->belongsTo(Designation::class);
+    }
+
+    public function classification()
+    {
+        return $this->belongsTo(Classification::class);
+    }
+
+    public function userObjectives()
+    {
+        return $this->hasMany(UserObjective::class);
+    }
+
+    public function submissionBin()
+    {
+        return $this->belongsTo(SubmissionBin::class);
+    }
 }
