@@ -1,3 +1,4 @@
+import { RequirementsEntryForm } from "@/Components/RequirementsEntryForm";
 import PanelLayout, { LayoutType } from "@/Layouts/PanelLayout";
 import { Link, useForm } from "@inertiajs/react";
 import React from "react";
@@ -47,8 +48,9 @@ function CreateObjective({ auth }) {
         <div className="container-fluid">
           <Card className="border-0 shadow-sm p-2 p-lg-3">
             <Card.Body>
-              <p className="form-text">New Target</p>
-              <hr />
+              <p className="text-2xl tracking-tight font-semibold">
+                New Target
+              </p>
               <Form onSubmit={(e) => handleSubmit(e)}>
                 <div className="mb-3">
                   <Form.Label className="text-secondary">Title:</Form.Label>
@@ -101,7 +103,9 @@ function CreateObjective({ auth }) {
                         setData("submission_bin_id", e.target.value)
                       }
                     >
-                      <option value="">Select Submission Bin</option>
+                      <option value="" disabled>
+                        Select Submission Bin
+                      </option>
                       {/* loop through submission bins */}
                       {submissionBins.map((bin) => (
                         <option key={bin.id} value={bin.id}>
@@ -111,6 +115,8 @@ function CreateObjective({ auth }) {
                     </Form.Select>
                   </div>
                 )}
+
+                <RequirementsEntryForm />
 
                 <div className="text-end mt-3 flex items-center justify-end gap-3">
                   <Link
