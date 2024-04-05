@@ -293,5 +293,40 @@ Route::get('/{appKey}/db/migrate', function ($appKey) {
     }
 });
 
+// OPCRQuestions
+Route::group(['prefix' => 'opcrquestion'], function () {
+    Route::get('/', [App\Http\Controllers\QuestionsController::class, 'opcrindex'])->name('opcrquestion.index');
+    Route::get('/create', [App\Http\Controllers\QuestionsController::class, 'opcrcreate'])->name('opcrquestion.create');
+    Route::post('/', [App\Http\Controllers\QuestionsController::class, 'opcrstore'])->name('opcrquestion.store');
+    Route::get('/{id}/edit', [App\Http\Controllers\QuestionsController::class, 'opcredit'])->name('opcrquestion.edit');
+    Route::put('/{id}', [App\Http\Controllers\QuestionsController::class, 'opcrupdate'])->name('opcrquestion.update');
+    Route::delete('/{id}', [App\Http\Controllers\QuestionsController::class, 'opcrdestroy'])->name('opcrquestion.destroy');
+
+    // archives /archives
+    Route::get('/archives', [App\Http\Controllers\QuestionsController::class, 'opcrarchives'])->name('opcrquestion.archives');
+
+    // archive question
+    Route::put('/{id}/archive', [App\Http\Controllers\QuestionsController::class, 'archive'])->name('opcrquestion.archive');
+
+    // unarchive question
+    Route::put('/{id}/unarchive', [App\Http\Controllers\QuestionsController::class, 'unarchive'])->name('opcrquestion.unarchive');
+})->middleware(['auth', 'verified']);
+
+// Opcr group 
+Route::group(['prefix' => 'opcr'], function () {
+
+    Route::get('/', [App\Http\Controllers\OPCRController::class, 'index'])->name('opcr.index');
+    Route::get('/create', [App\Http\Controllers\OPCRController::class, 'create'])->name('opcr.create');
+    Route::post('/', [App\Http\Controllers\OPCRController::class, 'store'])->name('opcr.store');
+    Route::get('/{id}', [App\Http\Controllers\OPCRController::class, 'show'])->name('opcr.show');
+    Route::get('/{id}/edit', [App\Http\Controllers\OPCRController::class, 'edit'])->name('opcr.edit');
+    Route::put('/{id}', [App\Http\Controllers\OPCRController::class, 'update'])->name('opcr.update');
+    Route::delete('/{id}', [App\Http\Controllers\OPCRController::class, 'destroy'])->name('opcr.destroy');
+
+    // print
+    Route::get('/{id}/print', [App\Http\Controllers\OPCRController::class, 'print'])->name('opcr.print');
+})->middleware(['auth', 'verified']);
+
+
 
 require __DIR__ . '/auth.php';

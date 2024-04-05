@@ -18,6 +18,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             // is_archived
             $table->boolean('is_archived')->default(false);
+
+            // status : 0 -> approved, 1 -> pending, 2 -> rejected default 1
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }
