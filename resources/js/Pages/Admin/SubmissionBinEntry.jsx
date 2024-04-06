@@ -12,12 +12,14 @@ export const SubmissionBinEntry = ({
 }) => {
   const [data, setData] = useState({
     title: entry.title,
+    event_name: entry.event_name,
     date: entry.date,
     documentation:
       typeof entry.documentation === "string"
         ? JSON.parse(entry.documentation)
         : [],
     participants: entry.participants,
+    participants_number: entry.participants_number,
     location: entry.location,
     conducted_by: entry.conducted_by,
     budget: entry.budget,
@@ -57,6 +59,21 @@ export const SubmissionBinEntry = ({
                 name="title"
                 id="title"
                 value={data.title}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div>
+              <Form.Label className="text-secondary">
+                <span className="text-sm text-danger me-1">*</span>
+                Name of Event
+              </Form.Label>
+              <Form.Control
+                type="text"
+                required
+                name="event_name"
+                id="event_name"
+                value={data.event_name}
                 onChange={handleChange}
               />
             </div>
@@ -128,6 +145,21 @@ export const SubmissionBinEntry = ({
                 name="participants"
                 id="participants"
                 value={data.participants}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div>
+              <Form.Label className="text-secondary">
+                <span className="text-sm text-danger me-1">*</span>
+                Number of Participants
+              </Form.Label>
+              <Form.Control
+                type="text"
+                required
+                name="participants_number"
+                id="participants_number"
+                value={data.participants_number}
                 onChange={handleChange}
               />
             </div>
