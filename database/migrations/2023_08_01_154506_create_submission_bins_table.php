@@ -17,11 +17,11 @@ return new class extends Migration
             $table->integer('status');
             $table->string('title');
             $table->string('instruction');
-            // campus_id is the foreign key
-            $table->foreignId('campus_id')->constrained()->cascadeOnDelete();
+            // campus_id is the foreign key which is nullable
+            $table->foreignId('campus_id')->nullable()->constrained()->nullOnDelete();
 
-            // designation_id is the foreign key
-            $table->foreignId('designation_id')->constrained()->cascadeOnDelete();
+            // designation_id is the foreign key which is nullable
+            $table->foreignId('designation_id')->nullable()->constrained()->nullOnDelete();
 
             $table->date('deadline_date');
             $table->time('deadline_time');
