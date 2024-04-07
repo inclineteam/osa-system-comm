@@ -92,9 +92,25 @@ class UnitHeadController extends Controller
     /* reports page*/
     public function reports(Request $request)
     {
-        $data['submissionBins'] = SubmissionBin::limit(5)->orderByDesc('id')->get();
+        // check if submission bin has designation set but if not lets not add it to check 
+
+        $data['submissionBins'] = SubmissionBin::where('campus_id', $request->user()->campus_id)
+            ->limit(5)
+            ->orderByDesc('id')
+            ->get();
+
         $data['rows'] = count(SubmissionBin::all());
         $data['reports'] = $request->user()->reports()->get();
+
+        $data['submissionBins'] = $data['submissionBins']->filter(function ($submissionBin) use ($request) {
+            if ($submissionBin->designation_id == null) {
+                return $submissionBin;
+            } else {
+                return $submissionBin->designation_id == $request->user()->designation_id;
+            }
+        });
+
+
         return Inertia::render('UnitHead/UnitHeadReports', $data);
     }
 

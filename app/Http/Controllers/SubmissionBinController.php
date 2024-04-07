@@ -138,10 +138,21 @@ class SubmissionBinController extends Controller
     public function all(Request $request)
     {
         $lastId = $request->id;
-        $data['submissionBins'] = SubmissionBin::where('id', '<', $lastId)->limit(10)->orderByDesc('id')->get();
+
+        dd($request->user()->campus_id, $request->user()->designation_id);
+        $data['submissionBins'] = SubmissionBin::where('campus_id', $request->user()->campus_id)
+            ->where('designation_id', $request->user()->designation_id)
+            ->where('id', '<', $lastId)
+            ->limit(10)
+            ->orderByDesc('id')
+            ->get();
+
         $lastId = $data['submissionBins'][count($data['submissionBins']) - 1]->id;
         $data['hasRows'] = SubmissionBin::where('id', '<', $lastId)->count() > 0;
         return response()->json($data);
+
+        // get all submission bins with pagination but only for the campus of the user and designation
+        // $data['submissionBins'] = SubmissionBin::where('campus_id', $request->user()->campus_id)
     }
 
     public function search(Request $request)

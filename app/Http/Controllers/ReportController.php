@@ -115,8 +115,34 @@ class ReportController extends Controller
 
     public function submitReport(Request $request, SubmissionBin $submissionBin)
     {
+
         $user = $request->user();
         $report = null;
+
+        /**
+         * "report" => null
+            "entries" => array:1 [▼
+                0 => array:10 [▼
+                "id" => "95d05ef4-0b61-418b-8caf-7355dad9886c"
+                "title" => "asdasd"
+                "event_name" => "asdasd"
+                "date" => "2024-04-11"
+                "documentation" => []
+                "participants" => array:4 [▼
+                    0 => array:2 [▼
+                    "id" => "ac65c0a9-d6e9-40ae-8132-608a45305e7c"
+                    "participant" => "asdasd"
+                    ]
+                    1 => array:2 [▶]
+                    2 => array:2 [▶]
+                    3 => array:2 [▶]
+                ]
+                "participants_number" => 0
+                "location" => "test"
+                "conducted_by" => "test"
+                "budget" => true
+                ]
+         */
 
         if ($request->report) {
             $report = Report::find($request->report['id']);
@@ -154,8 +180,9 @@ class ReportController extends Controller
                 ReportEntry::create([
                     'title' => $entry['title'],
                     'date' => $entry['date'],
+                    'event_name' => $entry['event_name'],
                     'duration' => '',
-                    'participants' => $entry['participants'],
+                    'participants' => json_encode($entry['participants']),
                     'location' => $entry['location'],
                     'conducted_by' => $entry['conducted_by'],
                     'budget' => $entry['budget'],
@@ -276,7 +303,6 @@ class ReportController extends Controller
             if ($latestReportCampus->name === $campus->name) {
                 return response()->json(['latestReport' => $latestReport]);
             }
-
         }
     }
 
@@ -330,7 +356,7 @@ class ReportController extends Controller
             }
         }
 
-        if (!isset ($data['offices'])) {
+        if (!isset($data['offices'])) {
             $data['offices'] = [];
         }
 
@@ -378,7 +404,7 @@ class ReportController extends Controller
                 // check if report has a designation
                 if ($report->designation) {
                     // check if isset
-                    if (isset ($data[$campus->name]['offices'][$report->designation->name])) {
+                    if (isset($data[$campus->name]['offices'][$report->designation->name])) {
                         $data[$campus->name]['offices'][$report->designation->name] += $report->reports->count();
                     } else {
                         $data[$campus->name]['offices'][$report->designation->name] = $report->reports->count();
@@ -407,7 +433,7 @@ class ReportController extends Controller
             // check if report has a designation
             if ($report->designation) {
                 // check if isset
-                if (isset ($data['offices'][$report->designation->name])) {
+                if (isset($data['offices'][$report->designation->name])) {
                     $data['offices'][$report->designation->name] += $report->reports->count();
                 } else {
                     $data['offices'][$report->designation->name] = $report->reports->count();
@@ -471,7 +497,7 @@ class ReportController extends Controller
             }
         }
 
-        if (!isset ($data['offices'])) {
+        if (!isset($data['offices'])) {
             $data['offices'] = [];
         }
 
@@ -489,7 +515,7 @@ class ReportController extends Controller
         }
 
 
-        if (!isset ($data['offices'])) {
+        if (!isset($data['offices'])) {
             $data['offices'] = [];
         }
 
