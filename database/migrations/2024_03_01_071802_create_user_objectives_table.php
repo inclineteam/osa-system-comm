@@ -16,11 +16,14 @@ return new class extends Migration
             $table->foreignId('objective_id')->constrained()->onDelete('cascade');
             $table->boolean('is_completed')->default(false);
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
             // is_archived
             $table->boolean('is_archived')->default(false);
 
-            // status : 0 -> approved, 1 -> pending, 2 -> rejected default 1
+            // status : 1-> completed, 1 -> in-progress, 2 -> needs-review, 3 - overdue
             $table->tinyInteger('status')->default(1);
+
+
             $table->timestamps();
         });
     }

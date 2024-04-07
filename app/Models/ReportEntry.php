@@ -21,6 +21,7 @@ class ReportEntry extends Model
         'conducted_by',
         'location',
         'documentation',
+        'event_name',
     ];
 
     public function user()

@@ -18,7 +18,9 @@ class SubmissionBin extends Model
         'instruction',
         'deadline_date',
         'deadline_time',
-        'has_deadline'
+        'has_deadline',
+        'campus_id',
+        'designation_id',
     ];
 
     public function attachments(): HasMany
