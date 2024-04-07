@@ -56,7 +56,14 @@ export const ReportImages = ({ entry, tdClass, imgClass }) => {
             />
           ))}
         </td>
-        <td>{entry.participants}</td>
+        <td>
+          {JSON.parse(entry.participants).map((participant, index) => (
+            <div key={index} className="flex items-center gap-1">
+              <i className="fi fi-rr-user text-xs"></i>
+              <span>{participant.participant}</span>
+            </div>
+          ))}
+        </td>
         <td>{entry.location}</td>
         <td>{entry.conducted_by}</td>
         <td>{entry.budget === 1 ? "Accomplished" : "Not accomplished"}</td>
