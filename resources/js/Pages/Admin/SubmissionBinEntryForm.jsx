@@ -17,9 +17,13 @@ export const SubmissionBinEntryForm = ({ submissionBinId, report }) => {
           {
             id: crypto.randomUUID(),
             title: entry.title,
+            // event_name: entry.event_name,
+            event_name: "",
             date: entry.date,
             duration: "",
             participants: entry.participants,
+            // participants_number: entry.participants_number,
+            participants_number: "",
             documentation: entry.documentation,
             location: entry.location,
             conducted_by: entry.conducted_by,
