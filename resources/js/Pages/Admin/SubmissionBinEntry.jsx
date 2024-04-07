@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card, Form, FormCheck } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { SubmissionBinEntryImageInput } from "./SubmissionBinEntryImageInput";
+import { ParticipantsEntryForm } from "@/Components/ParticipantsEntryForm";
 
 export const SubmissionBinEntry = ({
   deleteDataInEntries,
@@ -10,6 +11,7 @@ export const SubmissionBinEntry = ({
   entryCount,
   entry,
 }) => {
+  console.log(entry);
   const [data, setData] = useState({
     title: entry.title,
     event_name: entry.event_name,
@@ -18,13 +20,27 @@ export const SubmissionBinEntry = ({
       typeof entry.documentation === "string"
         ? JSON.parse(entry.documentation)
         : [],
-    participants: entry.participants,
-    participants_number: entry.participants_number,
+    participants:
+      typeof entry.participants === "string"
+        ? JSON.parse(entry.participants)
+        : [],
+    participants_number:
+      typeof entry.participants === "string"
+        ? JSON.parse(entry.participants).length
+        : 0,
     location: entry.location,
     conducted_by: entry.conducted_by,
     budget: entry.budget,
   });
   const [hide, setHide] = useState(false);
+  const [participants, setParticipants] = useState([]);
+  const [participant, setParticipant] = useState("");
+
+  const handleAddParticipant = () => {
+    if (!participant) return;
+
+    setParticipants((prev) => [...prev, participant]);
+  };
 
   const handleChange = (e) => {
     setData((prevData) => ({ ...prevData, [e.target.name]: e.target.value }));
@@ -134,34 +150,25 @@ export const SubmissionBinEntry = ({
               </div>
             </div>
 
-            <div>
-              <Form.Label className="text-secondary">
-                <span className="text-sm text-danger me-1">*</span>
-                Participants
-              </Form.Label>
-              <Form.Control
-                type="text"
-                required
-                name="participants"
-                id="participants"
-                value={data.participants}
-                onChange={handleChange}
-              />
-            </div>
+            <div className="flex">
+              <div className="flex-[2]">
+                <ParticipantsEntryForm
+                  participants={participants}
+                  setParticipants={setParticipants}
+                  dataParticipants={data.participants}
+                  setData={setData}
+                />
+              </div>
 
-            <div>
-              <Form.Label className="text-secondary">
-                <span className="text-sm text-danger me-1">*</span>
-                Number of Participants
-              </Form.Label>
-              <Form.Control
-                type="text"
-                required
-                name="participants_number"
-                id="participants_number"
-                value={data.participants_number}
-                onChange={handleChange}
-              />
+              <div className="ml-4 flex-1">
+                <Form.Label className="text-secondary">
+                  <span className="text-sm text-danger me-1">*</span>
+                  Number of Participants
+                </Form.Label>
+                <p className="text-2xl font-semibold m-0">
+                  {data.participants.length}
+                </p>
+              </div>
             </div>
 
             <div>

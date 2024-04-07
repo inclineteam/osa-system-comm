@@ -117,7 +117,7 @@ const SuperAdminDashboard = () => {
                 report.
               </p>
               <div
-                class={`overflow-hidden rounded-md border-slate-200 ${
+                className={`overflow-hidden rounded-md border-slate-200 ${
                   !latestReport.data ? "border-2 border-dashed" : "border"
                 }`}
               >

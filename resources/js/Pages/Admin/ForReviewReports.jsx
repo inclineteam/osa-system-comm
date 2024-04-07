@@ -68,7 +68,7 @@ export default function ForReviewReports({ reports, campuses }) {
                   ])}
                   className="w-full lg:flex-1 uppercase group hover:text-indigo-600 hover:border-indigo-300 rounded-md text-lg font-semibold text-slate-600 flex flex-col p-6 border-[1px] border-slate-300 shadow-sm"
                 >
-                  <i class="fi fi-rr-cabin text-3xl mb-3 text-slate-400 group-hover:text-indigo-400"></i>
+                  <i className="fi fi-rr-cabin text-3xl mb-3 text-slate-400 group-hover:text-indigo-400"></i>
                   <span>{campus.name}</span>
                 </Link>
               ))}

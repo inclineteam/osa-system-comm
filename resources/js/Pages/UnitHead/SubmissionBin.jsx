@@ -78,7 +78,7 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
                 <div>
                   <span className="mr-4 items-start gap-2.5 w-max flex pl-3.5 pr-2.5 py-1.5 border border-slate-300 rounded-md">
                     <i
-                      class={`fi mt-0.5 ${statusIcons[report.status]} ${
+                      className={`fi mt-0.5 ${statusIcons[report.status]} ${
                         statusColors[report.status]
                       }`}
                     ></i>

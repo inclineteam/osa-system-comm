@@ -148,7 +148,11 @@ class AdminController extends Controller
 
     public function create_submission_bin()
     {
-        return Inertia::render('Admin/CreateSubmissionBin');
+        $data = [];
+        $data['classifications'] = Classification::with(['designations'])->get();
+        $data['campuses'] = Campus::all();
+
+        return Inertia::render('Admin/CreateSubmissionBin', $data);
     }
     public function edit_submission_bin(Request $request)
     {

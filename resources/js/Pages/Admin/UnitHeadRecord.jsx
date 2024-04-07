@@ -82,7 +82,7 @@ const UnitHeadRecord = ({ unitHeads }) => {
               }}
               className="block py-1.5 text-slate-800 hover:bg-slate-100 rounded px-3"
             >
-              <i class="fi text-red-500  fi-ss-user-slash"></i>
+              <i className="fi text-red-500  fi-ss-user-slash"></i>
             </Link>
           )}
 
@@ -95,7 +95,7 @@ const UnitHeadRecord = ({ unitHeads }) => {
               }}
               className="block py-1.5 text-slate-800 hover:bg-slate-100 rounded px-3"
             >
-              <i class="fi text-emerald-500  fi-ss-user-slash"></i>
+              <i className="fi text-emerald-500  fi-ss-user-slash"></i>
             </Link>
           )}
         </div>
