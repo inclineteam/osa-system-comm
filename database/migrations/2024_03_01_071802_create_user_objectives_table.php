@@ -23,6 +23,8 @@ return new class extends Migration
             // status : 1-> completed, 1 -> in-progress, 2 -> needs-review, 3 - overdue
             $table->tinyInteger('status')->default(1);
 
+            // info_data
+            $table->json('info_data')->nullable();
 
             $table->timestamps();
         });
