@@ -9,17 +9,18 @@ import { useState } from "react";
 import { Button, Card, Container, Form } from "react-bootstrap";
 import { toast } from "sonner";
 
-const CreateSubmissionBin = ({ auth }) => {
+const CreateSubmissionBin = ({ auth, campuses, classifications }) => {
   const { post, processing, data, setData } = useForm({
     title: "",
     instruction: "",
     deadline_date: "",
     deadline_time: "",
+    campus_id: null,
+    designation_id: null,
   });
   const [submitting, setSubmitting] = useState(false);
   const [showFileModal, setShowFileModal] = useState(false);
   const [viewFile, setViewFile] = useState(null);
-
   const [files, setFiles] = useState([]);
 
   const showFile = (file) => {
@@ -53,6 +54,8 @@ const CreateSubmissionBin = ({ auth }) => {
       });
   };
 
+  console.log(campuses);
+
   return (
     <PanelLayout
       defaultActiveLink="submission-bins"
@@ -68,6 +71,50 @@ const CreateSubmissionBin = ({ auth }) => {
                   <span>New Submission Bin</span>
                 </p>
               </div>
+              {auth.role === "admin" ? (
+                <div className="mb-3">
+                  <Form.Label className="text-secondary">
+                    Designation:
+                  </Form.Label>
+                  <Form.Select
+                    onChange={(e) =>
+                      setData("designation_id", parseInt(e.target.value) + 1)
+                    }
+                  >
+                    <option>select classification</option>
+                    {classifications &&
+                      classifications.map((c, index) => (
+                        // select classification
+
+                        <optgroup key={index + 1} label={c.name}>
+                          {c.designations.map((desig, i) => (
+                            <option value={i} key={i}>
+                              {desig.name}
+                            </option>
+                          ))}
+                        </optgroup>
+                      ))}
+                  </Form.Select>
+                </div>
+              ) : (
+                <div className="mb-3">
+                  <Form.Label className="text-secondary">Campus:</Form.Label>
+                  <Form.Select
+                    onChange={(e) =>
+                      setData("campus_id", parseInt(e.target.value))
+                    }
+                  >
+                    <option>select classification</option>
+                    {campuses &&
+                      campuses.map((c, index) => (
+                        <option value={c.id} key={index + 1}>
+                          {c.name}
+                        </option>
+                      ))}
+                  </Form.Select>
+                </div>
+              )}
+
               <div className="mb-3">
                 <Form.Label>Title:</Form.Label>
                 <Form.Control
@@ -76,6 +123,7 @@ const CreateSubmissionBin = ({ auth }) => {
                   type="text"
                 />
               </div>
+
               <div className="mb-3">
                 <Form.Label>Instruction:</Form.Label>
                 <textarea

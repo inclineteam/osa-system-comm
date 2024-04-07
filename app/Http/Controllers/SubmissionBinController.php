@@ -38,6 +38,9 @@ class SubmissionBinController extends Controller
         $bin = new SubmissionBin([
             'title' => $request->title,
             'instruction' => $request->instruction,
+            'campus_id' => $request->campus_id,
+            // IMPORTANT: `?? 1` should be remove
+            'designation_id' => $request->designation_id ?? 1,
             'deadline_date' => $request->deadline_date,
             'deadline_time' => $request->deadline_time,
         ]);
