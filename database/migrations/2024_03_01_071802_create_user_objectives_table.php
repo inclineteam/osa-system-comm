@@ -20,11 +20,13 @@ return new class extends Migration
             // is_archived
             $table->boolean('is_archived')->default(false);
 
-            // status : 1-> completed, 1 -> in-progress, 2 -> needs-review, 3 - overdue
-            $table->tinyInteger('status')->default(1);
+            // status : 1-> completed, 0 -> not completed
+            $table->tinyInteger('status')->default(0);
 
-            // info_data
-            $table->json('info_data')->nullable();
+            // admin_status : 0 - review, 1 - approved, 2 - rejected
+            $table->tinyInteger('admin_status')->default(0);
+
+           
 
             $table->timestamps();
         });

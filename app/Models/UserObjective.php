@@ -14,8 +14,11 @@ class UserObjective extends Model
         'objective_id',
         'is_completed',
         'user_id',
-        'is_archived'
+        'is_archived',
+        'admin_status',
     ];
+
+
 
     // objective
     public function objective()
@@ -24,10 +27,7 @@ class UserObjective extends Model
     }
 
     // // entries
-    // public function entries()
-    // {
-    //     return $this->hasMany(UserCheckoutEntry::class);
-    // }
+
 
     // user
     public function user()

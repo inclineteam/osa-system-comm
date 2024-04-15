@@ -1,15 +1,17 @@
 import PanelLayout from "@/Layouts/PanelLayout";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { set } from "date-fns";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const ObjectiveMonitoring = () => {
+const ObjectiveMonitoring = ({ classifications }) => {
+  console.log(classifications);
+  const [classificationIndex, setClassificationIndex] = useState(null);
   // get all user objectives
   const [userObjectives, setUserObjectives] = useState([]);
   // year date selector
@@ -19,8 +21,13 @@ const ObjectiveMonitoring = () => {
     setSelectedYear(date);
   };
 
+  // get all campus
+  const [campuses, setCampuses] = useState([]);
+
   // quarter
   const [selectedQuarter, setSelectedQuarter] = useState(null);
+
+  const [selectedCampus, setSelectedCampus] = useState(null);
 
   const handleQuarterChange = (e) => {
     setSelectedQuarter(e.target.value);
@@ -31,22 +38,31 @@ const ObjectiveMonitoring = () => {
       await axios
         .get(
           route("objectives.user.get", {
-            year: selectedYear?.getFullYear(),
-            quarter: selectedQuarter?.toString(),
+            year: selectedYear ? selectedYear.getFullYear() : null,
+            quarter: selectedQuarter,
+            classificationIndex: classificationIndex,
+            campus: selectedCampus,
           })
         )
         .then((res) => {
-          if (res.statusText === "OK") {
-            console.log(res.data);
+          if (res.status === 200) {
             setUserObjectives(res.data);
           }
         });
     };
 
     getUserObjectives();
+  }, [selectedYear, selectedQuarter, classificationIndex, selectedCampus]);
 
-    // change user objectives based on selected year and quarter
-  }, [selectedQuarter, selectedYear]);
+  useEffect(() => {
+    const fetchCampuses = () => {
+      axios.get(route("campus.index")).then((res) => {
+        setCampuses(res.data.campuses);
+      });
+    };
+
+    fetchCampuses();
+  }, []);
 
   // user name ( first name + last name ), campus, designation, objective title, objective status ( is_completed ), objective type
   const columns = [
@@ -54,7 +70,7 @@ const ObjectiveMonitoring = () => {
       name: "User Name",
       cell: (row) => (
         <span>
-          {row.user.firstname} {row.user.lastname}
+          {row.user ? `${row.user.firstname} ${row.user.lastname}` : "N/A"}
         </span>
       ),
     },
@@ -148,9 +164,93 @@ const ObjectiveMonitoring = () => {
     {
       name: "Action",
       cell: (row) => (
+        // check if admin_status is 1 or 2
         <div className="flex flex-col">
-          <Link className="btn btn-primary mb-1">Approve</Link>
-          <Link className="btn btn-danger mb-1">Reject</Link>
+          {row.admin_status == 0 ? (
+            <div className="flex flex-col">
+              {/*  */}
+              {row.is_completed && (
+                // for reviewal, approve
+                <div>
+                  <button
+                    variant="success"
+                    className="bg-green-500 text-white px-2 py-1 rounded-md"
+                    onClick={() => {
+                      // approve objective
+                      axios
+                        .put(route("objectives.approve"), {
+                          id: row.id,
+                        })
+                        .then((res) => {
+                          if (res.statusText === "OK") {
+                            setUserObjectives(
+                              userObjectives.map((objective) => {
+                                if (objective.id === row.id) {
+                                  return {
+                                    ...objective,
+                                    admin_status: 1,
+                                  };
+                                }
+                                return objective;
+                              })
+                            );
+                          }
+                        });
+                    }}
+                  >
+                    Approve
+                  </button>
+                  {/* for reviewal */}
+                  <button
+                    className="bg-blue-500 text-white px-2 py-1 rounded-md mt-2"
+                    onClick={() => {
+                      // reject objective
+                      axios
+                        .put(route("objectives.reject"), {
+                          id: row.id,
+                        })
+                        .then((res) => {
+                          if (res.statusText === "OK") {
+                            // dynamically update the user objectives
+                            setUserObjectives(
+                              userObjectives.map((objective) => {
+                                if (objective.id === row.id) {
+                                  return {
+                                    ...objective,
+                                    admin_status: 2,
+                                  };
+                                }
+                                return objective;
+                              })
+                            );
+                          }
+                        });
+                    }}
+                  >
+                    For Review
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : row.admin_status == 1 ? (
+            // display approved
+            <span className="text-green-500">Approved</span>
+          ) : (
+            // display rejected
+            <span className="text-red-500">For Reviewal</span>
+          )}
+
+          {/** check if there are entries, if there is show a button to check the entries */}
+          {row.entries.length > 0 && (
+            <button
+              onClick={() =>
+                router.visit(`/admin/objectives/${row.id}/entries`)
+              }
+              className="bg-blue-500 py-1 px-2 rounded-md text-white mt-2"
+            >
+              View Entries
+            </button>
+          )}
         </div>
       ),
     },
@@ -214,6 +314,54 @@ const ObjectiveMonitoring = () => {
               <option value="2">2nd Quarter</option>
               <option value="3">3rd Quarter</option>
               <option value="4">4th Quarter</option>
+            </select>
+          </div>
+
+          {/* select campus */}
+          <div className="z-50 mx-2">
+            <div>
+              <p className="font-bold mb-0">Select Campus</p>
+            </div>
+            <select
+              className="border-slate-300 rounded-md hover:border-slate-400"
+              name="campus"
+              onChange={(e) => setSelectedCampus(e.target.value)}
+              id="campus"
+            >
+              <option>Select Campus</option>
+              {campuses.map((campus) => (
+                <option key={campus.id} value={campus.id}>
+                  {campus.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="z-50 mx-2">
+            <div>
+              <p className="font-bold mb-0">Select Classification</p>
+            </div>
+            <select
+              required
+              className="border-slate-300 w-[90%] rounded-md hover:border-slate-400"
+              defaultValue={""}
+              onChange={(e) =>
+                setClassificationIndex(parseInt(e.target.value) + 1)
+              }
+            >
+              <option value={""} disabled>
+                Select Classification
+              </option>
+              {classifications &&
+                classifications.map((c, index) => (
+                  <optgroup key={index + 1} label={c.name}>
+                    {c.designations.map((desig, i) => (
+                      <option value={i} key={i}>
+                        {desig.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
             </select>
           </div>
         </div>

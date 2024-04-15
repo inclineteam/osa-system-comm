@@ -13,7 +13,8 @@ class UserCheckoutEntry extends Model
         'objective_entry_id',
         'status',
         'completed_at',
-        'user_id'
+        'user_id',
+        'info_data',
     ];
 
     public function objectiveEntry()

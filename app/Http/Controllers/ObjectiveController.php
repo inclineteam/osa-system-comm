@@ -50,6 +50,8 @@ class ObjectiveController extends Controller
     public function create()
     {
         $data['classifications'] = Classification::with(['designations'])->get();
+        // campus
+        $data['campuses'] = DB::table('campuses')->get();
 
         return Inertia::render('Admin/CreateObjective', $data);
     }
@@ -66,13 +68,10 @@ class ObjectiveController extends Controller
                 'title' => 'required',
                 'objective_type' => 'required',
                 'classificationIndex' => 'required',
+                'campus_id' => 'required',
             ]);
 
-
-
             $objective = new Objective();
-
-
 
             // check first is submission_bin_id is not null
             if ($request->submission_bin_id != null) {
@@ -81,12 +80,16 @@ class ObjectiveController extends Controller
 
                 $objective->objective_type = $request->objective_type;
                 $objective->submission_bin_id = $request->submission_bin_id;
+                $objective->campus_id = $request->campus_id;
+                $objective->due_date = $request->due_date;
                 $objective->designation_id = $request->classificationIndex;
                 $objective->save();
             } else {
 
                 $objective->title = $request->title;
                 $objective->objective_type = $request->objective_type;
+                $objective->campus_id = $request->campus_id;
+                $objective->due_date = $request->due_date;
                 $objective->designation_id = $request->classificationIndex;
                 $objective->submission_bin_id = null;
                 $objective->save();
@@ -102,8 +105,8 @@ class ObjectiveController extends Controller
                 }
             }
 
-            // all unitHeads where they have a designation of unit head and not null
-            $unitHeads = User::whereNotNull('campus_id')->get();
+            // all unitHeads where they have a designation of unit head and not null and campus_id
+            $unitHeads = User::where('designation_id', $request->classificationIndex)->where('campus_id', $request->campus_id)->get();
 
 
             foreach ($unitHeads as $unitHead) {
@@ -170,10 +173,6 @@ class ObjectiveController extends Controller
                 'designation_id' => $request->classificationIndex,
             ]);
 
-            // dd($objective);
-
-
-
             // check if requirements is not null
             if ($request->requirements != null) {
                 ObjectiveEntry::where('objective_id', $objective->id)->delete();
@@ -230,13 +229,14 @@ class ObjectiveController extends Controller
         return response()->json($userObjectives);
     }
 
-    //update user objective
     public function updateUserObjective(Request $request)
     {
         try {
-            // $userObjective = UserObjective::find($request->id);
-            // $userObjective->update($request->all());
-            // $userObjective->save();
+            // Convert info_data to JSON string if it's an array
+            if (is_array($request->info_data)) {
+                $info_data = json_encode($request->info_data);
+                $request->merge(['info_data' => $info_data]);
+            }
 
             $entry = UserCheckoutEntry::find($request->id);
             $entry->update($request->all());
@@ -246,6 +246,20 @@ class ObjectiveController extends Controller
         }
 
         return response()->json(['message' => 'User objective updated successfully'], 200);
+    }
+
+    // updateObjective
+    public function updateObjective(Request $request)
+    {
+        try {
+            $objective = UserObjective::find($request->id);
+            $objective->update($request->all());
+            $objective->save();
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error updating objective' . $th->getMessage()], 500);
+        }
+
+        return response()->json(['message' => 'Objective updated successfully'], 200);
     }
 
     // getAllUsersObjective
@@ -259,30 +273,42 @@ class ObjectiveController extends Controller
             '4' => [10, 11, 12]
         ];
 
-
         $year = $request->input('year');
         $quarter = $request->input('quarter');
+        $classificationId = $request->input('classificationIndex');
+        $campus = $request->input('campus');
 
         // Start query with base conditions
         $query = UserObjective::query();
-
-
+        $query = $query->with('user', 'objective');
 
         // If both year and quarter are provided, add additional conditions
         if ($year && $quarter) {
             $query->whereYear('created_at', $year)->whereIn(DB::raw('MONTH(created_at)'), $quarters[$quarter]);
         }
 
-        // Fetch user objectives
-        $userObjectives = $query->with('user', 'objective')->get();
+
+        // Fetch user objectives with user and objective relationships with search conditions
+        $userObjectives = $query->whereHas('user', function ($query) use ($classificationId, $campus) {
+            //    check if campus is not null
+            if ($campus != null) {
+                $query->where('campus_id', $campus);
+            }
+
+            // check if classificationId is not null
+            if ($classificationId != null) {
+                $query->where('designation_id', $classificationId);
+            }
+        })->get();
+
 
         // get UserCheckoutEntry
         foreach ($userObjectives as $userObjective) {
-            $userObjective->entries = UserCheckoutEntry::where('user_id', $userObjective->user_id)->whereHas('objectiveEntry', function ($query) use ($userObjective) {
+            $userObjective->entries = UserCheckoutEntry::where('user_id', $userObjective->user_id)->whereHas('objectiveEntry', function ($query) use ($userObjective, $campus) {
                 $query->where('objective_id', $userObjective->objective_id);
             })->get();
 
-            // get entries  
+            // get entries
             foreach ($userObjective->entries as $entry) {
                 $entry->objectiveEntry;
             }
@@ -291,6 +317,13 @@ class ObjectiveController extends Controller
         // Return JSON response
         return response()->json($userObjectives);
     }
+
+
+
+
+
+
+
 
     // getUserArchiveObjective
     public function getArchivedUserObjective($id, Request $request)
@@ -301,5 +334,59 @@ class ObjectiveController extends Controller
 
         // Return JSON response
         return response()->json($userObjectives);
+    }
+
+    // archiveUserObjective
+    public function archiveUserObjective(Request $request)
+    {
+        try {
+            $userObjective = UserObjective::find($request->id);
+            $userObjective->is_archived = $userObjective->is_archived == 1 ? 0 : 1;
+            $userObjective->save();
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error archiving user objective' . $th->getMessage()], 500);
+        }
+
+        return response()->json(['message' => 'User objective archived successfully'], 200);
+    }
+
+    // approveObjective
+    public function approveObjective(Request $request)
+    {
+
+        try {
+            $userObjective = UserObjective::find($request->id);
+            $userObjective->admin_status = 1;
+            // set is_archived to 1
+            $userObjective->is_archived = 1;
+            $userObjective->save();
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error approving user objective' . $th->getMessage()], 500);
+        }
+
+        return response()->json(['message' => 'User objective approved successfully'], 200);
+    }
+
+    // rejectObjective
+    public function rejectObjective(Request $request)
+    {
+        try {
+            $userObjective = UserObjective::find($request->id);
+            $userObjective->admin_status = 2;
+            $userObjective->save();
+
+            // get entries of the objective
+            $entries = ObjectiveEntry::where('objective_id', $userObjective->objective_id)->get();
+
+            foreach ($entries as $entry) {
+                $userEntry = UserCheckoutEntry::where('objective_entry_id', $entry->id)->where('user_id', $userObjective->user_id)->first();
+                $userEntry->status = false;
+                $userEntry->save();
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error rejecting user objective' . $th->getMessage()], 500);
+        }
+
+        return response()->json(['message' => 'User objective rejected successfully'], 200);
     }
 }

@@ -23,11 +23,15 @@ use App\Mail\CalendarEventMail;
 use App\Mail\NewReportMail;
 use App\Models\AnnualReport;
 use App\Models\CalendarEvent;
+use App\Models\Classification;
+use App\Models\Designation;
 use App\Models\Report;
 use App\Models\ReportComment;
 use App\Models\SubmissionBin;
 use App\Models\User;
+use App\Models\UserCheckoutEntry;
 use App\Models\UserEventsHistory;
+use App\Models\UserObjective;
 use App\Notifications\CalendarEventNotification;
 use App\Notifications\DueSubmissionBin;
 use App\Notifications\NewComment;
@@ -97,7 +101,14 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
 
     // userobjectives monitoring
     Route::get('/user-objectives', function () {
-        return Inertia::render('Admin/ObjectiveMonitoring');
+        // get designations
+        $designations = Classification::with(['designations'])->get();
+        return Inertia::render(
+            'Admin/ObjectiveMonitoring',
+            [
+                'classifications' => $designations
+            ]
+        );
     })->name('admin.user_objectives');
 
     // userobjectives archives
@@ -109,6 +120,35 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
 
     // members
     Route::get('/members', [AdminController::class, 'members'])->name('admin.members');
+
+    // userobjectives entries
+    Route::get('/objectives/{id}/entries', function ($id) {
+
+        // get all user objective entries
+        $userObjective = UserObjective::where('objective_id', $id)->orderBy('created_at', 'desc')->get();
+
+        // get all user objective entries
+        // $userObjectiveEntries = UserCheckoutEntry::where('objective_id', $id)->orderBy('created_at', 'desc')->get(); // error
+        $userObjectiveEntries = UserCheckoutEntry::whereHas('objectiveEntry', function ($query) use ($id) {
+            $query->where('objective_id', $id);
+        })->orderBy('created_at', 'desc')->get();
+
+        // json decode info_data
+        $userObjectiveEntries->map(function ($entry) {
+            $entry->info_data = json_decode($entry->info_data);
+            return $entry;
+        });
+
+        // get user
+        $userObjectiveEntries->map(function ($entry) {
+            $entry->user = User::find($entry->user_id);
+            return $entry;
+        });
+
+        return Inertia::render('Admin/ObjectiveEntries', [
+            'userObjectiveEntries' => $userObjectiveEntries,
+        ]);
+    })->name('admin.user_objectives.entries');
 
     Route::get('/objectives/create', [ObjectiveController::class, 'create'])->name('admin.objectives.create');
     Route::get('/signout', [AdminController::class, 'signout'])->name('admin.signout');

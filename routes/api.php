@@ -163,11 +163,23 @@ Route::prefix('/objectives')->group(function () {
     Route::get('/{id}/all', [ObjectiveController::class, 'allUserObjectives'])->name('objectives.user.all');
     Route::put('/user', [ObjectiveController::class, 'updateUserObjective'])->name('objectives.user.update');
 
+    // update user objective
+    Route::put('/update', [ObjectiveController::class, 'updateObjective'])->name('objectives.update');
+
     // get all users objectives from UserObjective model
     Route::get('/all/user', [ObjectiveController::class, 'getUsersObjective'])->name('objectives.user.get');
 
     // get specific user objectives from UserObjective model that is archived
     Route::get('/{id}/archived', [ObjectiveController::class, 'getArchivedUserObjective'])->name('objectives.user.archived');
+
+    // archive user objective
+    Route::put('/archive', [ObjectiveController::class, 'archiveUserObjective'])->name('objectives.user.archive');
+
+    // reject
+    Route::put('/reject', [ObjectiveController::class, 'rejectObjective'])->name('objectives.reject');
+
+    // approve
+    Route::put('/approve', [ObjectiveController::class, 'approveObjective'])->name('objectives.approve');
 })->middleware(['auth']);
 
 

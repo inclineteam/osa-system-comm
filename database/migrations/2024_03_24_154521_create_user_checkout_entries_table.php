@@ -23,6 +23,9 @@ return new class extends Migration
             $table->tinyInteger('status')->default(0);
             // completed_at
             $table->timestamp('completed_at')->nullable();
+
+            // info_data
+            $table->json('info_data')->nullable();
             $table->timestamps();
         });
     }

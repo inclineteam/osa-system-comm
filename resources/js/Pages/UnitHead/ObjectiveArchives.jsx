@@ -17,7 +17,7 @@ const ObjectiveArchives = ({ auth }) => {
         .get(route("objectives.user.archived", auth.user.id))
         .then((res) => {
           if (res.statusText === "OK") {
-            console.log(res.data);
+            console.log(res);
             setUserObjectives(res.data);
           }
         });

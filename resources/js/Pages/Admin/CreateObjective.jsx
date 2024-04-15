@@ -5,14 +5,19 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
+import { toast } from "sonner";
 
-function CreateObjective({ auth, classifications }) {
+function CreateObjective({ auth, classifications, campuses }) {
   const [classificationIndex, setClassificationIndex] = useState(null);
   const { data, setData, processing, post } = useForm({
     title: "",
     submission_bin_id: null,
     objective_type: 0,
+    campus_id: null,
+    due_date: "",
   });
+
+  console.log(campuses);
   const [requirements, setRequirements] = useState([]);
   const [submissionBins, setSubmissionBins] = useState([]);
 
@@ -37,6 +42,11 @@ function CreateObjective({ auth, classifications }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (requirements.length == 0 && data.objective_type == 0) {
+      toast.error("Please add requirements for self checkout objective");
+      return;
+    }
+
     router.post(route("objectives.store"), {
       ...data,
       requirements,
@@ -48,7 +58,7 @@ function CreateObjective({ auth, classifications }) {
     <PanelLayout
       userAuth={auth}
       layout={LayoutType.SUPER_ADMIN}
-      headerTitle="Create Announcement"
+      headerTitle="Create Target"
     >
       <div className="py-3">
         <div className="container-fluid">
@@ -69,16 +79,39 @@ function CreateObjective({ auth, classifications }) {
                   />
                 </div>
 
+                {/* select campus */}
+                <div className="mb-3">
+                  <Form.Label className="text-secondary">Campus:</Form.Label>
+                  <Form.Select
+                    required
+                    defaultValue={""}
+                    onChange={(e) => setData("campus_id", e.target.value)}
+                  >
+                    <option value={""} disabled>
+                      Select Campus
+                    </option>
+                    {campuses.map((campus) => (
+                      <option key={campus.id} value={campus.id}>
+                        {campus.name}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </div>
+
                 <div className="mb-3">
                   <Form.Label className="text-secondary">
                     Designation:
                   </Form.Label>
                   <Form.Select
+                    required
+                    defaultValue={""}
                     onChange={(e) =>
                       setClassificationIndex(parseInt(e.target.value) + 1)
                     }
                   >
-                    <option>select classification</option>
+                    <option value={""} disabled>
+                      select classification
+                    </option>
                     {classifications &&
                       classifications.map((c, index) => (
                         // select classification
@@ -92,6 +125,17 @@ function CreateObjective({ auth, classifications }) {
                         </optgroup>
                       ))}
                   </Form.Select>
+                </div>
+
+                {/* due date */}
+                <div className="mb-3">
+                  <Form.Label className="text-secondary">Due Date:</Form.Label>
+                  <Form.Control
+                    type="date"
+                    required
+                    value={data.due_date}
+                    onChange={(e) => setData("due_date", e.target.value)}
+                  />
                 </div>
 
                 {/* objective type radio button here 2 types : 0 - self checkout, 1 - submission */}
