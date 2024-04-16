@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { toast } from "sonner";
+import { ObjectiveTableInput } from "./ObjectiveTableInput";
 
 const Objective = ({ user }) => {
   const [objectives, setObjectives] = useState([]);
@@ -26,19 +27,146 @@ const Objective = ({ user }) => {
     const data = {};
     objectives.forEach((objective) => {
       objective.entries.forEach((entry) => {
-        if (user.designation.id === 1) {
-          data[entry.id] = {
-            programActivity: "",
-            satisfactionRating: "",
-            guidanceServices: "",
-          };
-        } else if (user.designation.id === 2) {
-          data[entry.id] = {
-            attendance: "",
-            printedMaterials: "",
-            typeOfMaterials: "",
-            satisfactionRating: "",
-          };
+        switch (entry) {
+          case 1:
+            data[entry.id] = {
+              programActivity: "",
+              satisfactionRating: "",
+              guidanceServices: "",
+            };
+            break;
+          case 2:
+            data[entry.id] = {
+              attendance: "",
+              printedMaterials: "",
+              typeOfMaterials: "",
+              satisfactionRating: "",
+            };
+            break;
+          case 3:
+            data[entry.id] = {
+              jobConducted: "",
+              satisfactionRating: "",
+            };
+            break;
+          case 4:
+            data[entry.id] = {
+              numOfProvidedCopy: "",
+            };
+            break;
+          case 5:
+            data[entry.id] = {
+              studentNumber: "",
+              activitiesNumber: "",
+              numOfActMonitored: "",
+            };
+            break;
+          case 6:
+            data[entry.id] = {
+              relatedActivitiesNumber: "",
+              satisfactionRating: "",
+            };
+            break;
+          case 7:
+            data[entry.id] = {
+              casesSettledNumber: "",
+            };
+            break;
+          case 8:
+            data[entry.id] = {
+              paperNumber: "",
+              trainingWorkshopNumber: "",
+              enrolledStudentsNumber: "",
+            };
+            break;
+          case 9:
+            data[entry.id] = {
+              conductedRelatedActivities: "",
+              obtainedFourPointZeroSatRating: "",
+            };
+            break;
+          case 10:
+            data[entry.id] = {
+              submitAfterEnrollment: "",
+              scholarsNumber: "",
+              conductedActivityPerSemNumber: "",
+            };
+            break;
+          case 11:
+            data[entry.id] = {
+              conductedActivityNumber: "",
+              satisfactionRating: "",
+            };
+            break;
+          case 12:
+            data[entry.id] = {
+              evaluatedFoodNumber: "",
+            };
+            break;
+          case 13:
+            data[entry.id] = {
+              conductedActivityNumber: "",
+              satisfactionRating: "",
+              assistanceNumber: "",
+              sanitationProgram: "",
+            };
+            break;
+          case 14:
+            data[entry.id] = {
+              satisfactionObtained: "",
+              safetyAndSecurity: "",
+            };
+            break;
+          case 15:
+            data[entry.id] = {
+              monitoredStudentNumber: "",
+            };
+            break;
+          case 16:
+            data[entry.id] = {
+              monitoredStudentNumber: "",
+              satisfactionRating: "",
+            };
+            break;
+          case 17:
+            data[entry.id] = {};
+            break;
+          case 18:
+            data[entry.id] = {
+              internalPolicy: "",
+            };
+            break;
+          case 19:
+            data[entry.id] = {
+              conductedCulturalAndArtsNumber: "",
+              satisfactionRating: "",
+              conductedTrainingNumber: "",
+              attendedNumber: "",
+            };
+            break;
+          case 20:
+            data[entry.id] = {
+              conductedIndividPhysicalFitnessNumber: "",
+              satisfactionRating: "",
+            };
+            break;
+          case 21:
+            data[entry.id] = {
+              conductedIndividPhysicalFitnessNumber: "",
+              satisfactionRating: "",
+              preparedAndSubmittedx: "",
+              accReport: "",
+              conductedMeetingsNumber: "",
+              announcementNumber: "",
+              researchNumber: "",
+            };
+            break;
+          case 22:
+            data[entry.id] = {
+              accommodatedApplNumber: "",
+              admittedNumber: "",
+            };
+            break;
         }
       });
     });
@@ -359,6 +487,247 @@ const Objective = ({ user }) => {
                                 </tbody>
                               </table>
                             </div>
+                          ) : user.designation.id === 3 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                jobConducted:
+                                  "Number of Job Orientations conducted",
+                                satisfactionRating:
+                                  "Career Orientation satisfaction rating",
+                              }}
+                            />
+                          ) : user.designation.id === 4 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                numOfProvidedCopy:
+                                  "Number of first year students provided copy of Student Handbook",
+                              }}
+                            />
+                          ) : user.designation.id === 5 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                studentNumber:
+                                  "Number of student Organizations",
+                                activitiesNumber:
+                                  "Number of activities to ensure the effectiveness and efficiency of the services to the studentry.",
+                                numOfActMonitored:
+                                  "Number of student organization activities monitored and supervised",
+                              }}
+                            />
+                          ) : user.designation.id === 6 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                relatedActivitiesNumber:
+                                  "Number of conducted of student related activities",
+                                satisfactionRating:
+                                  "Satisfaction rating of conducted of student related activities",
+                              }}
+                            />
+                          ) : user.designation.id === 7 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                casesSettledNumber: "Number of cases settled",
+                              }}
+                            />
+                          ) : user.designation.id === 8 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                paperNumber:
+                                  "Number of printed newspaper/journal/magazines, newsletter",
+                                trainingWorkshopNumber:
+                                  "Number of Training Workshop and press conference attended",
+                                enrolledStudentsNumber:
+                                  "Number of enrolled students provided a copy of newsletter/ magazine per sem",
+                              }}
+                            />
+                          ) : user.designation.id === 9 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                conductedRelatedActivities:
+                                  "Conducted at least 2 student related activities",
+                                obtainedFourPointZeroSatRating:
+                                  "Student related activities obtained 4.0 satisfaction rating",
+                              }}
+                            />
+                          ) : user.designation.id === 10 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                submitAfterEnrollment:
+                                  "Prepare and submit one (1) scholarship report after enrollment",
+                                scholarsNumber:
+                                  "Number of scholars and grantees monitored",
+                                conductedActivityPerSemNumber:
+                                  "Number of conducted activity per sem",
+                              }}
+                            />
+                          ) : user.designation.id === 11 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                conductedActivityNumber:
+                                  "Number of Program Activity conducted",
+                                satisfactionRating:
+                                  "Program Activity Rated Satisfaction Rating",
+                              }}
+                            />
+                          ) : user.designation.id === 12 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                evaluatedFoodNumber:
+                                  "Number of evaluated and monitored Food Establishments",
+                              }}
+                            />
+                          ) : user.designation.id === 13 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                conductedActivityNumber:
+                                  "Number of conducted health program/activity to at least 50% students",
+                                satisfactionRating:
+                                  "Satisfaction rating of Health-related activities",
+                                assistanceNumber:
+                                  "Number of students that seeks medical assistance",
+                                sanitationProgram:
+                                  "Sanitation program & secure water analysis certification for effective and efficient services.",
+                              }}
+                            />
+                          ) : user.designation.id === 14 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                satisfactionObtained:
+                                  "Obtained Satisfaction rating number of safety and security related activities",
+                                safetyAndSecurity:
+                                  "Conduct of safety and security and/or physical drill within the university following the minimum health standard",
+                              }}
+                            />
+                          ) : user.designation.id === 15 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                monitoredStudentNumber:
+                                  "Number of monitored student housing within the vicinity of the University",
+                              }}
+                            />
+                          ) : user.designation.id === 16 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                monitoredStudentNumber:
+                                  "Number of conducted program/activity designed to meet the needs of students in religious/spiritual aspect",
+                                satisfactionRating:
+                                  "Satisfaction rating of multi-faith services related activities",
+                              }}
+                            />
+                          ) : user.designation.id === 17 ? null : user
+                              .designation.id === 18 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                internalPolicy:
+                                  "Craft one (1) guideline/internal policy for various group with special",
+                              }}
+                            />
+                          ) : user.designation.id === 19 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                conductedCulturalAndArtsNumber:
+                                  "Number of conducted cultural and arts activity within the semester",
+                                satisfactionRating:
+                                  "Satisfaction Rating of Culture and Arts related activities",
+                                conductedTrainingNumber:
+                                  "Number of conducted training for student artists",
+                                attendedNumber:
+                                  "Number of Attended training related to culture and arts either in local, regional, and national level",
+                              }}
+                            />
+                          ) : user.designation.id === 20 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                conductedIndividPhysicalFitnessNumber:
+                                  "Number of conducted individualized physical fitness program",
+                                satisfactionRating:
+                                  "Satisfaction Rating of Sport related programs implemented",
+                              }}
+                            />
+                          ) : user.designation.id === 21 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                conductedIndividPhysicalFitnessNumber:
+                                  "Number of conducted community-based activity related to student development",
+                                satisfactionRating:
+                                  "Satisfaction Rating of Conducted Clientele Satisfaction Survey every semester with 4.0 satisfaction rating (using the CC as result of ARTA survey conducted by MIS)",
+                                preparedAndSubmittedx:
+                                  "Prepared and submitted quarterly reports from various units",
+                                accReport:
+                                  "Accomplishment Report, collected, prepared, submitted (Quarterly/Annually as Requested)",
+                                conductedMeetingsNumber:
+                                  "Number of Conducted and Attended meetings",
+                                announcementNumber:
+                                  "Number of announcement posted offline and/or online platforms",
+                                researchNumber:
+                                  "Number of research for SAS conducted",
+                              }}
+                            />
+                          ) : user.designation.id === 22 ? (
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                accommodatedApplNumber:
+                                  "Number of accommodated applicants from various high schools in the province and nearby provinces",
+                                admittedNumber: "Number of admitted students",
+                              }}
+                            />
                           ) : (
                             ""
                           )}

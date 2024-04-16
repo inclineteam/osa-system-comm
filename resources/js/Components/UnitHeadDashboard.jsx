@@ -4,6 +4,7 @@ import LatestReminder from "./UnitHeadDashboard/LatestReminder";
 import LatestAnnouncement from "./UnitHeadDashboard/LatestAnnouncement";
 import LatestSubmissionBin from "./UnitHeadDashboard/LatestSubmissionBin";
 import Objective from "./Objective";
+import { ObjectiveTableInput } from "./ObjectiveTableInput";
 
 const UnitHeadDashboard = ({ auth }) => {
   return (
