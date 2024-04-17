@@ -125,12 +125,12 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
     Route::get('/objectives/{id}/entries', function ($id) {
 
         // get all user objective entries
-        $userObjective = UserObjective::where('objective_id', $id)->orderBy('created_at', 'desc')->get();
+        $userObjective = UserObjective::where('id', $id)->orderBy('created_at', 'desc')->get();
 
         // get all user objective entries
         // $userObjectiveEntries = UserCheckoutEntry::where('objective_id', $id)->orderBy('created_at', 'desc')->get(); // error
-        $userObjectiveEntries = UserCheckoutEntry::whereHas('objectiveEntry', function ($query) use ($id) {
-            $query->where('objective_id', $id);
+        $userObjectiveEntries = UserCheckoutEntry::whereHas('objectiveEntry', function ($query) use ($userObjective) {
+            $query->where('objective_id', $userObjective[0]->objective_id);
         })->orderBy('created_at', 'desc')->get();
 
         // json decode info_data

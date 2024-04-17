@@ -26,9 +26,6 @@ class UserObjective extends Model
         return $this->belongsTo(Objective::class);
     }
 
-    // // entries
-
-
     // user
     public function user()
     {
