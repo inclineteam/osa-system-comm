@@ -279,7 +279,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
       <div className="content-wrapper">
         {/* y ear date selector */}
 
-        <div className="flex">
+        <div className="flex-col lg:flex-row flex lg:items-end">
           <div className="mx-2">
             <div>
               <p className="font-bold mb-0">Select Year</p>
@@ -361,6 +361,16 @@ const ObjectiveMonitoring = ({ classifications }) => {
                   </optgroup>
                 ))}
             </select>
+          </div>
+
+          <div className="ml-auto">
+            <Link
+              className="bg-white px-3 py-2 border border-slate-200 rounded-md hover:bg-slate-200 w-max text-sm font-semibold text-indigo-500 block"
+              // href={route("admin.report.open", latestTarget.data.id)}
+              href={route("admin.reports.archive")}
+            >
+              View archives
+            </Link>
           </div>
         </div>
 

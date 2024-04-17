@@ -100,7 +100,7 @@ const SuperAdminDashboard = () => {
     fetchSubmittedUsers();
   }, []);
 
-  console.log(latestTarget);
+  console.log("PATEN KUNE", latestTarget);
 
   return (
     <div>
@@ -138,28 +138,39 @@ const SuperAdminDashboard = () => {
                     </thead>
 
                     <tbody>
-                      <tr className="[&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-5 [&>td]:py-4">
-                        <td>
-                          {/* {latestTarget.data.unit_head.lastname},{" "} */}
-                          {/* {latestTarget.data.unit_head.firstname}{" "} */}
-                          {/* {latestTarget.data.unit_head.middlename} */}
-                        </td>
-                        {/* <td>{latestTarget.data.unit_head.campus.name}</td>
-                        <td>{latestTarget.data.unit_head.designation.name}</td>
-                        <td>
-                          {dayjs(latestTarget.data.date_submitted).format(
-                            "MMM. D, YYYY"
-                          )}
-                        </td>
-                        <td className="flex items-center">
-                          <div
-                            className={`inline-block mr-2 w-2 h-2 rounded-full ${
-                              statusColors[latestTarget.data.status]
-                            }`}
-                          ></div>
-                          {latestTarget.data.status}
-                        </td> */}
-                      </tr>
+                      {latestTarget.data.map((item, idx) => (
+                        <tr
+                          key={idx}
+                          className="[&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-5 [&>td]:py-4"
+                        >
+                          <td>
+                            {item.user.lastname}, {item.user.firstname}{" "}
+                            {item.user.middlename}
+                          </td>
+                          <td>{item.user.designation.name}</td>
+                          <td>
+                            {dayjs(item.objective.due_date).format(
+                              "MMM. D, YYYY"
+                            )}
+                          </td>
+                          <td>{item.user.campus.name}</td>
+                          <td className="flex items-center">
+                            {item.objective.entries.length === 0
+                              ? item.is_completed
+                                ? "Completed"
+                                : "In Progress"
+                              : // check if all entries are completed
+                              item.objective.entries.every(
+                                  (entry) => entry.status == 1
+                                )
+                              ? "Completed"
+                              : "In Progress"}
+                          </td>
+                          {/*
+                           */}
+                          {/* </tr> */}
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 ) : (

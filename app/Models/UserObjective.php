@@ -9,6 +9,8 @@ class UserObjective extends Model
 {
     use HasFactory;
 
+    protected $with = ['user', 'objective'];
+
     // objective_id, is_completed, user_id
     protected $fillable = [
         'objective_id',

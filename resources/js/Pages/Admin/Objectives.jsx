@@ -1,4 +1,5 @@
 import PanelLayout, { LayoutType } from "@/Layouts/PanelLayout";
+import { Link } from "@inertiajs/react";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -114,16 +115,26 @@ function CreateObjectives() {
               Generate a target for users to complete.
             </p>
 
-            <button
-              // onClick={() => handleSubmission()}
-              onClick={() =>
-                (window.location.href = route("admin.objectives.create"))
-              }
-              className=" w-max transition bg-indigo-600 mb-3 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md flex"
-            >
-              <i className="fi fi-rs-add-document text-base mr-2"></i>
-              <span>Create Target</span>
-            </button>
+            <div className="flex mb-3 items-center gap-3">
+              <button
+                // onClick={() => handleSubmission()}
+                onClick={() =>
+                  (window.location.href = route("admin.objectives.create"))
+                }
+                className=" w-max transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md flex"
+              >
+                <i className="fi fi-rs-add-document text-base mr-2"></i>
+                <span>Create Target</span>
+              </button>
+
+              <Link
+                className="px-3 py-2 border border-slate-200 rounded-md hover:bg-slate-200 w-max text-sm font-semibold text-indigo-500 block"
+                // href={route("admin.report.open", latestTarget.data.id)}
+                href={route("admin.user_objectives")}
+              >
+                View monitoring
+              </Link>
+            </div>
           </div>
 
           <hr className="my-8 border-slate-400" />
