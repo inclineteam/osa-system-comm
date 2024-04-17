@@ -76,24 +76,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
     },
     {
       name: "Activities / Programme",
-      cell: (row) => (
-        <span>
-          {row.entries.length === 0
-            ? row.objective.title
-            : row.entries.map((entry, index) => {
-                console.log(entry);
-                // Return the JSX for each entry here
-                return (
-                  <div key={index}>
-                    {/* Example: Display entry description */}
-                    <p>
-                      {index + 1}.) {entry.objective_entry.description}
-                    </p>
-                  </div>
-                );
-              })}
-        </span>
-      ),
+      cell: (row) => <span>{row.objective.title}</span>,
     },
     {
       name: "Targets",
