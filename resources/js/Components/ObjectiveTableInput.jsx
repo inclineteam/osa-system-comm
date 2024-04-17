@@ -17,18 +17,14 @@ export const ObjectiveTableInput = ({
           </tr>
         </thead>
         <tbody>
-          <tr className="border-b border-slate-200" key={entry.id}>
+          <tr className="border-b border-slate-200" key={entry}>
             {Object.keys(data).map((k, i) => (
               <td key={i} className="px-4 py-2">
                 <input
                   type="text"
                   className="border-none"
-                  defaultValue={
-                    inputData[entry.id] ? inputData[entry.id][k] : ""
-                  }
-                  onChange={(e) =>
-                    handleInputChange(entry.id, k, e.target.value)
-                  }
+                  defaultValue={inputData[entry] ? inputData[entry][k] : ""}
+                  onChange={(e) => handleInputChange(entry, k, e.target.value)}
                   required
                 />
               </td>
