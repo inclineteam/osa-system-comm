@@ -294,7 +294,7 @@ const SuperAdminDashboard = () => {
                           className={`icon p-2 flex items-center justify-center w-[45px] h-[45px] rounded-2 fs-4 bg-gradient-to-tr from-emerald-600 text-white to-emerald-400 text-center mb-3`}
                         >
                           {/* <i className="fi fi-rr-boxes leading-none"></i>  */}
-                          <i className="fi fi-rr-user fs-5"></i>
+                          <i class="fi fi-rr-exit fs-5"></i>{" "}
                         </div>
                         <p className="mt-0 mb-0 text-sm fw-bold text-slate-800 fs-6">
                           Left Users
@@ -318,7 +318,7 @@ const SuperAdminDashboard = () => {
                           className={`icon p-2 flex items-center justify-center w-[45px] h-[45px] rounded-2 fs-4 bg-gradient-to-tr from-emerald-600 text-white to-emerald-400 text-center mb-3`}
                         >
                           {/* <i className="fi fi-rr-boxes leading-none"></i>  */}
-                          <i className="fi fi-rr-user fs-5"></i>
+                          <i class="fi fi-rr-memo-circle-check fs-5"></i>{" "}
                         </div>
                         <p className="mt-0 mb-0 text-sm fw-bold text-slate-800 fs-6">
                           Submitted Users
@@ -339,17 +339,17 @@ const SuperAdminDashboard = () => {
                     <Card.Body className="p-4 border-yellow-500 rounded-sm border-l-4 flex justify-between">
                       <div className="">
                         <div
-                          className={`icon p-2 flex items-center justify-center w-[45px] h-[45px] rounded-2 fs-4 bg-gradient-to-tr from-emerald-600 text-white to-emerald-400 text-center mb-3`}
+                          className={`icon p-2 flex items-center justify-center w-[45px] h-[45px] rounded-2 fs-4 bg-gradient-to-tr from-yellow-600 text-white to-yellow-400 text-center mb-3`}
                         >
                           {/* <i className="fi fi-rr-boxes leading-none"></i>  */}
-                          <i className="fi fi-rr-user fs-5"></i>
+                          <i class="fi fi-rr-calendar-clock"></i>
                         </div>
                         <p className="mt-0 mb-0 text-sm fw-bold text-slate-800 fs-6">
                           Near Due Users
                         </p>
                       </div>
                       <div className="flex items-center">
-                        <p className={`my-0 fw-bold text-dark text-[2.5rem]`}>
+                        <p className={`my-0 fw-bol text-dark text-[2.5rem]`}>
                           {dueUsers}
                         </p>
                       </div>
@@ -363,10 +363,10 @@ const SuperAdminDashboard = () => {
                     <Card.Body className="p-4 border-red-500 rounded-sm border-l-4 flex justify-between">
                       <div className="">
                         <div
-                          className={`icon p-2 flex items-center justify-center w-[45px] h-[45px] rounded-2 fs-4 bg-gradient-to-tr from-emerald-600 text-white to-emerald-400 text-center mb-3`}
+                          className={`icon p-2 flex items-center justify-center w-[45px] h-[45px] rounded-2 fs-4 bg-gradient-to-tr from-red-600 text-white to-red-400 text-center mb-3`}
                         >
                           {/* <i className="fi fi-rr-boxes leading-none"></i>  */}
-                          <i className="fi fi-rr-user fs-5"></i>
+                          <i class="fi fi-rr-calendar-xmark"></i>{" "}
                         </div>
                         <p className="mt-0 mb-0 text-sm fw-bold text-slate-800 fs-6">
                           Overdue Users

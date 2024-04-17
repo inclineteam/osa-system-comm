@@ -27,7 +27,7 @@ const Objective = ({ user }) => {
     const data = {};
     objectives.forEach((objective) => {
       objective.entries.forEach((entry) => {
-        switch (entry) {
+        switch (user.designation.id) {
           case 1:
             data[entry.id] = {
               programActivity: "",
