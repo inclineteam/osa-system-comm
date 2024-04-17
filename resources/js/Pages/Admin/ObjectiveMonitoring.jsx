@@ -132,7 +132,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
     //   cell: (row) => <>{row.objective.title}</>,
     // },
     {
-      name: "Objective Indicator",
+      name: "Indicator",
       cell: (row) => (
         <span>
           {
@@ -297,7 +297,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
   };
 
   return (
-    <PanelLayout headerTitle="Objective Monitoring">
+    <PanelLayout headerTitle="Targets Reviewal">
       <div className="content-wrapper">
         {/* y ear date selector */}
 

@@ -4,7 +4,7 @@ import React from "react";
 function ObjectiveEntries({ userObjectiveEntries }) {
   console.log(userObjectiveEntries);
   return (
-    <PanelLayout headerTitle="Objective Monitoring">
+    <PanelLayout headerTitle="Target Entries">
       <div className="content-wrapper">
         {/* table for : userObjectiveEntries[0].info_data where info_data has : {"test1": 0, "test2": 0} where test1 and test2 are the table titles and its value is the under the title */}
         {/* userObjectiveEntries is {{ }, {}} */}
@@ -19,8 +19,17 @@ function ObjectiveEntries({ userObjectiveEntries }) {
 
               {/* check the first time of the userObjectvieEntries */}
               {Object.keys(userObjectiveEntries[0].info_data).map((key) => (
-                <th key={key}>{key}</th>
+                // <th key={key}>{key}</th>
+                // formaat the key so that it the first letter is capitalized and the rest is lower case and add space between the words
+                <th key={key}>
+                  {key.replace(/([A-Z])/g, " $1").replace(/^./, function (str) {
+                    return str.toUpperCase();
+                  })}
+                </th>
               ))}
+
+              {/* date passed : updated_at */}
+              <th>Date Passed</th>
             </tr>
           </thead>
           {/* table body has the following, the info_data value */}
@@ -38,6 +47,10 @@ function ObjectiveEntries({ userObjectiveEntries }) {
                 {Object.keys(userObjectiveEntry.info_data).map((key) => (
                   <td key={key}>{userObjectiveEntry.info_data[key]}</td>
                 ))}
+                <td>
+                  {/* format date */}
+                  {new Date(userObjectiveEntry.updated_at).toLocaleDateString()}
+                </td>
               </tr>
             ))}
           </tbody>

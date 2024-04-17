@@ -130,7 +130,7 @@ const ObjectiveArchives = ({ classifications }) => {
     //   cell: (row) => <>{row.objective.title}</>,
     // },
     {
-      name: "Objective Indicator",
+      name: "Indicator",
       cell: (row) => (
         <span>
           {
@@ -220,7 +220,7 @@ const ObjectiveArchives = ({ classifications }) => {
   };
 
   return (
-    <PanelLayout headerTitle="Objective Monitoring">
+    <PanelLayout headerTitle="Target Archives">
       <div className="content-wrapper">
         {/* y ear date selector */}
 

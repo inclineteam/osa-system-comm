@@ -103,7 +103,7 @@ function CreateObjectives() {
   return (
     <PanelLayout
       layout={LayoutType.SUPER_ADMIN}
-      defaultActiveLink="generated reports annually"
+      defaultActiveLink="Create Targets"
     >
       <div className="content-wrapper">
         <div className="bg-white p-6">

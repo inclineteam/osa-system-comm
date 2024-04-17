@@ -248,9 +248,6 @@ class ObjectiveController extends Controller
             // get object due date
             $objective = Objective::find($userObjective->objective_id);
 
-            // check if the time today is greater than the due date
-            dd(strtotime(date('Y-m-d')), strtotime($objective->due_date));
-
             if (strtotime(date('Y-m-d')) > strtotime($objective->due_date)) {
                 $userObjective->status = 2; // due date is pass
                 $userObjective->save();

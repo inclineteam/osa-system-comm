@@ -162,6 +162,20 @@ const AdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
         },
         {
           type: NavType.DROPDOWN,
+          text: "Targets",
+          key: "targets",
+          opened: false,
+          navList: [
+            {
+              type: NavType.LINK,
+              text: "Reviewal",
+              href: route("admin.user_objectives"),
+              urlPath: "objectives monitoring",
+            },
+          ],
+        },
+        {
+          type: NavType.DROPDOWN,
           text: "Retrieval",
           key: "retrieval",
           opened: false,
