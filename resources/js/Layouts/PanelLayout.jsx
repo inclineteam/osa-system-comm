@@ -7,7 +7,7 @@ import AdminSidebar from "@/Components/AdminSidebar";
 import UnitHeadSidebar from "@/Components/UnitHeadSidebar";
 import BottomNav from "@/Components/BottomNav";
 import { useNavState, usePolicyState } from "@/States/States";
-import { Head, usePage, useRemember } from "@inertiajs/react";
+import { Head, Link, usePage, useRemember } from "@inertiajs/react";
 import { useEffect } from "react";
 import FeedBackModal from "@/Components/FeedBackModal";
 import PolicyModal from "@/Components/PolicyModal";
