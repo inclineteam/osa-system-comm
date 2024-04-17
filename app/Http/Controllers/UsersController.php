@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Report;
 use App\Models\SubmissionBin;
 use App\Models\User;
+use App\Models\UserObjective;
 use App\Notifications\SubmitReportNotif;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -87,6 +88,13 @@ class UsersController extends Controller
     public function profile()
     {
         return Inertia::render('Profile');
+    }
+
+    public function latestTarget()
+    {
+        $latestTarget = UserObjective::latest()->take(3)->get();
+
+        return response()->json(['latestTarget' => $latestTarget]);
     }
 
     // new users count
