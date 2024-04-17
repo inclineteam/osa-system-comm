@@ -82,9 +82,9 @@ function EditObjective({
                     Designation:
                   </Form.Label>
                   <Form.Select
-                    defaultValue={classificationIndex - 1}
+                    defaultValue={classificationIndex}
                     onChange={(e) =>
-                      setClassificationIndex(parseInt(e.target.value) + 1)
+                      setClassificationIndex(parseInt(e.target.value))
                     }
                   >
                     <option>select classification</option>
@@ -94,7 +94,7 @@ function EditObjective({
 
                         <optgroup key={index} label={c.name}>
                           {c.designations.map((desig, i) => (
-                            <option value={i} key={i}>
+                            <option value={desig.id} key={desig.id}>
                               {desig.name}
                             </option>
                           ))}

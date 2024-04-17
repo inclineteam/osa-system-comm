@@ -105,9 +105,10 @@ class ObjectiveController extends Controller
                 }
             }
 
-            // all unitHeads where they have a designation of unit head and not null and campus_id
-            $unitHeads = User::where('designation_id', $request->classificationIndex)->where('campus_id', $request->campus_id)->get();
+            $campus_id = (int)$request->campus_id;
 
+            // all unitHeads where they have a designation of unit head and not null and campus_id
+            $unitHeads = User::where('designation_id', $request->classificationIndex)->where('campus_id', $campus_id)->get();
 
             foreach ($unitHeads as $unitHead) {
                 UserObjective::create([
