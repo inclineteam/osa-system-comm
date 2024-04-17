@@ -153,9 +153,9 @@ const ObjectiveArchives = ({ classifications }) => {
       cell: (row) => (
         //  1 - on time, 0 - ongoing, 2 - pass due
         <span>
-          {row.is_completed
+          {row.status == 1
             ? "On Time"
-            : new Date(row.due_date) < new Date()
+            : row.status == 2
             ? "Pass Due"
             : "On Going"}
         </span>
