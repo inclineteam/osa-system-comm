@@ -186,9 +186,9 @@ const SuperAdminDashboard = () => {
                 ) : latestTarget.data != null ? (
                   <Link
                     className="px-3 py-2 border border-slate-200 rounded-md hover:bg-slate-200 w-max text-sm font-semibold text-indigo-500 mt-4 block"
-                    // href={route("admin.report.open", latestTarget.data.id)}
+                    href={route("admin.user_objectives")}
                   >
-                    View full report
+                    View full
                   </Link>
                 ) : (
                   ""
