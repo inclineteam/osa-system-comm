@@ -113,7 +113,7 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
 
     // userobjectives archives
     Route::get('/user-objectives/archives', function () {
-        return Inertia::render('Admin/ObjectiveArchives');
+        return Inertia::render('Admin/ObjectiveMonitoringArchive');
     })->name('admin.user_objectives.archives');
 
     Route::get('/generate', [AnnualReportController::class, 'getSpecificReports'])->name('admin.annual_reports.create');

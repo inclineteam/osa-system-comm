@@ -168,7 +168,8 @@ Route::prefix('/objectives')->group(function () {
 
     // get all users objectives from UserObjective model
     Route::get('/all/user', [ObjectiveController::class, 'getUsersObjective'])->name('objectives.user.get');
-
+    Route::get('/all/user/archived', [ObjectiveController::class, 'getUsersArchivedObjective'])->name('objectives.user.archive.get');
+    Route::get('/all/user/indiv/archived', [ObjectiveController::class, 'getIndivUserArchivedObjective'])->name('objectives.user.archive.indiv.get');
     // get specific user objectives from UserObjective model that is archived
     Route::get('/{id}/archived', [ObjectiveController::class, 'getArchivedUserObjective'])->name('objectives.user.archived');
 

@@ -19,7 +19,7 @@ return new class extends Migration
             // user_id
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
-            // status ( 0 = pending, 1 = completed )
+            // status ( 0 = pending, 1 = completed, )
             $table->tinyInteger('status')->default(0);
             // completed_at
             $table->timestamp('completed_at')->nullable();

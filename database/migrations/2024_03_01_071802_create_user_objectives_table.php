@@ -20,7 +20,7 @@ return new class extends Migration
             // is_archived
             $table->boolean('is_archived')->default(false);
 
-            // status : 1-> completed, 0 -> not completed
+            // status : 1-> completed (ontime), 0 -> not completed, 2 - pass due date
             $table->tinyInteger('status')->default(0);
 
             // admin_status : 0 - review, 1 - approved, 2 - rejected
