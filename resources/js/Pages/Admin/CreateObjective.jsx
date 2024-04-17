@@ -106,7 +106,7 @@ function CreateObjective({ auth, classifications, campuses }) {
                     required
                     defaultValue={""}
                     onChange={(e) =>
-                      setClassificationIndex(parseInt(e.target.value) + 1)
+                      setClassificationIndex(parseInt(e.target.value))
                     }
                   >
                     <option value={""} disabled>
@@ -118,7 +118,7 @@ function CreateObjective({ auth, classifications, campuses }) {
 
                         <optgroup key={index + 1} label={c.name}>
                           {c.designations.map((desig, i) => (
-                            <option value={i} key={i}>
+                            <option value={desig.id} key={desig.id}>
                               {desig.name}
                             </option>
                           ))}
