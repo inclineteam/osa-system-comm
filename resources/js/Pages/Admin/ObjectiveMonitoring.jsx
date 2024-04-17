@@ -345,9 +345,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
               required
               className="border-slate-300 w-[90%] rounded-md hover:border-slate-400"
               defaultValue={""}
-              onChange={(e) =>
-                setClassificationIndex(parseInt(e.target.value) + 1)
-              }
+              onChange={(e) => setClassificationIndex(parseInt(e.target.value))}
             >
               <option value={""} disabled>
                 Select Classification
@@ -356,7 +354,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
                 classifications.map((c, index) => (
                   <optgroup key={index + 1} label={c.name}>
                     {c.designations.map((desig, i) => (
-                      <option value={i} key={i}>
+                      <option value={desig.id} key={desig.id}>
                         {desig.name}
                       </option>
                     ))}
