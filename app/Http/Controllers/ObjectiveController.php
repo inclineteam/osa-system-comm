@@ -141,6 +141,8 @@ class ObjectiveController extends Controller
     public function all()
     {
         $objectives = Objective::all();
+
+
         // get entries
         foreach ($objectives as $objective) {
             $objective->entries;
@@ -232,6 +234,7 @@ class ObjectiveController extends Controller
 
     public function updateUserObjective(Request $request)
     {
+
         try {
             // Convert info_data to JSON string if it's an array
             if (is_array($request->info_data)) {
@@ -240,6 +243,20 @@ class ObjectiveController extends Controller
             }
 
             $entry = UserCheckoutEntry::find($request->id);
+            // get the user objective
+            $userObjective = UserObjective::where('user_id', $entry->user_id)->where('objective_id', $entry->objectiveEntry->objective_id)->first();
+            // get object due date
+            $objective = Objective::find($userObjective->objective_id);
+
+            // check if the time today is greater than the due date
+            if (strtotime(date('Y-m-d')) > strtotime($objective->due_date)) {
+                $userObjective->status = 2; // due date is pass
+                $userObjective->save();
+            } else {
+                $userObjective->status = 1; // ontime
+                $userObjective->save();
+            }
+
             $entry->update($request->all());
             $entry->save();
         } catch (\Throwable $th) {
@@ -300,6 +317,8 @@ class ObjectiveController extends Controller
             if ($classificationId != null) {
                 $query->where('designation_id', $classificationId);
             }
+
+            $query->where('is_archived', 0);
         })->get();
 
 
@@ -319,6 +338,113 @@ class ObjectiveController extends Controller
         return response()->json($userObjectives);
     }
 
+
+    // getAllUsersObjective
+    public function getUsersArchivedObjective(Request $request)
+    {
+        // Define quarters mapping
+        $quarters = [
+            '1' => [1, 2, 3],
+            '2' => [4, 5, 6],
+            '3' => [7, 8, 9],
+            '4' => [10, 11, 12]
+        ];
+
+        $year = $request->input('year');
+        $quarter = $request->input('quarter');
+        $classificationId = $request->input('classificationIndex');
+        $campus = $request->input('campus');
+
+        // Start query with base conditions
+        $query = UserObjective::query();
+        $query = $query->with('user', 'objective');
+
+        // If both year and quarter are provided, add additional conditions
+        if ($year && $quarter) {
+            $query->whereYear('created_at', $year)->whereIn(DB::raw('MONTH(created_at)'), $quarters[$quarter]);
+        }
+
+
+        // Fetch user objectives with user and objective relationships with search conditions
+        $userObjectives = $query->whereHas('user', function ($query) use ($classificationId, $campus) {
+            //    check if campus is not null
+            if ($campus != null) {
+                $query->where('campus_id', $campus);
+            }
+
+            // check if classificationId is not null
+            if ($classificationId != null) {
+                $query->where('designation_id', $classificationId);
+            }
+
+            $query->where('is_archived', 1);
+        })->get();
+
+
+        // get UserCheckoutEntry
+        foreach ($userObjectives as $userObjective) {
+            $userObjective->entries = UserCheckoutEntry::where('user_id', $userObjective->user_id)->whereHas('objectiveEntry', function ($query) use ($userObjective, $campus) {
+                $query->where('objective_id', $userObjective->objective_id);
+            })->get();
+
+            // get entries
+            foreach ($userObjective->entries as $entry) {
+                $entry->objectiveEntry;
+            }
+        }
+
+        // Return JSON response
+        return response()->json($userObjectives);
+    }
+
+    // getAllUsersObjective
+    public function getIndivUserArchivedObjective(Request $request)
+    {
+        // Define quarters mapping
+        $quarters = [
+            '1' => [1, 2, 3],
+            '2' => [4, 5, 6],
+            '3' => [7, 8, 9],
+            '4' => [10, 11, 12]
+        ];
+
+        $year = $request->input('year');
+        $quarter = $request->input('quarter');
+
+
+        // Start query with base conditions
+        $query = UserObjective::query();
+        $query = $query->with('user', 'objective');
+
+        // If both year and quarter are provided, add additional conditions
+        if ($year && $quarter) {
+            $query->whereYear('created_at', $year)->whereIn(DB::raw('MONTH(created_at)'), $quarters[$quarter]);
+        }
+
+
+        // Fetch user objectives with user and objective relationships with search conditions
+        $userObjectives = $query->whereHas('user', function ($query) {
+
+
+            $query->where('is_archived', 1);
+        })->get();
+
+
+        // get UserCheckoutEntry
+        foreach ($userObjectives as $userObjective) {
+            $userObjective->entries = UserCheckoutEntry::where('user_id', $userObjective->user_id)->whereHas('objectiveEntry', function ($query) use ($userObjective) {
+                $query->where('objective_id', $userObjective->objective_id);
+            })->get();
+
+            // get entries
+            foreach ($userObjective->entries as $entry) {
+                $entry->objectiveEntry;
+            }
+        }
+
+        // Return JSON response
+        return response()->json($userObjectives);
+    }
 
 
 

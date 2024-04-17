@@ -9,7 +9,7 @@ import DataTable from "react-data-table-component";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const ObjectiveArchives = ({ classifications }) => {
+const ObjectiveMonitoringArchive = ({ classifications }) => {
   console.log(classifications);
   const [classificationIndex, setClassificationIndex] = useState(null);
   // get all user objectives
@@ -37,9 +37,11 @@ const ObjectiveArchives = ({ classifications }) => {
     const getUserObjectives = async () => {
       await axios
         .get(
-          route("objectives.user.archive.indiv.get", {
+          route("objectives.user.archive.get", {
             year: selectedYear ? selectedYear.getFullYear() : null,
             quarter: selectedQuarter,
+            classificationIndex: classificationIndex,
+            campus: selectedCampus,
           })
         )
         .then((res) => {
@@ -261,6 +263,52 @@ const ObjectiveArchives = ({ classifications }) => {
               <option value="4">4th Quarter</option>
             </select>
           </div>
+
+          {/* select campus */}
+          <div className="z-50 mx-2">
+            <div>
+              <p className="font-bold mb-0">Select Campus</p>
+            </div>
+            <select
+              className="border-slate-300 rounded-md hover:border-slate-400"
+              name="campus"
+              onChange={(e) => setSelectedCampus(e.target.value)}
+              id="campus"
+            >
+              <option>Select Campus</option>
+              {campuses.map((campus) => (
+                <option key={campus.id} value={campus.id}>
+                  {campus.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="z-50 mx-2">
+            <div>
+              <p className="font-bold mb-0">Select Classification</p>
+            </div>
+            <select
+              required
+              className="border-slate-300 w-[90%] rounded-md hover:border-slate-400"
+              defaultValue={""}
+              onChange={(e) => setClassificationIndex(parseInt(e.target.value))}
+            >
+              <option value={""} disabled>
+                Select Classification
+              </option>
+              {classifications &&
+                classifications.map((c, index) => (
+                  <optgroup key={index + 1} label={c.name}>
+                    {c.designations.map((desig, i) => (
+                      <option value={desig.id} key={desig.id}>
+                        {desig.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+            </select>
+          </div>
         </div>
 
         <div className="mt-4 z-10 border p-2 bg-white border-slate-200 rounded-md overflow-hidden">
@@ -277,4 +325,4 @@ const ObjectiveArchives = ({ classifications }) => {
   );
 };
 
-export default ObjectiveArchives;
+export default ObjectiveMonitoringArchive;

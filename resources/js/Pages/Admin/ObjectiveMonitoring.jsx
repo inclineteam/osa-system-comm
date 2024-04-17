@@ -132,7 +132,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
     //   cell: (row) => <>{row.objective.title}</>,
     // },
     {
-      name: "Objective Status",
+      name: "Objective Indicator",
       cell: (row) => (
         <span>
           {
@@ -149,6 +149,28 @@ const ObjectiveMonitoring = ({ classifications }) => {
         </span>
       ),
     },
+    // objective status
+    {
+      name: "Objective Status",
+      cell: (row) => (
+        //  1 - on time, 0 - ongoing, 2 - pass due
+        <span>
+          {row.is_completed
+            ? "On Time"
+            : new Date(row.due_date) < new Date()
+            ? "Pass Due"
+            : "On Going"}
+        </span>
+      ),
+    },
+    {
+      // due date
+      name: "Due Date",
+      cell: (row) => (
+        <>{new Date(row.objective.due_date).toLocaleDateString("en-US")}</>
+      ),
+    },
+
     // completed_at
     {
       name: "Completed At",
