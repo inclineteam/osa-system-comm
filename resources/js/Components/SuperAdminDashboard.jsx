@@ -20,7 +20,7 @@ export const statusColors = {
 const SuperAdminDashboard = () => {
   const [campuses, setCampuses] = useState([]);
   const [fetchingCampus, setFetchingCampus] = useState(true);
-  const [latestReport, setLatestReport] = useState({
+  const [latestTarget, setLatestTarget] = useState({
     loading: true,
     data: null,
   });
@@ -41,10 +41,10 @@ const SuperAdminDashboard = () => {
       });
     };
 
-    const fetchLatestReport = () => {
-      axios.get(route("reports.latest")).then((res) => {
+    const fetchLatestTarget = () => {
+      axios.get(route("objectives.latest")).then((res) => {
         console.log("datasss", res.data);
-        setLatestReport({ loading: false, data: res.data.latestReport });
+        setLatestTarget({ loading: false, data: res.data.latestTarget });
       });
     };
 
@@ -91,7 +91,7 @@ const SuperAdminDashboard = () => {
     };
 
     fetchCampuses();
-    fetchLatestReport();
+    fetchLatestTarget();
     fetchNewUsers();
     fetchTotalUsers();
     fetchLeftUsers();
@@ -99,6 +99,8 @@ const SuperAdminDashboard = () => {
     fetchOverdueUsers();
     fetchSubmittedUsers();
   }, []);
+
+  console.log(latestTarget);
 
   return (
     <div>
@@ -110,7 +112,7 @@ const SuperAdminDashboard = () => {
           <Row className="px-2.5">
             <div className="p-4 border-b border-slate-300 rounded-lg shadow-sm bg-white mb-8">
               <h1 className="text-xl font-bold mb-2 leading-none">
-                Latest report
+                Latest targets
               </h1>
               <p className="leading-none mb-4 text-slate-500 text-sm">
                 See details about the user and status of the latest submitted
@@ -118,19 +120,19 @@ const SuperAdminDashboard = () => {
               </p>
               <div
                 className={`overflow-hidden rounded-md border-slate-200 ${
-                  !latestReport.data ? "border-2 border-dashed" : "border"
+                  !latestTarget.data ? "border-2 border-dashed" : "border"
                 }`}
               >
-                {latestReport.loading ? (
+                {latestTarget.loading ? (
                   <div className="py-6 text-center">Loading... Please wait</div>
-                ) : latestReport.data != null ? (
+                ) : latestTarget.data != null ? (
                   <table className="w-full">
                     <thead className="">
                       <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-5 [&>th]:py-2.5 border-b [&>th]:text-sm [&>th]:font-medium">
-                        <th>User</th>
-                        <th>Campus</th>
+                        <th>Name</th>
                         <th>Office</th>
-                        <th>Date Submitted</th>
+                        <th>Date</th>
+                        <th>Campus</th>
                         <th>Status</th>
                       </tr>
                     </thead>
@@ -138,25 +140,25 @@ const SuperAdminDashboard = () => {
                     <tbody>
                       <tr className="[&>td]:text-sm [&>td]:border-l [&>td:first-child]:border-0 [&>td]:px-5 [&>td]:py-4">
                         <td>
-                          {latestReport.data.unit_head.lastname},{" "}
-                          {latestReport.data.unit_head.firstname}{" "}
-                          {latestReport.data.unit_head.middlename}
+                          {/* {latestTarget.data.unit_head.lastname},{" "} */}
+                          {/* {latestTarget.data.unit_head.firstname}{" "} */}
+                          {/* {latestTarget.data.unit_head.middlename} */}
                         </td>
-                        <td>{latestReport.data.unit_head.campus.name}</td>
-                        <td>{latestReport.data.unit_head.designation.name}</td>
+                        {/* <td>{latestTarget.data.unit_head.campus.name}</td>
+                        <td>{latestTarget.data.unit_head.designation.name}</td>
                         <td>
-                          {dayjs(latestReport.data.date_submitted).format(
+                          {dayjs(latestTarget.data.date_submitted).format(
                             "MMM. D, YYYY"
                           )}
                         </td>
                         <td className="flex items-center">
                           <div
                             className={`inline-block mr-2 w-2 h-2 rounded-full ${
-                              statusColors[latestReport.data.status]
+                              statusColors[latestTarget.data.status]
                             }`}
                           ></div>
-                          {latestReport.data.status}
-                        </td>
+                          {latestTarget.data.status}
+                        </td> */}
                       </tr>
                     </tbody>
                   </table>
@@ -168,12 +170,12 @@ const SuperAdminDashboard = () => {
               </div>
 
               <div className="flex justify-end">
-                {latestReport.loading ? (
+                {latestTarget.loading ? (
                   ""
-                ) : latestReport.data != null ? (
+                ) : latestTarget.data != null ? (
                   <Link
                     className="px-3 py-2 border border-slate-200 rounded-md hover:bg-slate-200 w-max text-sm font-semibold text-indigo-500 mt-4 block"
-                    href={route("admin.report.open", latestReport.data.id)}
+                    // href={route("admin.report.open", latestTarget.data.id)}
                   >
                     View full report
                   </Link>
