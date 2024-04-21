@@ -14,6 +14,7 @@ export const ObjectiveTableInput = ({
                 {v}
               </th>
             ))}
+            <th className="px-4 py-2">Documentation</th>
           </tr>
         </thead>
         <tbody>
@@ -29,6 +30,19 @@ export const ObjectiveTableInput = ({
                 />
               </td>
             ))}
+            <td className="px-4 py-2">
+              <input
+                type="file"
+                className="border-none"
+                defaultValue={
+                  inputData[entry] ? inputData[entry]["documentation"] : ""
+                }
+                onChange={(e) =>
+                  handleInputChange(entry, "documentation", e.target.value)
+                }
+                required
+              />
+            </td>
           </tr>
         </tbody>
       </table>

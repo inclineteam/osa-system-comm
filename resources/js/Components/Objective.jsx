@@ -33,6 +33,7 @@ const Objective = ({ user }) => {
               programActivity: "",
               satisfactionRating: "",
               guidanceServices: "",
+              documentation: null,
             };
             break;
           case 2:
@@ -41,17 +42,20 @@ const Objective = ({ user }) => {
               printedMaterials: "",
               typeOfMaterials: "",
               satisfactionRating: "",
+              documentation: null,
             };
             break;
           case 3:
             data[entry.id] = {
               jobConducted: "",
               satisfactionRating: "",
+              documentation: null,
             };
             break;
           case 4:
             data[entry.id] = {
               numOfProvidedCopy: "",
+              documentation: null,
             };
             break;
           case 5:
@@ -59,17 +63,20 @@ const Objective = ({ user }) => {
               studentNumber: "",
               activitiesNumber: "",
               numOfActMonitored: "",
+              documentation: null,
             };
             break;
           case 6:
             data[entry.id] = {
               relatedActivitiesNumber: "",
               satisfactionRating: "",
+              documentation: null,
             };
             break;
           case 7:
             data[entry.id] = {
               casesSettledNumber: "",
+              documentation: null,
             };
             break;
           case 8:
@@ -77,12 +84,14 @@ const Objective = ({ user }) => {
               paperNumber: "",
               trainingWorkshopNumber: "",
               enrolledStudentsNumber: "",
+              documentation: null,
             };
             break;
           case 9:
             data[entry.id] = {
               conductedRelatedActivities: "",
               obtainedFourPointZeroSatRating: "",
+              documentation: null,
             };
             break;
           case 10:
@@ -90,17 +99,20 @@ const Objective = ({ user }) => {
               submitAfterEnrollment: "",
               scholarsNumber: "",
               conductedActivityPerSemNumber: "",
+              documentation: null,
             };
             break;
           case 11:
             data[entry.id] = {
               conductedActivityNumber: "",
               satisfactionRating: "",
+              documentation: null,
             };
             break;
           case 12:
             data[entry.id] = {
               evaluatedFoodNumber: "",
+              documentation: null,
             };
             break;
           case 13:
@@ -109,23 +121,27 @@ const Objective = ({ user }) => {
               satisfactionRating: "",
               assistanceNumber: "",
               sanitationProgram: "",
+              documentation: null,
             };
             break;
           case 14:
             data[entry.id] = {
               satisfactionObtained: "",
               safetyAndSecurity: "",
+              documentation: null,
             };
             break;
           case 15:
             data[entry.id] = {
               monitoredStudentNumber: "",
+              documentation: null,
             };
             break;
           case 16:
             data[entry.id] = {
               monitoredStudentNumber: "",
               satisfactionRating: "",
+              documentation: null,
             };
             break;
           case 17:
@@ -134,6 +150,7 @@ const Objective = ({ user }) => {
           case 18:
             data[entry.id] = {
               internalPolicy: "",
+              documentation: null,
             };
             break;
           case 19:
@@ -142,12 +159,14 @@ const Objective = ({ user }) => {
               satisfactionRating: "",
               conductedTrainingNumber: "",
               attendedNumber: "",
+              documentation: null,
             };
             break;
           case 20:
             data[entry.id] = {
               conductedIndividPhysicalFitnessNumber: "",
               satisfactionRating: "",
+              documentation: null,
             };
             break;
           case 21:
@@ -159,12 +178,14 @@ const Objective = ({ user }) => {
               conductedMeetingsNumber: "",
               announcementNumber: "",
               researchNumber: "",
+              documentation: null,
             };
             break;
           case 22:
             data[entry.id] = {
               accommodatedApplNumber: "",
               admittedNumber: "",
+              documentation: null,
             };
             break;
         }
@@ -307,186 +328,31 @@ const Objective = ({ user }) => {
                           {entry.status ? (
                             "Completed"
                           ) : user.designation.id === 1 ? (
-                            <div>
-                              <table className="table-auto">
-                                <thead>
-                                  <tr>
-                                    <th className="px-4 py-2">
-                                      Number of Program activity for the
-                                      students
-                                    </th>
-                                    <th className="px-4 py-2">
-                                      Satisfaction rating of program/activity
-                                      conducted
-                                    </th>
-                                    <th className="px-4 py-2">
-                                      Number of students seeks guidance and
-                                      counseling services
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr
-                                    className="border-b border-slate-200"
-                                    key={entry.id}
-                                  >
-                                    <td className="px-4 py-2">
-                                      <input
-                                        type="text"
-                                        className="border-none"
-                                        defaultValue={
-                                          inputData[entry.id]
-                                            ?.programActivity || ""
-                                        }
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            entry.id,
-                                            "programActivity",
-                                            e.target.value
-                                          )
-                                        }
-                                        required
-                                      />
-                                    </td>
-                                    <td className="px-4 py-2">
-                                      <input
-                                        type="text"
-                                        className="border-none"
-                                        defaultValue={
-                                          inputData[entry.id]
-                                            ?.satisfactionRating || ""
-                                        }
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            entry.id,
-                                            "satisfactionRating",
-                                            e.target.value
-                                          )
-                                        }
-                                        required
-                                      />
-                                    </td>
-                                    <td className="px-4 py-2">
-                                      <input
-                                        type="text"
-                                        className="border-none"
-                                        defaultValue={
-                                          inputData[entry.id]
-                                            ?.guidanceServices || ""
-                                        }
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            entry.id,
-                                            "guidanceServices",
-                                            e.target.value
-                                          )
-                                        }
-                                        required
-                                      />
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                programActivity:
+                                  "Number of Program activity for the students",
+                                satisfactionRating:
+                                  "Satisfaction rating of program/activity conducted",
+                                guidanceServices:
+                                  "Number of students seeks guidance and counseling services",
+                              }}
+                            />
                           ) : user.designation.id === 2 ? (
-                            <div>
-                              <table className="table-auto">
-                                <thead>
-                                  <tr>
-                                    <th className="px-4 py-2">
-                                      Number of Attendance
-                                    </th>
-                                    <th className="px-4 py-2">
-                                      No of Printed Materials
-                                    </th>
-                                    <th className="px-4 py-2">
-                                      Type of Materials
-                                    </th>
-                                    <th className="px-4 py-2">
-                                      Satisfaction Rating
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr
-                                    className="border-b border-slate-200"
-                                    key={entry.id}
-                                  >
-                                    <td className="px-4 py-2">
-                                      <input
-                                        type="text"
-                                        className="border-none"
-                                        defaultValue={
-                                          inputData[entry.id]?.attendance || ""
-                                        }
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            entry.id,
-                                            "attendance",
-                                            e.target.value
-                                          )
-                                        }
-                                        required
-                                      />
-                                    </td>
-                                    <td className="px-4 py-2">
-                                      <input
-                                        type="text"
-                                        className="border-none"
-                                        defaultValue={
-                                          inputData[entry.id]
-                                            ?.printedMaterials || ""
-                                        }
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            entry.id,
-                                            "printedMaterials",
-                                            e.target.value
-                                          )
-                                        }
-                                        required
-                                      />
-                                    </td>
-                                    <td className="px-4 py-2">
-                                      <input
-                                        type="text"
-                                        className="border-none"
-                                        defaultValue={
-                                          inputData[entry.id]
-                                            ?.typeOfMaterials || ""
-                                        }
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            entry.id,
-                                            "typeOfMaterials",
-                                            e.target.value
-                                          )
-                                        }
-                                        required
-                                      />
-                                    </td>
-                                    <td className="px-4 py-2">
-                                      <input
-                                        type="text"
-                                        className="border-none"
-                                        defaultValue={
-                                          inputData[entry.id]
-                                            ?.satisfactionRating || ""
-                                        }
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            entry.id,
-                                            "satisfactionRating",
-                                            e.target.value
-                                          )
-                                        }
-                                        required
-                                      />
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
+                            <ObjectiveTableInput
+                              handleInputChange={handleInputChange}
+                              inputData={inputData}
+                              entry={entry.id}
+                              data={{
+                                attendance: "Number of Attendance",
+                                printedMaterials: "No of Printed Materials",
+                                typeOfMaterials: "Type of Materials",
+                                satisfactionRating: "Satisfaction Rating",
+                              }}
+                            />
                           ) : user.designation.id === 3 ? (
                             <ObjectiveTableInput
                               handleInputChange={handleInputChange}
