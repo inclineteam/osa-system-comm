@@ -38,7 +38,7 @@ export const ObjectiveTableInput = ({
                   inputData[entry] ? inputData[entry]["documentation"] : ""
                 }
                 onChange={(e) =>
-                  handleInputChange(entry, "documentation", e.target.value)
+                  handleInputChange(entry, "documentation", e.target.files[0])
                 }
                 required
               />
