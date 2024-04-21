@@ -15,6 +15,7 @@ class UserCheckoutEntry extends Model
         'completed_at',
         'user_id',
         'info_data',
+        'file_path'
     ];
 
     public function objectiveEntry()

@@ -56,6 +56,22 @@ class ObjectiveController extends Controller
         return Inertia::render('Admin/CreateObjective', $data);
     }
 
+    public function downloadObjectiveDocumentation($filename)
+    {
+        $path = storage_path('app/public/objective-documentation/' . $filename);
+
+        if (!file_exists($path)) {
+            dd("file_not");
+            abort(404);
+        }
+
+        $headers = [
+            'Content-Type' => 'application/pdf',
+        ];
+
+        return response()->download($path, $filename, $headers);
+    }
+
     // storeObjective
     public function storeObjective(Request $request)
     {
@@ -235,13 +251,14 @@ class ObjectiveController extends Controller
 
     public function updateUserObjective(Request $request)
     {
-
         try {
             // Convert info_data to JSON string if it's an array
             if (is_array($request->info_data)) {
                 $info_data = json_encode($request->info_data);
                 $request->merge(['info_data' => $info_data]);
             }
+            // Access the fields using the `get()` method
+            $requestData = $request->all();
 
             $entry = UserCheckoutEntry::find($request->id);
             // get the user objective
@@ -257,8 +274,22 @@ class ObjectiveController extends Controller
                 $userObjective->save();
             }
 
-            $entry->update($request->all());
-            $entry->save();
+
+            $documentation = $requestData['documentation'] ?? null;
+
+            $entry->update($requestData);
+
+
+            if ($documentation) {
+                // Generate a unique file name
+                $filename = uniqid() . '.' . $documentation->getClientOriginalExtension();
+
+                $path = $documentation->storeAs('public/objective-documentation', $filename);
+
+                $entry->file_path = $filename;
+                // save
+                $entry->save();
+            }
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Error updating user objective' . $th->getMessage()], 500);
         }
@@ -270,6 +301,7 @@ class ObjectiveController extends Controller
     public function updateObjective(Request $request)
     {
         try {
+
             $objective = UserObjective::find($request->id);
             $objective->update($request->all());
             $objective->save();

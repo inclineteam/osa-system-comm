@@ -105,11 +105,76 @@ const ObjectiveMonitoring = ({ classifications }) => {
     },
     {
       name: "Actual Accomplished",
-      cell: (row) => <>{console.log(row)}</>,
+      cell: (row) => (
+        <>
+          {row.entries.map((entry, index) => {
+            // Parse the info_data to get the dynamic key and value
+            const data = JSON.parse(entry.info_data);
+            // Iterate over each key-value pair in the parsed data
+            return (
+              <div
+                className="border-solid border-2 rounded-xl w-[20rem] leading-[0.6rem] border-black p-2"
+                key={index}
+              >
+                {Object.entries(data).map(([key, value]) => (
+                  <p className="text-center text-[0.7rem]" key={key}>
+                    {/* Display the dynamic key and its value */}
+                    <span className="font-bold"> {`${key} `}</span>
+                    <span>{value}</span>
+                  </p>
+                ))}
+              </div>
+            );
+          })}
+        </>
+      ),
     },
     {
       name: "Documentation",
-      cell: (row) => <></>,
+      cell: (row) => (
+        <>
+          {row.entries.map((entry, index) => {
+            if (entry.file_path) {
+              return (
+                <div key={index}>
+                  <a
+                    onClick={() => {
+                      axios
+                        .get(
+                          route(
+                            "objectives.documentation.download",
+                            entry.file_path
+                          ),
+                          {
+                            responseType: "blob",
+                          }
+                        )
+                        .then((response) => {
+                          const url = window.URL.createObjectURL(
+                            new Blob([response.data])
+                          );
+                          const link = document.createElement("a");
+                          link.href = url;
+                          link.setAttribute("download", `${entry.file_path}`);
+                          document.body.appendChild(link);
+                          link.click();
+                          link.parentNode.removeChild(link);
+                        })
+                        .catch((error) => {
+                          console.log("failed to download file", error);
+                        });
+                    }}
+                    download
+                    className="border-solid border-2 rounded-xl w-[20rem] leading-[0.6rem] border-black p-2"
+                  >
+                    Download
+                  </a>
+                </div>
+              );
+            }
+          })}
+        </>
+      ),
     },
     {
       name: "Designation",

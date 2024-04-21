@@ -206,12 +206,42 @@ const Objective = ({ user }) => {
       return; // Prevent status update
     }
 
+    console.log(inputData[entryId].documentation); // Debug statement (input data for the current entry
+
+    // Create a new FormData object
+    const formData = new FormData();
+
+    // Add the input data to the FormData object
+    formData.append("_method", "PUT");
+    formData.append("id", entryId);
+    formData.append("status", 1);
+
+    // Convert info_data to JSON string if it's an object
+    const info_data = inputData[entryId];
+    if (typeof info_data === "object") {
+      // create new object to remove the documentation key
+      const newInfoData = { ...info_data };
+      delete newInfoData.documentation;
+      formData.append("info_data", JSON.stringify(newInfoData));
+    } else {
+      // create new object to remove the documentation key
+      const newInfoData = { ...info_data };
+      delete newInfoData.documentation;
+
+      formData.append("info_data", newInfoData);
+    }
+
+    // Add the file input to the FormData object
+    if (inputData[entryId].documentation) {
+      formData.append("documentation", inputData[entryId].documentation);
+    }
+
     // Proceed with status update if all inputs are filled
     axios
-      .put(route("objectives.user.update"), {
-        id: entryId,
-        status: true,
-        info_data: inputData[entryId], // Pass only the data for the specific entry
+      .post(route("objectives.user.update", { id: objectiveId }), formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       })
       .then((res) => {
         if (res.statusText === "OK") {
@@ -260,22 +290,40 @@ const Objective = ({ user }) => {
   };
 
   const handleInputChange = (entryId, column, value) => {
-    setInputData((prevInputData) => ({
-      ...prevInputData,
-      [entryId]: {
-        ...prevInputData[entryId],
-        [column]: value,
-      },
-    }));
+    console.log(value);
+    if (column === "documentation") {
+      setInputData((prevInputData) => ({
+        ...prevInputData,
+        [entryId]: {
+          ...prevInputData[entryId],
+          documentation: value[0],
+        },
+      }));
+    } else {
+      setInputData((prevInputData) => ({
+        ...prevInputData,
+        [entryId]: {
+          ...prevInputData[entryId],
+          [column]: value,
+        },
+      }));
+    }
   };
 
   const isInputComplete = (entryId) => {
     const data = inputData[entryId];
     if (!data) return false; // Entry data not found
     // Check if any input field in the entry data is empty
-    return Object.values(data).every((value) => value.trim() !== "");
+    return Object.values(data).every((value) => {
+      if (typeof value === "string") {
+        return value.trim() !== "";
+      } else if (value === null || value === undefined) {
+        return true;
+      } else {
+        return Object.values(value).every((fileValue) => fileValue !== null);
+      }
+    });
   };
-
   return (
     <div className="mb-4 bg-white shadow-sm border-b border-slate-300 rounded-lg p-4">
       <div>

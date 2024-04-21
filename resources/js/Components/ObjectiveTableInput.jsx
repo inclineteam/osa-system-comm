@@ -34,11 +34,8 @@ export const ObjectiveTableInput = ({
               <input
                 type="file"
                 className="border-none"
-                defaultValue={
-                  inputData[entry] ? inputData[entry]["documentation"] : ""
-                }
                 onChange={(e) =>
-                  handleInputChange(entry, "documentation", e.target.files[0])
+                  handleInputChange(entry, "documentation", e.target.files)
                 }
                 required
               />
