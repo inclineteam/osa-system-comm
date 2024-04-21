@@ -44,7 +44,7 @@ const AppLayout = ({ children, auth }) => {
 
   return (
     <div className="app relative" data-bs-theme={theme}>
-      {!userAuth.user ? null : (
+      {!userAuth.user || userAuth.role === "unit_head" ? null : (
         <Link
           href={route("admin.user_objectives")}
           className="bottom-10 shadow-sm hover:bg-indigo-500 left-10 fixed z-[999] bg-indigo-600 text-white px-4 py-2.5 font-semibold rounded-md"
