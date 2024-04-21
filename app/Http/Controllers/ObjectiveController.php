@@ -30,7 +30,7 @@ class ObjectiveController extends Controller
             return [
                 'id' => $entry->id,
                 'requirement' => $entry->description,
-
+                'title' => $entry->title,
             ];
         });
 
@@ -62,7 +62,6 @@ class ObjectiveController extends Controller
 
 
         try {
-
 
             $request->validate([
                 'title' => 'required',
@@ -100,6 +99,7 @@ class ObjectiveController extends Controller
                         ObjectiveEntry::create([
                             'objective_id' => $objective->id,
                             'description' => $requirement['requirement'],
+                            'title' => $requirement['title'],
                         ]);
                     }
                 }
@@ -185,6 +185,7 @@ class ObjectiveController extends Controller
                     ObjectiveEntry::create([
                         'objective_id' => $objective->id,
                         'description' => $requirement['requirement'],
+                        'title' => $requirement['title'],
                     ]);
                 }
             }
@@ -294,6 +295,8 @@ class ObjectiveController extends Controller
         $quarter = $request->input('quarter');
         $classificationId = $request->input('classificationIndex');
         $campus = $request->input('campus');
+        $status = (int)$request->input('status');
+
 
         // Start query with base conditions
         $query = UserObjective::query();
@@ -306,7 +309,7 @@ class ObjectiveController extends Controller
 
 
         // Fetch user objectives with user and objective relationships with search conditions
-        $userObjectives = $query->whereHas('user', function ($query) use ($classificationId, $campus) {
+        $userObjectives = $query->whereHas('user', function ($query) use ($classificationId, $campus, $status) {
             //    check if campus is not null
             if ($campus != null) {
                 $query->where('campus_id', $campus);
@@ -315,6 +318,11 @@ class ObjectiveController extends Controller
             // check if classificationId is not null
             if ($classificationId != null) {
                 $query->where('designation_id', $classificationId);
+            }
+
+            // check if status is not null
+            if ($status != null) {
+                $query->where('admin_status', $status);
             }
 
             $query->where('is_archived', 0);

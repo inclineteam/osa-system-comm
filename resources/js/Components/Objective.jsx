@@ -300,9 +300,12 @@ const Objective = ({ user }) => {
                         </div>
                       )}
                       <div className="flex flex-col ml-5 justify-center">
-                        <h1 className="text-xl font-bold mb-2 leading-none">
-                          {entry.objective_entry.description}
-                        </h1>
+                        <div>
+                          <h1 className="text-xl font-bold leading-none">
+                            {entry.objective_entry.title}
+                          </h1>
+                          <p>{entry.objective_entry.description}</p>
+                        </div>
                         <p className="leading-none mb-4 text-slate-500 text-sm">
                           {entry.status ? (
                             "Completed"

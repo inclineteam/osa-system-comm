@@ -29,6 +29,8 @@ const ObjectiveMonitoring = ({ classifications }) => {
 
   const [selectedCampus, setSelectedCampus] = useState(null);
 
+  const [selectedStatus, setSelectedStatus] = useState(null);
+
   const handleQuarterChange = (e) => {
     setSelectedQuarter(e.target.value);
   };
@@ -42,6 +44,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
             quarter: selectedQuarter,
             classificationIndex: classificationIndex,
             campus: selectedCampus,
+            status: selectedStatus,
           })
         )
         .then((res) => {
@@ -52,7 +55,13 @@ const ObjectiveMonitoring = ({ classifications }) => {
     };
 
     getUserObjectives();
-  }, [selectedYear, selectedQuarter, classificationIndex, selectedCampus]);
+  }, [
+    selectedYear,
+    selectedQuarter,
+    classificationIndex,
+    selectedCampus,
+    selectedStatus,
+  ]);
 
   useEffect(() => {
     const fetchCampuses = () => {
@@ -95,8 +104,12 @@ const ObjectiveMonitoring = ({ classifications }) => {
       ),
     },
     {
-      name: "Campus",
-      cell: (row) => <>{row.user.campus.name}</>,
+      name: "Actual Accomplished",
+      cell: (row) => <>{console.log(row)}</>,
+    },
+    {
+      name: "Documentation",
+      cell: (row) => <></>,
     },
     {
       name: "Designation",
@@ -326,9 +339,9 @@ const ObjectiveMonitoring = ({ classifications }) => {
               className="border-slate-300 rounded-md hover:border-slate-400"
               name="status"
               id="status"
+              onChange={(e) => setSelectedStatus(e.target.value)}
             >
               <option value="0">In Progress</option>
-              <option value="1">Completed</option>
               <option value="2">For Reviewal</option>
             </select>
           </div>

@@ -12,6 +12,7 @@ class ObjectiveEntry extends Model
     protected $fillable = [
         'objective_id',
         'description',
+        'title'
     ];
 
     public function Objective()
