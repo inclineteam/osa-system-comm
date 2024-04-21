@@ -26,6 +26,9 @@ return new class extends Migration
 
             // info_data
             $table->json('info_data')->nullable();
+            // file path
+            $table->string('file_path')->nullable();
+
             $table->timestamps();
         });
     }

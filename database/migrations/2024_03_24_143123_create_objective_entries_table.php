@@ -16,6 +16,9 @@ return new class extends Migration
             // objective id
             $table->foreignId('objective_id')->constrained('objectives')->cascadeOnDelete();
 
+            // title
+            $table->string('title');
+
             // description
             $table->text('description');
 

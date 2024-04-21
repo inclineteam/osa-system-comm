@@ -67,14 +67,6 @@ const ObjectiveMonitoring = ({ classifications }) => {
   // user name ( first name + last name ), campus, designation, objective title, objective status ( is_completed ), objective type
   const columns = [
     {
-      name: "User Name",
-      cell: (row) => (
-        <span>
-          {row.user ? `${row.user.firstname} ${row.user.lastname}` : "N/A"}
-        </span>
-      ),
-    },
-    {
       name: "Activities / Programme",
       cell: (row) => <span>{row.objective.title}</span>,
     },
@@ -114,27 +106,10 @@ const ObjectiveMonitoring = ({ classifications }) => {
     //   name: "Objective Title",
     //   cell: (row) => <>{row.objective.title}</>,
     // },
-    {
-      name: "Indicator",
-      cell: (row) => (
-        <span>
-          {
-            // check if entries is empty
-            row.entries.length === 0
-              ? row.is_completed
-                ? "Completed"
-                : "In Progress"
-              : // check if all entries are completed
-              row.entries.every((entry) => entry.status == 1)
-              ? "Completed"
-              : "In Progress"
-          }
-        </span>
-      ),
-    },
+
     // objective status
     {
-      name: "Objective Status",
+      name: "Status",
       cell: (row) => (
         //  1 - on time, 0 - ongoing, 2 - pass due
         <span>
@@ -245,7 +220,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
             <span className="text-red-500">For Reviewal</span>
           )}
 
-          {/** check if there are entries, if there is show a button to check the entries */}
+          {/* * check if there are entries, if there is show a button to check the entries
           {row.entries.length > 0 && (
             <button
               onClick={() =>
@@ -255,7 +230,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
             >
               View Entries
             </button>
-          )}
+          )} */}
         </div>
       ),
     },
@@ -342,6 +317,22 @@ const ObjectiveMonitoring = ({ classifications }) => {
             </select>
           </div>
 
+          {/* dropdown : In-progress, For reviewal, Completed */}
+          <div className="z-50 mx-2">
+            <div>
+              <p className="font-bold mb-0">Select Status</p>
+            </div>
+            <select
+              className="border-slate-300 rounded-md hover:border-slate-400"
+              name="status"
+              id="status"
+            >
+              <option value="0">In Progress</option>
+              <option value="1">Completed</option>
+              <option value="2">For Reviewal</option>
+            </select>
+          </div>
+
           <div className="z-50 mx-2">
             <div>
               <p className="font-bold mb-0">Select Classification</p>
@@ -353,7 +344,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
               onChange={(e) => setClassificationIndex(parseInt(e.target.value))}
             >
               <option value={""} disabled>
-                Select Classification
+                All Offices
               </option>
               {classifications &&
                 classifications.map((c, index) => (
