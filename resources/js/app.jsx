@@ -18,10 +18,10 @@ import "react-quill/dist/quill.snow.css";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
-const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+// const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-// const googleClientId =
-//   "975156131635-fa69r5835sj96sjp52cfrn6u7hlluaiq.apps.googleusercontent.com";
+const googleClientId =
+  "975156131635-fa69r5835sj96sjp52cfrn6u7hlluaiq.apps.googleusercontent.com";
 
 axios.defaults.baseURL = import.meta.env.VITE_APP_URL + "/api";
 TimeAgo.addDefaultLocale(en);

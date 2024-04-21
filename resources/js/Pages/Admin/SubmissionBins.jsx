@@ -276,11 +276,6 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports }) => {
                                                     </Link> */}
                           <Link
                             as={"button"}
-                            disabled={
-                              auth.role === "super_admin"
-                                ? item.approved_reports?.length == 0
-                                : getReportsCount(item.id) == 0
-                            }
                             href={route("admin.reports.view", {
                               submission_bin_id: item.id,
                             })}
@@ -402,7 +397,6 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports }) => {
                                                     </Link> */}
                               <Link
                                 as={"button"}
-                                disabled={item.reports.length == 0}
                                 href={route("admin.reports.view", {
                                   submission_bin_id: item.id,
                                 })}

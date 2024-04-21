@@ -3,6 +3,7 @@ import { Form } from "react-bootstrap";
 
 export const RequirementsEntryForm = ({ requirements, setRequirements }) => {
   const [requirement, setRequirement] = useState("");
+  const [title, setTitle] = useState("");
 
   return (
     <div className="mt-10">
@@ -13,11 +14,14 @@ export const RequirementsEntryForm = ({ requirements, setRequirements }) => {
           requirements.map((requirement) => (
             <li
               key={requirement.id}
-              className="hover:bg-slate-100 flex items-center relative justify-between py-2 pr-2 pl-4"
+              className="hover:bg-slate-100 flex items-center relative justify-between py-3 pr-4 pl-4"
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-4">
                 <span className="block w-1.5 h-1.5 rounded-full bg-slate-700"></span>
-                <p className="mb-0">{requirement.requirement}</p>
+                <div>
+                  <b className="mb-2 block">{requirement.title}</b>
+                  <p className="mb-0">{requirement.requirement}</p>
+                </div>
               </div>
 
               <button
@@ -40,8 +44,15 @@ export const RequirementsEntryForm = ({ requirements, setRequirements }) => {
         )}
       </ul>
 
-      <div className="flex items-center">
+      <div className="space-x-4 flex items-center">
         <div className="flex-1">
+          <Form.Control
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Title"
+          />
+        </div>
+        <div className="flex-[2]">
           <Form.Control
             value={requirement}
             onChange={(e) => setRequirement(e.target.value)}
@@ -60,10 +71,12 @@ export const RequirementsEntryForm = ({ requirements, setRequirements }) => {
                 {
                   id: crypto.randomUUID(),
                   requirement,
+                  title,
                 },
               ]);
 
               setRequirement("");
+              setTitle("");
             }
           }}
           className="ml-4 bg-slate-100 my-2 px-3 w-max rounded-md font-medium text-slate-600 py-2 hover:bg-slate-200 outline outline-2 active:bg-slate-300 outline-transparent flex space-x-2 items-center focus:outline-indigo-600"
