@@ -44,7 +44,6 @@ const ObjectiveMonitoring = ({ classifications }) => {
             quarter: selectedQuarter,
             classificationIndex: classificationIndex,
             campus: selectedCampus,
-            status: selectedStatus,
           })
         )
         .then((res) => {
@@ -108,23 +107,26 @@ const ObjectiveMonitoring = ({ classifications }) => {
       cell: (row) => (
         <div className="flex flex-col">
           {row.entries.map((entry, index) => {
-            // Parse the info_data to get the dynamic key and value
-            const data = JSON.parse(entry.info_data);
-            // Iterate over each key-value pair in the parsed data
-            return (
-              <div
-                className="border-solid border-2 rounded-xl my-1  leading-[0.6rem] border-black p-2"
-                key={index}
-              >
-                {Object.entries(data).map(([key, value]) => (
-                  <p className="text-center text-[0.7rem]" key={key}>
-                    {/* Display the dynamic key and its value */}
-                    <span className="font-bold"> {`${key} `}</span>
-                    <span>{value}</span>
-                  </p>
-                ))}
-              </div>
-            );
+            // Check if info_data is defined before parsing it as JSON
+            if (entry.info_data) {
+              const data = JSON.parse(entry.info_data);
+              // Iterate over each key-value pair in the parsed data
+              return (
+                <div
+                  className="border-solid border-2 rounded-xl my-1  leading-[0.6rem] border-black p-2"
+                  key={index}
+                >
+                  {Object.entries(data).map(([key, value]) => (
+                    <p className="text-center text-[0.7rem]" key={key}>
+                      {/* Display the dynamic key and its value */}
+                      <span className="font-bold"> {`${key}`}</span>
+                      <br />
+                      <span>{value}</span>
+                    </p>
+                  ))}
+                </div>
+              );
+            }
           })}
         </div>
       ),
@@ -285,7 +287,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
                         });
                     }}
                   >
-                    For Review
+                    Return
                   </button>
                 </div>
               )}
@@ -392,22 +394,6 @@ const ObjectiveMonitoring = ({ classifications }) => {
                   {campus.name}
                 </option>
               ))}
-            </select>
-          </div>
-
-          {/* dropdown : In-progress, For reviewal, Completed */}
-          <div className="z-50 mx-2">
-            <div>
-              <p className="font-bold mb-0">Select Status</p>
-            </div>
-            <select
-              className="border-slate-300 rounded-md hover:border-slate-400"
-              name="status"
-              id="status"
-              onChange={(e) => setSelectedStatus(e.target.value)}
-            >
-              <option value="0">In Progress</option>
-              <option value="2">For Reviewal</option>
             </select>
           </div>
 
