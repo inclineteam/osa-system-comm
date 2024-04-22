@@ -193,7 +193,6 @@ const Objective = ({ user }) => {
     });
     setInputData(data);
   };
-
   const handleEntryStatusUpdate = (entryId, objectiveId) => {
     console.log("Updating entry status for entryId:", entryId); // Debug statement
 
@@ -246,19 +245,20 @@ const Objective = ({ user }) => {
       .then((res) => {
         if (res.statusText === "OK") {
           console.log("res:", res);
-          // Update the objectives state to reflect the status change
-          setObjectives((prevObjectives) =>
-            prevObjectives.map((obj) =>
-              obj.id === objectiveId
-                ? {
-                    ...obj,
-                    entries: obj.entries.map((ent) =>
-                      ent.id === entryId ? { ...ent, status: true } : ent
-                    ),
-                  }
-                : obj
-            )
-          );
+          // Filter out the updated entry from the objectives array
+          const updatedObjectives = objectives.map((objective) => {
+            if (objective.id === objectiveId) {
+              return {
+                ...objective,
+                entries: objective.entries.map((entry) =>
+                  entry.id === entryId ? { ...entry, status: true } : entry
+                ),
+              };
+            } else {
+              return objective;
+            }
+          });
+          setObjectives(updatedObjectives);
         }
       })
       .catch((error) => console.error("Error updating entry status:", error));
@@ -276,14 +276,11 @@ const Objective = ({ user }) => {
         if (res.statusText === "OK") {
           console.log("res:", res);
           toast.success("target submitted successfully.");
-          // Update the objectives state to reflect the status change
-          setObjectives((prevObjectives) =>
-            prevObjectives.map((obj) =>
-              obj.id === objectiveId
-                ? { ...obj, is_completed: true, admin_status: 0 }
-                : obj
-            )
+          // Filter out the updated objective from the objectives array
+          const updatedObjectives = objectives.filter(
+            (objective) => objective.id !== objectiveId
           );
+          setObjectives(updatedObjectives);
         }
       })
       .catch((error) => console.error("Error submitting objective:", error));

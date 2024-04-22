@@ -106,14 +106,14 @@ const ObjectiveMonitoring = ({ classifications }) => {
     {
       name: "Actual Accomplished",
       cell: (row) => (
-        <>
+        <div className="flex flex-col">
           {row.entries.map((entry, index) => {
             // Parse the info_data to get the dynamic key and value
             const data = JSON.parse(entry.info_data);
             // Iterate over each key-value pair in the parsed data
             return (
               <div
-                className="border-solid border-2 rounded-xl w-[20rem] leading-[0.6rem] border-black p-2"
+                className="border-solid border-2 rounded-xl my-1  leading-[0.6rem] border-black p-2"
                 key={index}
               >
                 {Object.entries(data).map(([key, value]) => (
@@ -126,17 +126,17 @@ const ObjectiveMonitoring = ({ classifications }) => {
               </div>
             );
           })}
-        </>
+        </div>
       ),
     },
     {
       name: "Documentation",
       cell: (row) => (
-        <>
+        <div className="flex flex-col">
           {row.entries.map((entry, index) => {
             if (entry.file_path) {
               return (
-                <div key={index}>
+                <div key={index} className="my-5">
                   <a
                     onClick={() => {
                       axios
@@ -173,7 +173,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
               );
             }
           })}
-        </>
+        </div>
       ),
     },
     {
