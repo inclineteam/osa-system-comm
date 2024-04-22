@@ -21,7 +21,7 @@ const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 // const googleClientId =
-//   "975156131635-fa69r5835sj96sjp52cfrn6u7hlluaiq.apps.googleusercontent.com";
+//   "855985514347-g7qro3g4g8cudl9c87jl10q0jsvol1os.apps.googleusercontent.com";
 
 axios.defaults.baseURL = import.meta.env.VITE_APP_URL + "/api";
 TimeAgo.addDefaultLocale(en);

@@ -301,14 +301,14 @@ const ObjectiveMonitoring = ({ classifications }) => {
           {/* * check if there are entries, if there is show a button to check the entries
           {row.entries.length > 0 && (
             <button
-              onClick={() =>
+            onClick={() =>
                 router.visit(`/admin/objectives/${row.id}/entries`)
               }
               className="bg-blue-500 py-1 px-2 rounded-md text-white mt-2"
-            >
+              >
               View Entries
-            </button>
-          )} */}
+              </button>
+            )} */}
         </div>
       ),
     },
