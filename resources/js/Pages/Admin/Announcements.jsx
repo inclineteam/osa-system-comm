@@ -129,17 +129,26 @@ const Announcements = ({ auth, announcements: announcementList }) => {
             <p className="fs-6 mt-3 whitespace-pre-wrap">
               {announcement.content}
             </p>
-            {announcement.image != "" && announcement.image != null && (
-              <div className="">
-                <Image
-                  fluid
-                  thumbnail
-                  draggable={false}
-                  className="rounded-0 shadow-sm max-h-[400px]"
-                  src={announcement.image}
-                />
-              </div>
-            )}
+
+            {announcement.images &&
+              Object.keys(announcement.images).length > 0 && (
+                <div className="d-flex flex-wrap">
+                  {Object.values(JSON.parse(announcement.images)).map(
+                    (image, index) => (
+                      <div key={index} className="m-2">
+                        <Image
+                          fluid
+                          thumbnail
+                          draggable={false}
+                          className="rounded-0 shadow-sm max-h-[40rem]"
+                          src={image}
+                        />
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
+
             <hr />
             <div className="text-end">
               <TextButton text="Close" onClick={closeViewModal} />
@@ -228,11 +237,23 @@ const Announcements = ({ auth, announcements: announcementList }) => {
                                     </p>
                                   </Col>
                                   <Col lg={5}>
-                                    {item.image !== "" &&
-                                      item.image !== null && (
-                                        <div className="col-lg-4 col-md-7 col-10 h-[150px] overflow-hidden p-3 border hover:shadow-inner position-relative">
-                                          <div className="cursor-pointer bg-gray-400 opacity-30 position-absolute w-full h-full top-0 left-0 hover:opacity-10 hover:shadow transition-all"></div>
-                                          <Image src={item.image} fluid />
+                                    {item.images &&
+                                      Object.keys(item.images).length > 0 && (
+                                        <div className="d-flex flex-row flex-wrap">
+                                          {console.log(JSON.parse(item.images))}
+                                          {Object.values(
+                                            JSON.parse(item.images)
+                                          ).map((image, index) => (
+                                            <div key={index} className="m-2">
+                                              <Image
+                                                fluid
+                                                thumbnail
+                                                draggable={false}
+                                                className="rounded-0 shadow-sm max-h-[20rem]"
+                                                src={image}
+                                              />
+                                            </div>
+                                          ))}
                                         </div>
                                       )}
                                   </Col>

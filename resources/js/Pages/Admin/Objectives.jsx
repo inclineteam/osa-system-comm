@@ -6,6 +6,11 @@ import { useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { toast } from "react-toastify";
+import { Tab } from "@headlessui/react";
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
 function CreateObjectives() {
   const [objectives, setObjectives] = useState([]);
@@ -106,55 +111,92 @@ function CreateObjectives() {
       defaultActiveLink="Create Targets"
     >
       <div className="content-wrapper">
-        <div className="bg-white p-6">
-          <div className="flex bg-white flex-col">
-            <h1 className="text-xl font-bold mb-2 leading-none">
-              Create Target
-            </h1>
-            <p className=" leading-none text-slate-500">
-              Generate a target for users to complete.
-            </p>
+        <Tab.Group>
+          <Tab.List className="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
+            <Tab
+              className={({ selected }) =>
+                classNames(
+                  "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
+                  "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2",
+                  selected
+                    ? "bg-white text-blue-700 shadow"
+                    : "text-blue-100 hover:bg-white/[0.12] hover:text-white"
+                )
+              }
+            >
+              Targets
+            </Tab>
+            <Tab
+              className={({ selected }) =>
+                classNames(
+                  "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
+                  "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2",
+                  selected
+                    ? "bg-white text-blue-700 shadow"
+                    : "text-blue-100 hover:bg-white/[0.12] hover:text-white"
+                )
+              }
+            >
+              Submission Bin
+            </Tab>
+          </Tab.List>
+          <Tab.Panels>
+            <Tab.Panel>
+              <div className="bg-white mt-3 p-6">
+                <div className="flex bg-white flex-col">
+                  <h1 className="text-xl font-bold mb-2 leading-none">
+                    Create Target
+                  </h1>
+                  <p className=" leading-none text-slate-500">
+                    Generate a target for users to complete.s
+                  </p>
 
-            <div className="flex mb-3 items-center gap-3">
-              <button
-                // onClick={() => handleSubmission()}
-                onClick={() =>
-                  (window.location.href = route("admin.objectives.create"))
-                }
-                className=" w-max transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md flex"
-              >
-                <i className="fi fi-rs-add-document text-base mr-2"></i>
-                <span>Create Target</span>
-              </button>
+                  <div className="flex mb-3 items-center gap-3">
+                    <button
+                      // onClick={() => handleSubmission()}
+                      onClick={() =>
+                        (window.location.href = route(
+                          "admin.objectives.create"
+                        ))
+                      }
+                      className=" w-max transition bg-indigo-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-indigo-400 rounded-md flex"
+                    >
+                      <i className="fi fi-rs-add-document text-base mr-2"></i>
+                      <span>Create Target</span>
+                    </button>
 
-              <Link
-                className="px-3 py-2 border border-slate-200 rounded-md hover:bg-slate-200 w-max text-sm font-semibold text-indigo-500 block"
-                // href={route("admin.report.open", latestTarget.data.id)}
-                href={route("admin.user_objectives")}
-              >
-                View monitoring
-              </Link>
-            </div>
-          </div>
+                    <Link
+                      className="px-3 py-2 border border-slate-200 rounded-md hover:bg-slate-200 w-max text-sm font-semibold text-indigo-500 block"
+                      // href={route("admin.report.open", latestTarget.data.id)}
+                      href={route("admin.user_objectives")}
+                    >
+                      View monitoring
+                    </Link>
+                  </div>
+                </div>
 
-          <hr className="my-8 border-slate-400" />
+                <hr className="my-8 border-slate-400" />
 
-          <h1 className="mt-4 text-xl font-bold mb-2 leading-none">
-            All targets
-          </h1>
-          <p className="border-b border-slate-200 pb-4 leading-none mb-4 text-slate-500">
-            Check out all the created targets
-          </p>
+                <h1 className="mt-4 text-xl font-bold mb-2 leading-none">
+                  All targets
+                </h1>
+                <p className="border-b border-slate-200 pb-4 leading-none mb-4 text-slate-500">
+                  Check out all the created targets
+                </p>
 
-          <div className="mt-4  rounded-md overflow-hidden">
-            <DataTable
-              columns={columns}
-              pagination
-              data={objectives}
-              customStyles={customStyles}
-            />
-          </div>
-        </div>
+                <div className="mt-4  rounded-md overflow-hidden">
+                  <DataTable
+                    columns={columns}
+                    pagination
+                    data={objectives}
+                    customStyles={customStyles}
+                  />
+                </div>
+              </div>
+            </Tab.Panel>
+            <Tab.Panel>Content 2</Tab.Panel>
+          </Tab.Panels>
+        </Tab.Group>
       </div>
     </PanelLayout>
   );

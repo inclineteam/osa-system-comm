@@ -346,7 +346,7 @@ class ReportController extends Controller
             'reports' => [],
             'entries' => [],
         ];
-        $reports = Report::with(['unitHead', 'submission_bin', 'entries'])->get();
+        $reports = Report::with(['unitHead', 'submission_bin', 'entries'])->where('is_archived', 0)->get();
         $data['campus'] = $request->campus;
 
         foreach ($reports as $report) {

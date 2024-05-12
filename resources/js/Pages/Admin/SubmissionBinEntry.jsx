@@ -3,6 +3,7 @@ import { Card, Form, FormCheck } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { SubmissionBinEntryImageInput } from "./SubmissionBinEntryImageInput";
 import { ParticipantsEntryForm } from "@/Components/ParticipantsEntryForm";
+import { toast } from "sonner";
 
 export const SubmissionBinEntry = ({
   deleteDataInEntries,
@@ -47,6 +48,11 @@ export const SubmissionBinEntry = ({
   };
 
   const handleSave = () => {
+    // check if date is current date or past date
+    if (new Date(data.date) > new Date()) {
+      toast.error("Date must be current or past date");
+      return;
+    }
     addDataInEntries(data, id);
     setHide(true);
   };

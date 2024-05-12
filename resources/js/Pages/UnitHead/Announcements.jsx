@@ -46,7 +46,17 @@ const Announcements = ({ announcements }) => {
           <div className="mt-3">
             <p className="whitespace-pre-wrap">{announcement.content}</p>
             <Col lg={5} md={8} sm={8} xs={12}>
-              <Image src={announcement.image} fluid thumbnail />
+              <div className="flex">
+                {announcement.images &&
+                  // get all images from JSON
+                  JSON.parse(announcement.images).map((image, index) => (
+                    <Image
+                      key={index}
+                      src={image}
+                      className="mb-2 m-2 w-100 h-auto"
+                    />
+                  ))}
+              </div>
             </Col>
           </div>
         </ModalComponent>
@@ -79,11 +89,21 @@ const Announcements = ({ announcements }) => {
                         {item.content}
                       </p>
 
-                      {item.image && (
+                      {/* {item.image && (
                         <div className="w-100 h-[170px] overflow-hidden border shadow-sm">
                           <Image
                             width={150}
                             src={item.image}
+                            className="mb-2 w-100 h-auto"
+                          />
+                        </div>
+                      )} */}
+                      {/* item.images is JSON */}
+                      {item.images && (
+                        <div className="w-100 h-[170px] overflow-hidden border shadow-sm">
+                          <Image
+                            width={150}
+                            src={JSON.parse(item.images)[0]}
                             className="mb-2 w-100 h-auto"
                           />
                         </div>

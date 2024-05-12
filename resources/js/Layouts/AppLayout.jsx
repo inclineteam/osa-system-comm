@@ -8,8 +8,11 @@ import {
   useUserAuthState,
   useWindowState,
 } from "@/States/States";
+import { Fab, Action } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 import { Link, router, usePage, useRemember } from "@inertiajs/react";
 import React, { Suspense, useEffect, useState } from "react";
+import { Toaster } from "sonner";
 
 const AppLayout = ({ children, auth }) => {
   const { theme, setTheme } = useThemeState();
@@ -45,14 +48,87 @@ const AppLayout = ({ children, auth }) => {
   return (
     <div className="app relative" data-bs-theme={theme}>
       {!userAuth.user || userAuth.role === "unit_head" ? null : (
-        <Link
-          href={route("admin.user_objectives")}
-          className="bottom-10 shadow-sm hover:bg-indigo-500 left-10 fixed z-[999] bg-indigo-600 text-white px-4 py-2.5 font-semibold rounded-md"
-        >
-          Targets
-        </Link>
-      )}
+        // <Link
+        //   href={route("admin.user_objectives")}
+        //   className="bottom-10 shadow-sm hover:bg-indigo-500 left-10 fixed z-[999] bg-indigo-600 text-white px-4 py-2.5 font-semibold rounded-md"
+        // >
+        //   Targets
+        // </Link>
 
+        <div>
+          <Fab
+            mainButtonStyles={{ background: "#0d6efd" }}
+            icon={<i className="fi fi-rr-location-crosshairs"></i>}
+          >
+            <Action
+              onClick={() => {
+                router.visit(route("admin.objectives.create"));
+              }}
+              text="Create Target"
+            >
+              <i class="fi fi-br-bullseye-arrow"></i>
+            </Action>
+
+            <Action
+              onClick={() => {
+                router.visit(route("admin.user_objectives"));
+              }}
+              text="Target Reviewal"
+            >
+              <i class="fi fi-br-book-alt"></i>
+            </Action>
+
+            <Action
+              onClick={() => {
+                router.visit(route("admin.user_objectives.archives"));
+              }}
+              text="Target Archive"
+            >
+              <i class="fi fi-rr-box"></i>
+            </Action>
+
+            <Action
+              onClick={() => {
+                router.visit(route("admin.create_submission_bin"));
+              }}
+              text="Create Submission Bin"
+            >
+              <i class="fi fi-rr-add"></i>
+            </Action>
+
+            <Action
+              onClick={() => {
+                router.visit(route("admin.reports.for-review"));
+              }}
+              text="For Review"
+            >
+              <i class="fi fi-rr-book-arrow-right"></i>
+            </Action>
+
+            <Action
+              onClick={() => {
+                router.visit(route("admin.reports.archive"));
+              }}
+              text="Report Archive"
+            >
+              <i class="fi fi-rr-folder-open"></i>
+            </Action>
+          </Fab>
+        </div>
+      )}
+      <Toaster
+        duration={3000}
+        theme="light"
+        position="bottom-right"
+        toastOptions={{
+          classNames: {
+            error: "!text-red-500",
+            success: "!text-green-500",
+            warning: "!text-yellow-500",
+            info: "!text-blue-500",
+          },
+        }}
+      />
       <PageLoader show={showLoader} />
       {children}
     </div>

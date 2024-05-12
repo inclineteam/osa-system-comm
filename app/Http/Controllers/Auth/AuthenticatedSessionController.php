@@ -33,6 +33,8 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
+        dd(auth()->user()->is_deleted);
+
         // check if user is is_deleted then logout
         if (auth()->user()->is_deleted == 1) {
             Auth::guard('web')->logout();
@@ -43,12 +45,18 @@ class AuthenticatedSessionController extends Controller
 
         $home = '/admin/dashboard';
 
+        dd($request->get('type'));
+
         switch ($request->get('type')) {
             case 'super_admin':
                 $home = '/admin/dashboard';
                 break;
             case 'admin':
                 $home = '/admin/dashboard';
+                break;
+            case 'unit_head':
+                $home = '/admin/dashboard';
+
                 break;
         }
 

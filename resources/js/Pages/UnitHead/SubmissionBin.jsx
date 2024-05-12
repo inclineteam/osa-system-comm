@@ -186,6 +186,7 @@ const SubmissionBin = ({ submissionBin, auth, report }) => {
               <Card.Body>
                 <p className="my-1">Private Comments</p>
                 <div className="mt-4">
+                  {console.log(report)}
                   <CommentsView
                     report={report}
                     unitHead={auth.user}

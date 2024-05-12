@@ -14,6 +14,7 @@ const EditUnitHead = ({ auth, classifications, unitHead }) => {
     middlename: unitHead.middlename,
     email: unitHead.email,
     designation_id: unitHead.designation.id,
+    password: unitHead.password,
     campus_id: unitHead.campus_id,
   });
 
@@ -82,17 +83,7 @@ const EditUnitHead = ({ auth, classifications, unitHead }) => {
                 <Col lg>
                   <Form.Label>
                     <div className="flex gap-2 items-center">
-                      <span className="text-sm text-danger ">*</span>
-                      <Image
-                        src="/images/google.png"
-                        fluid
-                        width={18}
-                        height={18}
-                      />
                       <span className="">Email address</span>
-                      <span className="text-sm text-secondary">
-                        (Must be a google account.)
-                      </span>
                     </div>
                   </Form.Label>
                   <Form.Control
@@ -103,6 +94,20 @@ const EditUnitHead = ({ auth, classifications, unitHead }) => {
                   />
                   <p className="mb-0 mt-2 text-sm text-danger">
                     {errors?.email}
+                  </p>
+                </Col>
+                <Col lg>
+                  <Form.Label>
+                    <div className="flex gap-2 items-center">
+                      <span className="">Password</span>
+                    </div>
+                  </Form.Label>
+                  <Form.Control
+                    value={data.password}
+                    onChange={(e) => setData("password", e.target.value)}
+                  />
+                  <p className="mb-0 mt-2 text-sm text-danger">
+                    {errors?.password}
                   </p>
                 </Col>
                 <Col>

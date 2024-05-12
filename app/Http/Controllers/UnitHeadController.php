@@ -20,13 +20,12 @@ class UnitHeadController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|unique:users,email|regex:/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/',
+            'email' => 'required|email|unique:users,email',
             'firstname' => 'required|string',
             'lastname' => 'required|string',
             'campus_id' => 'required',
             'designation_id' => 'required',
-        ], [
-            'email.regex' => 'This email is not a google account.'
+            'password' => 'required|string|min:8',
         ]);
 
 
@@ -37,6 +36,7 @@ class UnitHeadController extends Controller
             'middlename' => $request->middlename,
             'lastname' => $request->lastname,
             'campus_id' => $request->campus_id,
+            'password' => bcrypt('password'), // default password is 'password
             'designation_id' => $request->designation_id,
         ]);
 
@@ -59,15 +59,24 @@ class UnitHeadController extends Controller
     public function edit(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'string', 'regex:/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/', Rule::unique('users', 'email')->ignore($request->id)],
+            'email' => ['required', 'string', Rule::unique('users', 'email')->ignore($request->id)],
             'firstname' => 'required|string',
             'lastname' => 'required|string',
             'campus_id' => 'required',
+            'designation_id' => 'required',
+
         ], [
             'email.regex' => 'This email is not a google account.'
         ]);
 
         $unitHead = User::find($request->id);
+
+        if ($request->password) {
+            $request->validate([
+                'password' => 'required|string|min:8',
+            ]);
+            $unitHead->password = bcrypt($request->password);
+        }
 
         $unitHead->email = $request->email;
         $unitHead->firstname = $request->firstname;
@@ -75,6 +84,7 @@ class UnitHeadController extends Controller
         $unitHead->middlename = $request->middlename;
         $unitHead->campus_id = $request->campus_id;
         $unitHead->designation_id = $request->designation_id;
+
 
         $unitHead->save();
 

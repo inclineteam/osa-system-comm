@@ -53,6 +53,7 @@ const CommentsView = ({
   const [addingComments, setAddingComments] = useState(false);
   const [comment, setComment] = useState("");
   const [submittingComment, setSubmittingComment] = useState(false);
+  console.log("report ", report);
 
   const fetchComments = (commentsData) => {
     axios
@@ -141,6 +142,15 @@ const CommentsView = ({
           setComment={setComment}
           submittingComment={submittingComment}
         />
+      ) : report == null ? (
+        // <p
+        //   className="text-sm cursor-pointer text-primary"
+        //   onClick={() => setAddingComments(true)}
+        // >
+        //   Add private comments
+        // </p>
+        // check if report is null
+        <p className="text-sm text-slate-500">Create a report first</p>
       ) : (
         <p
           className="text-sm cursor-pointer text-primary"

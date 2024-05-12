@@ -19,7 +19,9 @@ const LatestReminder = () => {
   return (
     <div className="bg-white rounded-lg mb-4 shadow-sm border-b border-slate-300 p-4">
       <div>
-        <h1 className="text-xl font-bold mb-2 leading-none">Latest reminder</h1>
+        <h1 className="text-xl font-bold mb-2 leading-none">
+          📌Latest reminder
+        </h1>
         <p className="leading-none mb-4 text-slate-500 text-sm">
           Posted by the super admin.
         </p>

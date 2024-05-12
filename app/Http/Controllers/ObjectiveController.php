@@ -8,7 +8,9 @@ use App\Models\ObjectiveEntry;
 use App\Models\User;
 use App\Models\UserCheckoutEntry;
 use App\Models\UserObjective;
+use App\Notifications\NewTargetEvent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -123,8 +125,12 @@ class ObjectiveController extends Controller
 
             $campus_id = (int)$request->campus_id;
 
+
+
             // all unitHeads where they have a designation of unit head and not null and campus_id
             $unitHeads = User::where('designation_id', $request->classificationIndex)->where('campus_id', $campus_id)->get();
+
+            Notification::send($unitHeads, new NewTargetEvent($objective));
 
             foreach ($unitHeads as $unitHead) {
                 UserObjective::create([
@@ -133,6 +139,8 @@ class ObjectiveController extends Controller
                     'is_completed' => false,
                     'is_archived' => false
                 ]);
+
+
 
                 // get entries of the objective
                 $entries = ObjectiveEntry::where('objective_id', $objective->id)->get();

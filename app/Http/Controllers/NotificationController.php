@@ -12,6 +12,7 @@ use App\Notifications\NewReminder;
 use App\Notifications\NewReportApproved;
 use App\Notifications\NewReportSubmitted;
 use App\Notifications\NewSubmissionBin;
+use App\Notifications\NewTargetEvent;
 use App\Notifications\ReportStatusUpdated;
 use App\Notifications\SubmitReportNotif;
 use Illuminate\Http\Request;
@@ -52,7 +53,8 @@ class NotificationController extends Controller
                     ->whereIn('type', [
                         NewSubmissionBin::class,
                         ReportStatusUpdated::class,
-                        SubmitReportNotif::class
+                        SubmitReportNotif::class,
+                        NewTargetEvent::class,
                     ])
                     ->get();
             }

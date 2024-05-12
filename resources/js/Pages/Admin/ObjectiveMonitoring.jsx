@@ -1,125 +1,140 @@
+import React, { useState, useEffect } from "react";
 import PanelLayout from "@/Layouts/PanelLayout";
 import { Link, router } from "@inertiajs/react";
-import { set } from "date-fns";
-import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-import { Button, Form } from "react-bootstrap";
-import DataTable from "react-data-table-component";
 import DatePicker from "react-datepicker";
+import DataTable from "react-data-table-component";
 import "react-datepicker/dist/react-datepicker.css";
+import "../../../css/app.css";
+import ModalComponent from "@/Components/ModalComponent";
 
 const ObjectiveMonitoring = ({ classifications }) => {
-  console.log(classifications);
-  const [classificationIndex, setClassificationIndex] = useState(null);
-  // get all user objectives
-  const [userObjectives, setUserObjectives] = useState([]);
-  // year date selector
-  const [selectedYear, setSelectedYear] = useState(null);
-
-  const handleYearChange = (date) => {
-    setSelectedYear(date);
-  };
-
-  // get all campus
-  const [campuses, setCampuses] = useState([]);
-
-  // quarter
-  const [selectedQuarter, setSelectedQuarter] = useState(null);
-
-  const [selectedCampus, setSelectedCampus] = useState(null);
-
-  const [selectedStatus, setSelectedStatus] = useState(null);
-
-  const handleQuarterChange = (e) => {
-    setSelectedQuarter(e.target.value);
-  };
+  const [state, setState] = useState({
+    selectedYear: null,
+    selectedQuarter: null,
+    selectedCampus: null,
+    selectedStatus: null,
+    classificationIndex: null,
+    userObjectives: [],
+    campuses: [],
+  });
 
   useEffect(() => {
-    const getUserObjectives = async () => {
-      await axios
-        .get(
-          route("objectives.user.get", {
-            year: selectedYear ? selectedYear.getFullYear() : null,
-            quarter: selectedQuarter,
-            classificationIndex: classificationIndex,
-            campus: selectedCampus,
-          })
-        )
-        .then((res) => {
-          if (res.status === 200) {
-            setUserObjectives(res.data);
-          }
-        });
+    const fetchCampuses = async () => {
+      const response = await axios.get(route("campus.index"));
+      setState((prev) => ({ ...prev, campuses: response.data.campuses }));
     };
-
-    getUserObjectives();
-  }, [
-    selectedYear,
-    selectedQuarter,
-    classificationIndex,
-    selectedCampus,
-    selectedStatus,
-  ]);
-
-  useEffect(() => {
-    const fetchCampuses = () => {
-      axios.get(route("campus.index")).then((res) => {
-        setCampuses(res.data.campuses);
-      });
-    };
-
     fetchCampuses();
   }, []);
 
-  // user name ( first name + last name ), campus, designation, objective title, objective status ( is_completed ), objective type
+  useEffect(() => {
+    const getUserObjectives = async () => {
+      const response = await axios.get(
+        route("objectives.user.get", {
+          year: state.selectedYear ? state.selectedYear.getFullYear() : null,
+          quarter: state.selectedQuarter,
+          classificationIndex: state.classificationIndex,
+          campus: state.selectedCampus,
+        })
+      );
+      setState((prev) => ({ ...prev, userObjectives: response.data }));
+    };
+    getUserObjectives();
+  }, [
+    state.selectedYear,
+    state.selectedQuarter,
+    state.classificationIndex,
+    state.selectedCampus,
+  ]);
+
+  const [showTargetsModal, setShowTargetsModal] = useState(false);
+  const [selectedObjective, setSelectedObjective] = useState(null);
+
+  const viewTargets = (objective) => {
+    setSelectedObjective(objective);
+    setShowTargetsModal(true);
+  };
+
+  const closeTargetsModal = () => {
+    setSelectedObjective(null);
+    setShowTargetsModal(false);
+  };
+
+  const handleYearChange = (date) => {
+    setState((prev) => ({ ...prev, selectedYear: date }));
+  };
+
+  const handleQuarterChange = (e) => {
+    setState((prev) => ({ ...prev, selectedQuarter: e.target.value }));
+  };
+
+  const handleCampusChange = (e) => {
+    setState((prev) => ({ ...prev, selectedCampus: e.target.value }));
+  };
+
+  const handleClassificationChange = (e) => {
+    setState((prev) => ({
+      ...prev,
+      classificationIndex: parseInt(e.target.value),
+    }));
+  };
+
+  const ExpandedComponent = ({ object }) => (
+    <pre>{JSON.stringify(object, null, 2)}</pre>
+  );
+
   const columns = [
     {
       name: "Activities / Programme",
+      sortable: true,
+      selector: (row) => row.objective.title,
+      width: "14rem",
       cell: (row) => <span>{row.objective.title}</span>,
     },
     {
       name: "Targets",
+      width: "13rem",
       cell: (row) => (
         <span>
-          {row.entries.length === 0
-            ? row.is_completed
-              ? "Completed"
-              : "In Progress"
-            : row.entries.map((entry, index) => {
-                console.log(row.is_completed);
-                // Return the JSX for each entry here
-                return (
-                  <div key={index}>
-                    {/* Example: Display entry description */}
-                    <p>
-                      {index + 1}.) {entry.objective_entry.description} -{" "}
-                      {entry.status === 1 ? "Completed" : "In Progress"}
-                    </p>
-                  </div>
-                );
-              })}
+          {row.entries.length === 0 ? (
+            row.is_completed ? (
+              "Completed"
+            ) : (
+              "In Progress"
+            )
+          ) : (
+            <button
+              className="text-blue-500 underline"
+              onClick={() => viewTargets(row)}
+            >
+              View Targets
+            </button>
+          )}
         </span>
       ),
     },
     {
       name: "Actual Accomplished",
+      width: "14rem",
+
       cell: (row) => (
-        <div className="flex flex-col">
+        <div className="flex justify-center flex-col">
           {row.entries.map((entry, index) => {
-            // Check if info_data is defined before parsing it as JSON
             if (entry.info_data) {
               const data = JSON.parse(entry.info_data);
-              // Iterate over each key-value pair in the parsed data
               return (
                 <div
-                  className="border-solid border-2 rounded-xl my-1  leading-[0.6rem] border-black p-2"
+                  className="border-solid border-2 rounded-xl my-1  leading-[0.9rem] border-black p-2"
                   key={index}
                 >
                   {Object.entries(data).map(([key, value]) => (
                     <p className="text-center text-[0.7rem]" key={key}>
                       {/* Display the dynamic key and its value */}
-                      <span className="font-bold"> {`${key}`}</span>
+                      <span className="font-bold">
+                        {" "}
+                        {`${key
+                          .replace(/([a-z])([A-Z])/g, "$1 $2")
+                          .replace(/\b\w/g, (str) => str.toUpperCase())}`}
+                      </span>
                       <br />
                       <span>{value}</span>
                     </p>
@@ -133,6 +148,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
     },
     {
       name: "Documentation",
+      width: "auto",
       cell: (row) => (
         <div className="flex flex-col">
           {row.entries.map((entry, index) => {
@@ -167,7 +183,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
                         });
                     }}
                     download
-                    className="border-solid border-2 rounded-xl w-[20rem] leading-[0.6rem] border-black p-2"
+                    className="border-solid border-2 rounded-xl w-[20rem] leading-[0.6rem] bg-blue text-white p-2"
                   >
                     Download
                   </a>
@@ -179,7 +195,10 @@ const ObjectiveMonitoring = ({ classifications }) => {
       ),
     },
     {
-      name: "Designation",
+      name: "Office",
+      width: "auto",
+      selector: (row) => row.user.designation.name,
+      sortable: true,
       cell: (row) => <>{row.user.designation.name}</>,
     },
     // {
@@ -190,6 +209,9 @@ const ObjectiveMonitoring = ({ classifications }) => {
     // objective status
     {
       name: "Status",
+      width: "auto",
+      selector: (row) => row.status,
+      sortable: true,
       cell: (row) => (
         //  1 - on time, 0 - ongoing, 2 - pass due
         <span>
@@ -204,6 +226,9 @@ const ObjectiveMonitoring = ({ classifications }) => {
     {
       // due date
       name: "Due Date",
+      sortable: true,
+      selector: (row) => row.objective.due_date,
+      width: "auto",
       cell: (row) => (
         <>{new Date(row.objective.due_date).toLocaleDateString("en-US")}</>
       ),
@@ -212,6 +237,9 @@ const ObjectiveMonitoring = ({ classifications }) => {
     // completed_at
     {
       name: "Completed At",
+      selector: (row) => row.updated_at,
+      sortable: true,
+      width: "auto",
       cell: (row) => (
         <>
           {row.updated_at != row.created_at
@@ -223,15 +251,18 @@ const ObjectiveMonitoring = ({ classifications }) => {
     // action : approve, reject
     {
       name: "Action",
+      width: "auto",
       cell: (row) => (
         // check if admin_status is 1 or 2
         <div className="flex flex-col">
+          <div>{console.log(row)}</div>
           {row.admin_status == 0 ? (
             <div className="flex flex-col">
               {/*  */}
-              {row.is_completed && (
+
+              {row.is_completed ? (
                 // for reviewal, approve
-                <div>
+                <div className="flex flex-col">
                   <button
                     variant="success"
                     className="bg-green-500 text-white px-2 py-1 rounded-md"
@@ -243,17 +274,20 @@ const ObjectiveMonitoring = ({ classifications }) => {
                         })
                         .then((res) => {
                           if (res.statusText === "OK") {
-                            setUserObjectives(
-                              userObjectives.map((objective) => {
-                                if (objective.id === row.id) {
-                                  return {
-                                    ...objective,
-                                    admin_status: 1,
-                                  };
+                            setState((prev) => ({
+                              ...prev,
+                              userObjectives: state.userObjectives.map(
+                                (objective) => {
+                                  if (objective.id === row.id) {
+                                    return {
+                                      ...objective,
+                                      admin_status: 1,
+                                    };
+                                  }
+                                  return objective;
                                 }
-                                return objective;
-                              })
-                            );
+                              ),
+                            }));
                           }
                         });
                     }}
@@ -272,17 +306,20 @@ const ObjectiveMonitoring = ({ classifications }) => {
                         .then((res) => {
                           if (res.statusText === "OK") {
                             // dynamically update the user objectives
-                            setUserObjectives(
-                              userObjectives.map((objective) => {
-                                if (objective.id === row.id) {
-                                  return {
-                                    ...objective,
-                                    admin_status: 2,
-                                  };
+                            setState((prev) => ({
+                              ...prev,
+                              userObjectives: state.userObjectives.map(
+                                (objective) => {
+                                  if (objective.id === row.id) {
+                                    return {
+                                      ...objective,
+                                      admin_status: 2,
+                                    };
+                                  }
+                                  return objective;
                                 }
-                                return objective;
-                              })
-                            );
+                              ),
+                            }));
                           }
                         });
                     }}
@@ -290,6 +327,9 @@ const ObjectiveMonitoring = ({ classifications }) => {
                     Return
                   </button>
                 </div>
+              ) : (
+                // waiting
+                <span className="text-gray-400">Waiting</span>
               )}
             </div>
           ) : row.admin_status == 1 ? (
@@ -322,20 +362,49 @@ const ObjectiveMonitoring = ({ classifications }) => {
         padding: "10px 20px",
         fontSize: "14px",
         background: "#f8fafc",
+        borderBottom: "1px solid #000000",
+        borderTop: "1px solid #000000",
         fontWeight: 700,
         color: "#475569",
+        width: "auto", // Set width to auto for full width
       },
     },
     cells: {
       style: {
         padding: "10px 20px",
         fontSize: "14px",
+
+        borderBottom: "1px solid #000000",
+        wordBreak: "break-all",
+        minWidth: "150px", // Set a minimum width to prevent text from being cut off
+        maxWidth: "500px", // Set a maximum width to prevent excessive stretching
+        whiteSpace: "pre-wrap", // Wrap text
       },
     },
   };
 
   return (
-    <PanelLayout headerTitle="Targets Reviewal">
+    <PanelLayout headerTitle="Targets Review">
+      <ModalComponent
+        centered
+        size="lg"
+        show={showTargetsModal}
+        handleClose={closeTargetsModal}
+      >
+        {selectedObjective && (
+          <div className="my-2 container">
+            <h2>Targets</h2>
+            <ul>
+              {selectedObjective.entries.map((target, index) => (
+                <li key={index}>
+                  {target.objective_entry.description} -{" "}
+                  {target.status === 1 ? "Completed" : "In Progress"}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </ModalComponent>
       <div className="content-wrapper">
         {/* y ear date selector */}
 
@@ -345,7 +414,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
               <p className="font-bold mb-0">Select Year</p>
             </div>
             <DatePicker
-              selected={selectedYear}
+              selected={state.selectedYear}
               onChange={handleYearChange}
               dateFormat="yyyy"
               showYearPicker
@@ -366,7 +435,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
               className="border-slate-300 rounded-md hover:border-slate-400"
               name="quarter"
               id="quarter"
-              value={selectedQuarter}
+              value={state.selectedQuarter}
               onChange={handleQuarterChange}
             >
               <option>Select Quarter</option>
@@ -385,11 +454,11 @@ const ObjectiveMonitoring = ({ classifications }) => {
             <select
               className="border-slate-300 rounded-md hover:border-slate-400"
               name="campus"
-              onChange={(e) => setSelectedCampus(e.target.value)}
+              onChange={handleCampusChange}
               id="campus"
             >
               <option>Select Campus</option>
-              {campuses.map((campus) => (
+              {state.campuses.map((campus) => (
                 <option key={campus.id} value={campus.id}>
                   {campus.name}
                 </option>
@@ -405,7 +474,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
               required
               className="border-slate-300 w-[90%] rounded-md hover:border-slate-400"
               defaultValue={""}
-              onChange={(e) => setClassificationIndex(parseInt(e.target.value))}
+              onChange={handleClassificationChange}
             >
               <option value={""} disabled>
                 All Offices
@@ -434,14 +503,20 @@ const ObjectiveMonitoring = ({ classifications }) => {
           </div>
         </div>
 
-        <div className="mt-4 z-10 border p-2 bg-white border-slate-200 rounded-md overflow-hidden">
+        <div className="mt-4 z-10 border p-2 bg-white border-slate-200 rounded-md overflow-scroll table-container">
           <h3 className="text-lg ml-2 mt-2 font-semibold">Objectives</h3>
-          <DataTable
-            columns={columns}
-            data={userObjectives}
-            pagination
-            customStyles={customStyles}
-          />
+          <div className="table-scroll">
+            <DataTable
+              columns={columns}
+              data={state.userObjectives}
+              pagination
+              className="w-full"
+              customStyles={customStyles}
+              scrollX={true}
+              scrollY={true}
+              paginationRowsPerPageOptions={[1, 5, 100, 300, 500, 800, 1000]}
+            />
+          </div>
         </div>
       </div>
     </PanelLayout>

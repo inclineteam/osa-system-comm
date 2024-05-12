@@ -63,13 +63,6 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
           href: route("admin.reminders"),
           urlPath: "reminders",
         },
-        {
-          type: NavType.LINK,
-          text: "Targets",
-          icon: <i className="fi fi-rr-note"></i>,
-          href: route("admin.objectives"),
-          urlPath: "Create Targets",
-        },
       ],
     },
     {
@@ -99,7 +92,7 @@ const SuperAdminSidebar = ({ isActive, activeLink, setShowFeedbackModal }) => {
         },
         {
           type: NavType.LINK,
-          text: "Submission Bin",
+          text: "Submission Bin & Targets",
           href: route("admin.submission_bins"),
           urlPath: "submission_binsk",
         },

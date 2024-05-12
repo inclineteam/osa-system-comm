@@ -32,6 +32,7 @@ class AnnouncementController extends Controller
 
     public function create(Request $request)
     {
+
         // check if has announcements
         $count = Announcement::all(['id'])->count();
         $order = 0;
@@ -42,10 +43,11 @@ class AnnouncementController extends Controller
             $order = $maxOrder + 1;
         }
 
+
         $announcement = Announcement::create([
             'title' => $request->title,
             'content' => $request->content,
-            'image' => $request->image,
+            'images' => json_encode($request->images),
             'order' => $order
         ]);
 

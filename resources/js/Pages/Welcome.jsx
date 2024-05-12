@@ -141,6 +141,7 @@ const Welcome = () => {
                   handleSelect={(item) => {
                     setSigninError("");
                     setUserType(item);
+                    console.log("item: ", item);
                   }}
                   menu={[
                     { value: "unit_head", text: "Sign in as Unit Head" },
@@ -148,17 +149,37 @@ const Welcome = () => {
                     { value: "super_admin", text: "Sign in as Super Admin" },
                   ]}
                 />
-                <GoogleSignInButton
-                  onClick={() => {
-                    if (userType) {
-                      googleLogin();
-                    } else {
-                      // toast.warning('You need to select a user type first!');
-                      setSigninError("You need to select a user type first!");
-                    }
-                  }}
-                  className="col-xl-7 col-lg-10 mt-4 mx-auto mb-5"
-                />
+                {/* check if userType is not unithead */}
+                {userType?.value !== "unit_head" ? (
+                  <GoogleSignInButton
+                    onClick={() => {
+                      if (userType) {
+                        googleLogin();
+                      } else {
+                        // toast.warning('You need to select a user type first!');
+                        setSigninError("You need to select a user type first!");
+                      }
+                    }}
+                    className="col-xl-7 col-lg-10 mt-4 mx-auto mb-5"
+                  />
+                ) : (
+                  // email and password login
+                  <div className="col-xl-7 col-lg-10 mt-4 mx-auto mb-5">
+                    {/* 2 inputs, email and password */}
+                    <div className="mb-3">
+                      {/* login button to redirect to /login */}
+                      <button
+                        onClick={() => {
+                          router.visit(route("unithead.login"));
+                        }}
+                        className="btn btn-primary w-100"
+                      >
+                        Sign in
+                      </button>
+                    </div>
+                    {/* submit button */}
+                  </div>
+                )}
 
                 <div className="text-center">
                   {/* <p className='my-0 text-danger fw-bold'>{signinError}</p> */}

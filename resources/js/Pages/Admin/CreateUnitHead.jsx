@@ -4,6 +4,7 @@ import { Link, useForm } from "@inertiajs/react";
 import React from "react";
 import { useState } from "react";
 import { Button, Card, Col, Form, Image, Row } from "react-bootstrap";
+import { toast } from "sonner";
 
 const CreateUnitHead = ({ auth, classifications, campuses }) => {
   const [classificationIndex, setClassificationIndex] = useState(0);
@@ -11,6 +12,8 @@ const CreateUnitHead = ({ auth, classifications, campuses }) => {
     firstname: "",
     lastname: "",
     middlename: "",
+    password: "",
+    confirm_password: "",
     email: "",
     designation_id: classifications[0]?.designations[0]?.id,
     campus_id: auth.user.campus_id ?? campuses[0].id,
@@ -18,7 +21,37 @@ const CreateUnitHead = ({ auth, classifications, campuses }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(data);
+    // check firstname, lastname, email, password, password_confirmation, classificationIndex, campusIndex
+    if (
+      !data.firstname ||
+      !data.lastname ||
+      !data.email ||
+      !data.password ||
+      !data.confirm_password ||
+      !data.designation_id ||
+      !data.campus_id
+    ) {
+      toast.error("Please fill out all fields");
+      return;
+    }
+
+    if (data.password !== data.confirm_password) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    if (data.password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+    }
+
+    if (data.designation_id === null) {
+      toast.error("Please select a classification");
+      return;
+    }
+
+    if (data.campus_id === null) {
+      toast.error("Please select a campus");
+    }
 
     post(route("unit_head.create"));
   };
@@ -75,20 +108,10 @@ const CreateUnitHead = ({ auth, classifications, campuses }) => {
                   </Col>
                 </Row>
                 <Row className="gy-3 mb-3">
-                  <Col lg={12}>
+                  <Col lg={4}>
                     <Form.Label className="text-secondary">
                       <div className="flex flex-wrap gap-2 items-center">
-                        <span className="text-sm text-danger ">*</span>
-                        <Image
-                          src="/images/google.png"
-                          fluid
-                          width={18}
-                          height={18}
-                        />
                         <span className="">Email address</span>
-                        <span className="text-sm text-secondary">
-                          (Must be a google account.)
-                        </span>
                       </div>
                     </Form.Label>
                     <Form.Control
@@ -99,6 +122,38 @@ const CreateUnitHead = ({ auth, classifications, campuses }) => {
                     />
                     <p className="mb-0 mt-2 text-sm text-danger">
                       {errors?.email}
+                    </p>
+                  </Col>
+                  <Col lg={4}>
+                    <Form.Label className="text-secondary">
+                      <div className="flex flex-wrap gap-2 items-center">
+                        <span className="">Password</span>
+                      </div>
+                    </Form.Label>
+                    <Form.Control
+                      type="password"
+                      value={data.password}
+                      onChange={(e) => setData("password", e.target.value)}
+                    />
+                    <p className="mb-0 mt-2 text-sm text-danger">
+                      {errors?.password}
+                    </p>
+                  </Col>
+                  <Col lg={4}>
+                    <Form.Label className="text-secondary">
+                      <div className="flex flex-wrap gap-2 items-center">
+                        <span className="">Confirm Password</span>
+                      </div>
+                    </Form.Label>
+                    <Form.Control
+                      type="password"
+                      value={data.confirm_password}
+                      onChange={(e) =>
+                        setData("confirm_password", e.target.value)
+                      }
+                    />
+                    <p className="mb-0 mt-2 text-sm text-danger">
+                      {errors?.confirm_password}
                     </p>
                   </Col>
                   <Col xs={12} lg={6}>

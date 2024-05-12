@@ -20,7 +20,7 @@ const LatestAnnouncement = () => {
     <div className="mb-4 bg-white shadow-sm border-b border-slate-300 rounded-lg p-4">
       <div>
         <h1 className="text-xl font-bold mb-2 leading-none">
-          Latest announcement
+          📣Latest announcement
         </h1>
         <p className="leading-none mb-4 text-slate-500 text-sm">
           Posted by the super admin.

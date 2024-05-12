@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { toast } from "sonner";
 import { ObjectiveTableInput } from "./ObjectiveTableInput";
+import ModalComponent from "./ModalComponent";
 
 const Objective = ({ user }) => {
   const [objectives, setObjectives] = useState([]);
@@ -288,6 +289,7 @@ const Objective = ({ user }) => {
 
   const handleInputChange = (entryId, column, value) => {
     console.log(value);
+
     if (column === "documentation") {
       setInputData((prevInputData) => ({
         ...prevInputData,
@@ -309,18 +311,28 @@ const Objective = ({ user }) => {
 
   const isInputComplete = (entryId) => {
     const data = inputData[entryId];
+    console.log(data);
     if (!data) return false; // Entry data not found
-    // Check if any input field in the entry data is empty
-    return Object.values(data).every((value) => {
-      if (typeof value === "string") {
-        return value.trim() !== "";
-      } else if (value === null || value === undefined) {
-        return true;
-      } else {
-        return Object.values(value).every((fileValue) => fileValue !== null);
-      }
-    });
+    if (!data.documentation) return false;
+    // Check if any input field in the entry data is empty, excluding the documentation field
+    return Object.keys(data)
+      .filter((key) => key !== "documentation")
+      .every((key) => {
+        const value = data[key];
+        if (typeof value === "string") {
+          return value.trim() !== "";
+        } else if (value === null || value === undefined) {
+          return true;
+        } else {
+          return Object.values(value).every((fileValue) => fileValue !== null);
+        }
+      });
   };
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedEntryId, setSelectedEntryId] = useState(null);
+  const [selectedObjectiveId, setSelectedObjectiveId] = useState(null);
+
   return (
     <div className="mb-4 bg-white shadow-sm border-b border-slate-300 rounded-lg p-4">
       <div>
@@ -329,7 +341,32 @@ const Objective = ({ user }) => {
           Please finish the following tasks.
         </p>
       </div>
-      {objectives.length !== 0 && objectives ? (
+      <ModalComponent
+        size="md"
+        centered={true}
+        show={showModal}
+        handleClose={() => setShowModal(false)}
+        closeButton
+        title="Confirm Submit Target"
+      >
+        {/* are you sure you wannt submit the target? */}
+
+        {/* are you sure you want to submit target? */}
+        <div>
+          <p>Are you sure you want to submit target?</p>
+          <button
+            onClick={() => {
+              handleEntryStatusUpdate(selectedEntryId, selectedObjectiveId);
+              setShowModal(false);
+            }}
+            className="bg-blue-500 text-white py-1 px-2 rounded-md"
+          >
+            Submit
+          </button>
+        </div>
+      </ModalComponent>
+      {console.log(objectives.length)}
+      {objectives.length != 0 ? (
         objectives.map((objective) =>
           !objective.is_completed || objective.admin_status == 2 ? (
             <Card key={objective.id} className="mb-1">
@@ -345,11 +382,12 @@ const Objective = ({ user }) => {
 
                       {objective.admin_status == 2 && (
                         <span className="font-normal text-lg bg-red-500 text-white py-1 px-2 rounded-lg ml-2">
-                          For Reviewal
+                          For Review
                         </span>
                       )}
                     </h1>
                   </div>
+
                   {objective.entries.map((entry) => (
                     <Card
                       key={entry.id}
@@ -358,14 +396,16 @@ const Objective = ({ user }) => {
                       {!entry.status && (
                         <div className="flex items-center h-[2rem] w-[1rem] mr-2">
                           <i
-                            onClick={() =>
-                              handleEntryStatusUpdate(entry.id, objective.id)
-                            }
+                            onClick={() => {
+                              setSelectedEntryId(entry.id);
+                              setSelectedObjectiveId(objective.id);
+                              setShowModal(true);
+                            }}
                             className="fi p-1 hover:bg-emerald-500 hover:cursor-pointer hover:text-white border-emerald-500 border-1 rounded-lg text-emerald-500 fi-br-check"
                           ></i>
                         </div>
                       )}
-                      <div className="flex flex-col ml-5 justify-center">
+                      <div className="fex flex-col ml-5 justify-center">
                         <div>
                           <h1 className="text-xl font-bold leading-none">
                             {entry.objective_entry.title}
@@ -690,11 +730,7 @@ const Objective = ({ user }) => {
                 </Card>
               )}
             </Card>
-          ) : (
-            <div className="border-2 border-dashed border-slate-200 text-slate-500 text-sm py-6 text-center">
-              There are no objectives posted
-            </div>
-          )
+          ) : null
         )
       ) : (
         <div className="border-2 border-dashed border-slate-200 text-slate-500 text-sm py-6 text-center">

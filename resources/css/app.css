@@ -15,6 +15,11 @@
   @apply border-0 p-0.5;
 }
 
+.table-container {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
 .fc-theme-standard td {
   @apply border-0;
 }

@@ -8,11 +8,116 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { usePDF } from "react-to-pdf";
 import { ReportImages } from "./ReportTableRow";
+import DataTable from "react-data-table-component";
 
 export default function CampusForReviewReports({ campus, reports, entries }) {
   const [showExportPDF, setShowExportPDF] = useState(false);
   const { toPDF, targetRef } = usePDF({ filename: "REPORT.pdf" });
   const { auth, appLogo } = usePage().props;
+
+  const columns = [
+    {
+      name: "Name",
+      selector: (row) => row.unit_head.firstname + " " + row.unit_head.lastname,
+      sortable: true,
+      width: "auto",
+      cell: (row) => (
+        <div className="flex items-center">
+          {/* firstname and lastname */}
+          <div className="flex flex-col">
+            <span>{row.unit_head.firstname}</span>
+            <span>{row.unit_head.lastname}</span>
+          </div>
+        </div>
+      ),
+    },
+
+    // Date Submitted
+    {
+      name: "Date Submitted",
+      selector: (row) => dayjs(row.created_at).format("MMM. D, YYYY"),
+      sortable: true,
+      width: "auto",
+      cell: (row) => (
+        <span>{dayjs(row.created_at).format("MMM. D, YYYY")}</span>
+      ),
+    },
+
+    // Campus
+    {
+      name: "Campus",
+      selector: (row) => row.unit_head.campus.name,
+      sortable: true,
+      width: "auto",
+      cell: (row) => <span>{row.unit_head.campus.name}</span>,
+    },
+
+    // Office
+    {
+      name: "Office",
+      selector: (row) => row.unit_head.designation.name,
+      sortable: true,
+      width: "auto",
+      cell: (row) => <span>{row.unit_head.designation.name}</span>,
+    },
+
+    // Action
+    {
+      name: "Action",
+      selector: (row) => row.id,
+      width: "auto",
+      cell: (row) => (
+        <div className="flex flex-col">
+          <Link
+            href={route("admin.report.open", row.id)}
+            className="hover:underline"
+          >
+            View Reports
+          </Link>
+          {row.is_archived === 0 ? (
+            <Link
+              onClick={() => {
+                axios.put(route("admin.report.archive", row.id)).then((res) => {
+                  console.log("archive:", res);
+                });
+              }}
+              className="block hover:underline mt-2"
+            >
+              Archive
+            </Link>
+          ) : (
+            ""
+          )}
+        </div>
+      ),
+    },
+  ];
+  const customStyles = {
+    headCells: {
+      style: {
+        padding: "10px 20px",
+        fontSize: "14px",
+        background: "#f8fafc",
+        borderBottom: "1px solid #000000",
+        borderTop: "1px solid #000000",
+        fontWeight: 700,
+        color: "#475569",
+        width: "auto", // Set width to auto for full width
+      },
+    },
+    cells: {
+      style: {
+        padding: "10px 20px",
+        fontSize: "14px",
+
+        borderBottom: "1px solid #000000",
+        wordBreak: "break-all",
+        minWidth: "150px", // Set a minimum width to prevent text from being cut off
+        maxWidth: "500px", // Set a maximum width to prevent excessive stretching
+        whiteSpace: "pre-wrap", // Wrap text
+      },
+    },
+  };
 
   return (
     <PanelLayout
@@ -123,8 +228,18 @@ export default function CampusForReviewReports({ campus, reports, entries }) {
             Export Data
           </button>
 
-          <div className="mt-4 border border-slate-200 rounded-md overflow-hidden">
-            <table className="w-full">
+          <div className="mt-4 rounded-md overflow-hidden">
+            <DataTable
+              columns={columns}
+              data={reports}
+              pagination
+              className="w-full"
+              customStyles={customStyles}
+              scrollX={true}
+              scrollY={true}
+              paginationRowsPerPageOptions={[1, 5, 100, 300, 500, 800, 1000]}
+            />
+            {/* <table className="w-full">
               <thead>
                 <tr className="[&>th]:text-slate-500 [&>th]:bg-slate-50 [&>th]:border-l [&>th:first-child]:border-0 [&>th]:px-5 [&>th]:py-2.5 border-b [&>th]:text-sm [&>th]:font-medium">
                   <th>Name</th>
@@ -191,7 +306,7 @@ export default function CampusForReviewReports({ campus, reports, entries }) {
                   </div>
                 )}
               </tbody>
-            </table>
+            </table> */}
           </div>
         </div>
       </div>

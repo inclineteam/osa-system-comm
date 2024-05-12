@@ -2,13 +2,10 @@ import PanelLayout from "@/Layouts/PanelLayout";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Alert, Card, Col, Form, Row } from "react-bootstrap";
-import { useState } from "react";
 import ModalComponent from "@/Components/ModalComponent";
 import { TextButton } from "@/Components/CustomBtn";
-import { useRef } from "react";
-import { useEffect } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import ConfirmModal from "@/Components/ConfirmModal";
@@ -22,11 +19,15 @@ const Calendar = ({ auth, events: allEvents }) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [eventId, setEventId] = useState(null);
   const [processing, setProcessing] = useState(false);
+
   const onSelectDate = (d) => {
-    setStartDate(d.startStr);
-    setEndDate(d.endStr);
-    setShowAddModal(true);
+    if (d.startStr >= new Date().toISOString()) {
+      setStartDate(d.startStr);
+      setEndDate(d.endStr);
+      setShowAddModal(true);
+    }
   };
+
   const onNewEventAdded = (newEvent) => {
     setEvents((e) => [...e, newEvent]);
     toast.success("Successfully added!");
@@ -125,6 +126,29 @@ const Calendar = ({ auth, events: allEvents }) => {
                   editable
                   dayMaxEventRows={3}
                   eventDrop={(e) => console.log(e)}
+                  selectable
+                  select={onSelectDate}
+                  eventClick={onEventSelect}
+                  eventBackgroundColor={(info) => {
+                    const eventDate = new Date(info.event.start);
+                    if (eventDate < new Date()) {
+                      return "#f08080";
+                    }
+                  }}
+                  selectAllow={(info) => {
+                    const currentDate = new Date();
+                    const eventDate = new Date(info.start);
+                    return (
+                      eventDate >= currentDate ||
+                      eventDate.toDateString() === currentDate.toDateString()
+                    );
+                  }}
+                  selectOverlap={(info) => {
+                    return info.events.every((event) => {
+                      const eventDate = new Date(event.start);
+                      return eventDate >= new Date();
+                    });
+                  }}
                   headerToolbar={{
                     left: "title",
                     center: "",
@@ -134,9 +158,6 @@ const Calendar = ({ auth, events: allEvents }) => {
                     year: "numeric",
                     month: "short",
                   }}
-                  eventClick={onEventSelect}
-                  selectable
-                  select={onSelectDate}
                 />
               </Card.Body>
             </Card>
