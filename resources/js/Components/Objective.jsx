@@ -259,6 +259,8 @@ const Objective = ({ user }) => {
               return objective;
             }
           });
+          // reload
+          window.location.reload();
           setObjectives(updatedObjectives);
         }
       })
@@ -281,6 +283,8 @@ const Objective = ({ user }) => {
           const updatedObjectives = objectives.filter(
             (objective) => objective.id !== objectiveId
           );
+          // reload
+          window.location.reload();
           setObjectives(updatedObjectives);
         }
       })
@@ -373,8 +377,8 @@ const Objective = ({ user }) => {
               <div className="absolute top-0 bottom-0 w-1 bg-blue-500 rounded-md left-0"></div>
               {objective.entries.length !== 0 ? (
                 <div>
-                  <div className="flex items-center stext-sm py-6">
-                    <h1 className="text-center ml-2 mb-2 leading-none">
+                  <div className="flex flex-col text-sm py-6">
+                    <h1 className=" ml-5 mb-2 leading-none">
                       <span className="font-bold text-xl">
                         {objective.objective.title}
                       </span>
@@ -386,25 +390,18 @@ const Objective = ({ user }) => {
                         </span>
                       )}
                     </h1>
+                    {objective.comment && (
+                      <p className="ml-5 text-sm text-slate-500">
+                        comment : {objective.comment}
+                      </p>
+                    )}
                   </div>
 
                   {objective.entries.map((entry) => (
                     <Card
                       key={entry.id}
-                      className="ml-5 flex flex-row mb-1 p-2 pt-3 w-[97%] h-[2rem] border-2 border-dashed border-slate-200 rounded-md"
+                      className="ml-5 flex flex-col mb-1 p-2 pt-3 w-[97%] h-[2rem] border-2 border-dashed border-slate-200 rounded-md"
                     >
-                      {!entry.status && (
-                        <div className="flex items-center h-[2rem] w-[1rem] mr-2">
-                          <i
-                            onClick={() => {
-                              setSelectedEntryId(entry.id);
-                              setSelectedObjectiveId(objective.id);
-                              setShowModal(true);
-                            }}
-                            className="fi p-1 hover:bg-emerald-500 hover:cursor-pointer hover:text-white border-emerald-500 border-1 rounded-lg text-emerald-500 fi-br-check"
-                          ></i>
-                        </div>
-                      )}
                       <div className="fex flex-col ml-5 justify-center">
                         <div>
                           <h1 className="text-xl font-bold leading-none">
@@ -687,9 +684,23 @@ const Objective = ({ user }) => {
                           )}
                         </p>
                       </div>
+                      {!entry.status && (
+                        <div className="flex justify-end h-[2rem] w-full mr-2">
+                          <button
+                            onClick={() => {
+                              setSelectedEntryId(entry.id);
+                              setSelectedObjectiveId(objective.id);
+                              setShowModal(true);
+                            }}
+                            className="bg-emerald-500 text-white py-1 px-2 rounded-md"
+                          >
+                            Confirm your entry
+                          </button>
+                        </div>
+                      )}
                     </Card>
                   ))}
-                  <div className="flex ml-5 mb-2 items-center">
+                  <div className="flex ml-5 mb-2 items-center justify-end">
                     {parseFloat(
                       objective.entries.filter((entry) => entry.status).length /
                         objective.entries.length
@@ -698,9 +709,9 @@ const Objective = ({ user }) => {
                     100 ? (
                       <button
                         onClick={() => handleObjectiveSubmit(objective.id)}
-                        className="bg-blue-500 text-white py-1 px-2 rounded-md"
+                        className="bg-blue-500 mt-3 text-white py-1 px-2 rounded-md mr-2"
                       >
-                        Submit
+                        Submit Target
                       </button>
                     ) : (
                       ""

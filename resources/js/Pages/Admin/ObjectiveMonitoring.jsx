@@ -6,6 +6,10 @@ import DataTable from "react-data-table-component";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../css/app.css";
 import ModalComponent from "@/Components/ModalComponent";
+import { Input } from "postcss";
+import TextInput from "@/Components/TextInput";
+import InputLabel from "@/Components/InputLabel";
+import { Button, Textarea } from "flowbite-react";
 
 const ObjectiveMonitoring = ({ classifications }) => {
   const [state, setState] = useState({
@@ -48,6 +52,21 @@ const ObjectiveMonitoring = ({ classifications }) => {
 
   const [showTargetsModal, setShowTargetsModal] = useState(false);
   const [selectedObjective, setSelectedObjective] = useState(null);
+
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [comment, setComment] = useState("");
+
+  const viewCommentModal = (objective) => {
+    setSelectedObjective(objective);
+    setComment("");
+    setShowCommentModal(true);
+  };
+
+  const closeCommentModal = () => {
+    setSelectedObjective(null);
+    setComment("");
+    setShowCommentModal(false);
+  };
 
   const viewTargets = (objective) => {
     setSelectedObjective(objective);
@@ -148,7 +167,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
     },
     {
       name: "Documentation",
-      width: "auto",
+      width: "10rem ",
       cell: (row) => (
         <div className="flex flex-col">
           {row.entries.map((entry, index) => {
@@ -183,7 +202,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
                         });
                     }}
                     download
-                    className="border-solid border-2 rounded-xl w-[20rem] leading-[0.6rem] bg-blue text-white p-2"
+                    className="border-solid border-2 rounded-xl w-[80%] leading-[0.6rem] bg-blue text-white py-1 px-2"
                   >
                     Download
                   </a>
@@ -297,32 +316,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
                   {/* for reviewal */}
                   <button
                     className="bg-blue-500 text-white px-2 py-1 rounded-md mt-2"
-                    onClick={() => {
-                      // reject objective
-                      axios
-                        .put(route("objectives.reject"), {
-                          id: row.id,
-                        })
-                        .then((res) => {
-                          if (res.statusText === "OK") {
-                            // dynamically update the user objectives
-                            setState((prev) => ({
-                              ...prev,
-                              userObjectives: state.userObjectives.map(
-                                (objective) => {
-                                  if (objective.id === row.id) {
-                                    return {
-                                      ...objective,
-                                      admin_status: 2,
-                                    };
-                                  }
-                                  return objective;
-                                }
-                              ),
-                            }));
-                          }
-                        });
-                    }}
+                    onClick={() => viewCommentModal(row)}
                   >
                     Return
                   </button>
@@ -337,7 +331,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
             <span className="text-green-500">Approved</span>
           ) : (
             // display rejected
-            <span className="text-red-500">For Reviewal</span>
+            <span className="text-red-500">For Review</span>
           )}
 
           {/* * check if there are entries, if there is show a button to check the entries
@@ -405,10 +399,72 @@ const ObjectiveMonitoring = ({ classifications }) => {
           </div>
         )}
       </ModalComponent>
+
+      <ModalComponent
+        centered
+        size="lg"
+        show={showCommentModal}
+        handleClose={closeCommentModal}
+      >
+        {console.log(selectedObjective)}
+        {selectedObjective && (
+          <div className="my-2 container flex flex-col">
+            {/* h1 title Add Comment */}
+            <h2>Add Comment</h2>
+            {/* send a comment why it is rejected */}
+            <p>Send a comment why it is rejected</p>
+            {/* input for comment */}
+            <InputLabel htmlFor="comment" value="Comment" />
+            <Textarea
+              label="Comment"
+              value={comment}
+              className="h-[10rem] mb-3 text-black"
+              onChange={(e) => {
+                setComment(e.target.value);
+              }}
+            />
+            <Button
+              className="border-solid border-2 rounded-xl  leading-[0.6rem] bg-blue text-white"
+              onClick={() => {
+                {
+                  // reject objective
+                  axios
+                    .put(route("objectives.reject"), {
+                      id: selectedObjective.id,
+                      comment: comment,
+                    })
+                    .then((res) => {
+                      if (res.statusText === "OK") {
+                        // dynamically update the user objectives
+                        setState((prev) => ({
+                          ...prev,
+                          userObjectives: state.userObjectives.map(
+                            (objective) => {
+                              if (objective.id === row.id) {
+                                return {
+                                  ...objective,
+                                  admin_status: 2,
+                                };
+                              }
+                              return objective;
+                            }
+                          ),
+                        }));
+                      }
+                    });
+                  closeCommentModal();
+                }
+              }}
+            >
+              Submit
+            </Button>
+          </div>
+        )}
+      </ModalComponent>
       <div className="content-wrapper">
         {/* y ear date selector */}
 
-        <div className="flex-col lg:flex-row flex lg:items-end">
+        <div className="flex-col lg:flex-row flex-wrap flex lg:items-end">
           <div className="mx-2">
             <div>
               <p className="font-bold mb-0">Select Year</p>
@@ -492,20 +548,20 @@ const ObjectiveMonitoring = ({ classifications }) => {
             </select>
           </div>
 
-          <div className="ml-auto">
+          <div className="w-full m-2">
             <Link
               className="bg-white px-3 py-2 border border-slate-200 rounded-md hover:bg-slate-200 w-max text-sm font-semibold text-indigo-500 block"
               // href={route("admin.report.open", latestTarget.data.id)}
-              href={route("admin.reports.archive")}
+              href={route("admin.user_objectives.archives")}
             >
               View archives
             </Link>
           </div>
         </div>
 
-        <div className="mt-4 z-10 border p-2 bg-white border-slate-200 rounded-md overflow-scroll table-container">
+        <div className="mt-4 z-10 border p-2 bg-white border-slate-200 rounded-md table-container">
           <h3 className="text-lg ml-2 mt-2 font-semibold">Objectives</h3>
-          <div className="table-scroll">
+          <div className="table-scroll overflow-auto">
             <DataTable
               columns={columns}
               data={state.userObjectives}

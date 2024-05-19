@@ -7,6 +7,7 @@ import PanelLayout from "@/Layouts/PanelLayout";
 import { Card } from "react-bootstrap";
 
 export default function UnitHeadCalendar({ events }) {
+  console.log("events: ", events);
   return (
     <PanelLayout defaultActiveLink="Calendar">
       <div className="content-wrapper">

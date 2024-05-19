@@ -55,9 +55,12 @@ const AppLayout = ({ children, auth }) => {
         //   Targets
         // </Link>
 
-        <div>
+        <div className="relative">
           <Fab
-            mainButtonStyles={{ background: "#0d6efd" }}
+            mainButtonStyles={{
+              background: "#0d6efd",
+            }}
+            style={{ position: "fixed", bottom: "5px", left: "5px" }}
             icon={<i className="fi fi-rr-location-crosshairs"></i>}
           >
             <Action

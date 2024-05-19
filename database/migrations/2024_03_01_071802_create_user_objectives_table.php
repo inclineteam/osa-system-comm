@@ -26,6 +26,9 @@ return new class extends Migration
             // admin_status : 0 - review, 1 - approved, 2 - rejected
             $table->tinyInteger('admin_status')->default(0);
 
+            // comment
+            $table->text('comment')->nullable();
+
             $table->timestamps();
         });
     }

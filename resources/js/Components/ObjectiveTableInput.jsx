@@ -26,7 +26,7 @@ export const ObjectiveTableInput = ({
   };
 
   return (
-    <div className="rounded-lg border-[0.1rem] border-black">
+    <div className="rounded-lg overflow-auto border-[0.1rem] border-black">
       <table className="table-auto mt-2">
         <thead>
           <tr>
@@ -59,7 +59,7 @@ export const ObjectiveTableInput = ({
                         type="text"
                         value={inputData[entry][k]}
                         onChange={(e) => handlePercentageChange(e, k)}
-                        className="border-none"
+                        className="border-r-0 border-l-0 border-t-0 border-black"
                         required
                       />
                     ) : (
@@ -69,7 +69,7 @@ export const ObjectiveTableInput = ({
                         onChange={(e) =>
                           handleInputChange(entry, k, e.target.value)
                         }
-                        className="border-none"
+                        className="border-r-0 border-l-0 border-t-0 border-black"
                         required
                       />
                     )}

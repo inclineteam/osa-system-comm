@@ -1,4 +1,5 @@
 import ImageUploader from "@/Components/ImageUploader";
+import ModalComponent from "@/Components/ModalComponent";
 import PanelLayout, { LayoutType } from "@/Layouts/PanelLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import React, { useState } from "react";
@@ -26,6 +27,19 @@ const CreateAnnouncement = ({ auth }) => {
     post(route("announcements.create"));
   };
 
+  const [showImagePreviewModal, setShowImagePreviewModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const openImagePreviewModal = (image) => {
+    setSelectedImage(image);
+    setShowImagePreviewModal(true);
+  };
+
+  const closeImagePreviewModal = () => {
+    setSelectedImage(null);
+    setShowImagePreviewModal(false);
+  };
+
   return (
     <PanelLayout
       userAuth={auth}
@@ -33,6 +47,14 @@ const CreateAnnouncement = ({ auth }) => {
       headerTitle="Create Announcement"
       defaultActiveLink="announcements"
     >
+      <ModalComponent
+        centered
+        size="lg"
+        show={showImagePreviewModal}
+        handleClose={closeImagePreviewModal}
+      >
+        <Image src={selectedImage} fluid />
+      </ModalComponent>
       <ImageUploader
         closeOnComplete
         onCompleted={(imgUrl) => {
@@ -74,21 +96,28 @@ const CreateAnnouncement = ({ auth }) => {
                     size="sm"
                     className="rounded-1 mb-3 btn-light-primary"
                   >
-                    <span className="text-sm">
-                      {data.image == "" ? "Add" : "Change"} Image
-                    </span>
+                    <span className="text-sm">Upload Image</span>
                   </Button>
                   <div className="flex">
                     {images.map((image, index) => (
                       <div
                         key={index}
-                        className="col-lg-4   overflow-hidden m-3 p-3 border hover:shadow-inner position-relative"
+                        className="col-lg-4   overflow-hidden m-3 h-[20rem]  border hover:shadow-inner position-relative"
                       >
                         <div
-                          className="cursor-pointer bg-gray-400 opacity-30 position-absolute w-full h-full top-0 left-0 hover:opacity-10 hover:shadow transition-all"
-                          onClick={() => handleImageRemove(index)}
+                          className="cursor-pointer  opacity-30 position-absolute w-full h-full top-0 left-0 hover:opacity-10 hover:shadow transition-all"
+                          onClick={() => {
+                            openImagePreviewModal(image);
+                          }}
                         ></div>
                         <Image src={image} fluid />
+                        {/* remove button */}
+                        <div
+                          onClick={() => handleImageRemove(index)}
+                          className="position-absolute bottom-2 right-2 px-2 py-1 cursor-pointer bg-white rounded-full"
+                        >
+                          <i className="bx bx-x text-danger"></i>
+                        </div>
                       </div>
                     ))}
                   </div>

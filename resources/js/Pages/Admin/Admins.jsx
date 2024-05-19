@@ -43,6 +43,8 @@ const Admins = ({ campus_admins }) => {
   const columns = [
     {
       name: "Campus Admin",
+      selector: (row) => row.firstname,
+      sortable: true,
       cell: (row) => (
         <div className="flex items-center gap-3">
           <div>
@@ -71,10 +73,12 @@ const Admins = ({ campus_admins }) => {
     },
     {
       name: "Email",
+      sortable: true,
       selector: (row) => row.email,
     },
     {
       name: "Campus",
+      sortable: true,
       selector: (row) => (row.campus ? row.campus.name : "Not set"),
     },
     {
@@ -91,6 +95,33 @@ const Admins = ({ campus_admins }) => {
       grow: 0,
     },
   ];
+
+  const customStyles = {
+    headCells: {
+      style: {
+        padding: "10px 20px",
+        fontSize: "14px",
+        background: "#f8fafc",
+        borderBottom: "1px solid #000000",
+        borderTop: "1px solid #000000",
+        fontWeight: 700,
+        color: "#475569",
+        width: "auto", // Set width to auto for full width
+      },
+    },
+    cells: {
+      style: {
+        padding: "10px 20px",
+        fontSize: "14px",
+
+        borderBottom: "1px solid #000000",
+        wordBreak: "break-all",
+        minWidth: "150px", // Set a minimum width to prevent text from being cut off
+        maxWidth: "500px", // Set a maximum width to prevent excessive stretching
+        whiteSpace: "pre-wrap", // Wrap text
+      },
+    },
+  };
 
   const deleteBtnClicked = () => {
     Swal.fire({

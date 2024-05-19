@@ -547,6 +547,7 @@ class ObjectiveController extends Controller
         try {
             $userObjective = UserObjective::find($request->id);
             $userObjective->admin_status = 2;
+            $userObjective->comment = $request->comment;
             $userObjective->save();
 
             // get entries of the objective

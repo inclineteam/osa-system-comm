@@ -165,6 +165,18 @@ class UnitHeadController extends Controller
     public function calendar(Request $request)
     {
         $data['events'] = CalendarEvent::all();
+        // event must have user data get it using user_id
+        $data['events'] = $data['events']->map(function ($event) {
+            $event->role = User::find($event->user_id)->roles->first()->name;
+            // add user role to title for example "Unit Head: Meeting"
+            $event->title = ($event->role == "super_admin" ? "Super Admin" : "Admin") . ': ' . $event->title;
+            return $event;
+        });
+
+
+
+        // dd events user role
+        // dd($data['events']);
         if ($request->expectsJson()) {
             return response()->json($data);
         }

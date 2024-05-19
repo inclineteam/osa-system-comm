@@ -9,6 +9,7 @@ const LatestReminder = () => {
       axios.get(route("reminder.latest")).then((res) => {
         if (res.statusText === "OK") {
           setLatestReminder(res.data.latestReminder);
+          console.log(res.data);
         }
       });
     };

@@ -18,14 +18,14 @@ const UnitHeadSidebar = ({ isActive, setShowFeedbackModal, activeLink }) => {
     },
     {
       type: NavType.LINK,
-      text: "Submit Report",
+      text: "Accomplishment Report",
       icon: <i className="fi fi-rr-box"></i>,
       href: route("unit_head.reports"),
       urlPath: "reports",
     },
     {
       type: NavType.LINK,
-      text: "Calendar",
+      text: "View Calendar",
       icon: <i className="fi fi-rr-calendar"></i>,
       href: route("unit_head.calendar"),
       urlPath: "calendar",

@@ -1,3 +1,4 @@
+import ModalComponent from "@/Components/ModalComponent";
 import PanelLayout from "@/Layouts/PanelLayout";
 import { Link, router } from "@inertiajs/react";
 import { set } from "date-fns";
@@ -31,6 +32,19 @@ const ObjectiveMonitoringArchive = ({ classifications }) => {
 
   const handleQuarterChange = (e) => {
     setSelectedQuarter(e.target.value);
+  };
+
+  const [showTargetsModal, setShowTargetsModal] = useState(false);
+  const [selectedObjective, setSelectedObjective] = useState(null);
+
+  const viewTargets = (objective) => {
+    setSelectedObjective(objective);
+    setShowTargetsModal(true);
+  };
+
+  const closeTargetsModal = () => {
+    setSelectedObjective(null);
+    setShowTargetsModal(false);
   };
 
   useEffect(() => {
@@ -89,56 +103,63 @@ const ObjectiveMonitoringArchive = ({ classifications }) => {
     },
     {
       name: "Targets",
+      width: "13rem",
       cell: (row) => (
         <span>
-          {row.entries.length === 0
-            ? row.is_completed
-              ? "Completed"
-              : "In Progress"
-            : row.entries.map((entry, index) => {
-                console.log(row.is_completed);
-                // Return the JSX for each entry here
-                return (
-                  <div key={index}>
-                    {/* Example: Display entry description */}
-                    <p>
-                      {index + 1}.) {entry.objective_entry.description} -{" "}
-                      {entry.status === 1 ? "Completed" : "In Progress"}
-                    </p>
-                  </div>
-                );
-              })}
+          {row.entries.length === 0 ? (
+            row.is_completed ? (
+              "Completed"
+            ) : (
+              "In Progress"
+            )
+          ) : (
+            <button
+              className="text-blue-500 underline"
+              onClick={() => viewTargets(row)}
+            >
+              View Targets
+            </button>
+          )}
         </span>
       ),
     },
     {
       name: "Actual Accomplished",
+      width: "14rem",
+
       cell: (row) => (
-        <div className="flex flex-col">
+        <div className="flex justify-center flex-col">
           {row.entries.map((entry, index) => {
-            // Parse the info_data to get the dynamic key and value
-            const data = JSON.parse(entry.info_data);
-            // Iterate over each key-value pair in the parsed data
-            return (
-              <div
-                className="border-solid border-2 rounded-xl my-1  leading-[0.6rem] border-black p-2"
-                key={index}
-              >
-                {Object.entries(data).map(([key, value]) => (
-                  <p className="text-center text-[0.7rem]" key={key}>
-                    {/* Display the dynamic key and its value */}
-                    <span className="font-bold"> {`${key} `}</span>
-                    <span>{value}</span>
-                  </p>
-                ))}
-              </div>
-            );
+            if (entry.info_data) {
+              const data = JSON.parse(entry.info_data);
+              return (
+                <div
+                  className="border-solid border-2 rounded-xl my-1  leading-[0.9rem] border-black p-2"
+                  key={index}
+                >
+                  {Object.entries(data).map(([key, value]) => (
+                    <p className="text-center text-[0.7rem]" key={key}>
+                      {/* Display the dynamic key and its value */}
+                      <span className="font-bold">
+                        {" "}
+                        {`${key
+                          .replace(/([a-z])([A-Z])/g, "$1 $2")
+                          .replace(/\b\w/g, (str) => str.toUpperCase())}`}
+                      </span>
+                      <br />
+                      <span>{value}</span>
+                    </p>
+                  ))}
+                </div>
+              );
+            }
           })}
         </div>
       ),
     },
     {
       name: "Documentation",
+      width: "10rem",
       cell: (row) => (
         <div className="flex flex-col">
           {row.entries.map((entry, index) => {
@@ -173,7 +194,7 @@ const ObjectiveMonitoringArchive = ({ classifications }) => {
                         });
                     }}
                     download
-                    className="border-solid border-2 rounded-xl w-[20rem] leading-[0.6rem] border-black p-2"
+                    className="border-solid border-2 rounded-xl w-[80%] leading-[0.6rem] bg-blue text-white py-1 px-2"
                   >
                     Download
                   </a>
@@ -249,6 +270,26 @@ const ObjectiveMonitoringArchive = ({ classifications }) => {
 
   return (
     <PanelLayout headerTitle="Target Archives">
+      <ModalComponent
+        centered
+        size="lg"
+        show={showTargetsModal}
+        handleClose={closeTargetsModal}
+      >
+        {selectedObjective && (
+          <div className="my-2 container">
+            <h2>Targets</h2>
+            <ul>
+              {selectedObjective.entries.map((target, index) => (
+                <li key={index}>
+                  {target.objective_entry.description} -{" "}
+                  {target.status === 1 ? "Completed" : "In Progress"}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </ModalComponent>
       <div className="content-wrapper">
         {/* y ear date selector */}
 
@@ -344,6 +385,7 @@ const ObjectiveMonitoringArchive = ({ classifications }) => {
             data={userObjectives}
             pagination
             customStyles={customStyles}
+            paginationRowsPerPageOptions={[1, 5, 100, 300, 500, 800, 1000]}
           />
         </div>
       </div>

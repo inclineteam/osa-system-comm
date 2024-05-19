@@ -18,6 +18,8 @@ const UnitHeadRecord = ({ unitHeads }) => {
   const columns = [
     {
       name: "Unit Head",
+      selector: (row) => row.firstname,
+      sortable: true,
       cell: (row) => (
         <div className="flex items-center gap-3">
           <div>
@@ -46,18 +48,22 @@ const UnitHeadRecord = ({ unitHeads }) => {
     },
     {
       name: "Email",
+      sortable: true,
       selector: (row) => row.email,
     },
     {
       name: "Campus",
+      sortable: true,
       selector: (row) => row.campus.name,
     },
     {
       name: "Classification",
+      sortable: true,
       selector: (row) => row.designation.classification.name,
     },
     {
       name: "Designation",
+      sortable: true,
       selector: (row) => row.designation.name,
       title: (row) => row.designation.name,
     },
