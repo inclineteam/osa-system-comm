@@ -23,8 +23,6 @@ const EditUnitHead = ({ auth, classifications, unitHead }) => {
     setClassificationIndex(unitHead.designation.classification.id - 1);
   }, [classifications, unitHead.classification_id]);
 
-  console.log(unitHead);
-
   const onSubmit = (e) => {
     e.preventDefault();
     patch(route("unit_head.edit", { id: unitHead.id }));
@@ -114,7 +112,18 @@ const EditUnitHead = ({ auth, classifications, unitHead }) => {
                   <Form.Label>Classification:</Form.Label>
                   <Form.Select
                     value={classificationIndex}
-                    onChange={(e) => setClassificationIndex(e.target.value)}
+                    onChange={(e) => {
+                      console.log("test " + e.target.value);
+                      console.log(
+                        classifications[e.target.value].designations[0].id
+                      );
+
+                      setClassificationIndex(e.target.value);
+                      setData(
+                        "designation_id",
+                        classifications[e.target.value].designations[0].id
+                      );
+                    }}
                   >
                     {classifications &&
                       classifications.map((c, index) => (

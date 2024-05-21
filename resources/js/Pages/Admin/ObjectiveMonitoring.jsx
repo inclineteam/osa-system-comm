@@ -391,8 +391,14 @@ const ObjectiveMonitoring = ({ classifications }) => {
             <ul>
               {selectedObjective.entries.map((target, index) => (
                 <li key={index}>
-                  {target.objective_entry.description} -{" "}
-                  {target.status === 1 ? "Completed" : "In Progress"}
+                  <p>
+                    {index + 1} .) {target.objective_entry.description}
+                  </p>
+                  <p>
+                    <span>Status:</span>
+                    <br />
+                    {target.status === 1 ? "Completed" : "In Progress"}
+                  </p>
                 </li>
               ))}
             </ul>
@@ -483,7 +489,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
           </div>
 
           {/* quarter dropdown option ( 1st quarter - jan-march, 2nd quarter - Apr-Jun, 3rd quarter - Jul-Sept, 4th - Oct-Dec) */}
-          <div className="z-50 mx-2">
+          <div className="mx-2">
             <div>
               <p className="font-bold mb-0">Select Quarter</p>
             </div>
@@ -503,7 +509,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
           </div>
 
           {/* select campus */}
-          <div className="z-50 mx-2">
+          <div className="mx-2">
             <div>
               <p className="font-bold mb-0">Select Campus</p>
             </div>
@@ -522,7 +528,7 @@ const ObjectiveMonitoring = ({ classifications }) => {
             </select>
           </div>
 
-          <div className="z-50 mx-2">
+          <div className="mx-2">
             <div>
               <p className="font-bold mb-0">Select Classification</p>
             </div>

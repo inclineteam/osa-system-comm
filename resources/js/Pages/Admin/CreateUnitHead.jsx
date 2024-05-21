@@ -162,7 +162,13 @@ const CreateUnitHead = ({ auth, classifications, campuses }) => {
                     </Form.Label>
                     <Form.Select
                       value={classificationIndex}
-                      onChange={(e) => setClassificationIndex(e.target.value)}
+                      onChange={(e) => {
+                        setClassificationIndex(e.target.value);
+                        setData(
+                          "designation_id",
+                          classifications[e.target.value].designations[0].id
+                        );
+                      }}
                     >
                       {classifications &&
                         classifications.map((c, index) => (

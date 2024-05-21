@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import { SubmissionBinEntry } from "./SubmissionBinEntry";
 import { router } from "@inertiajs/react";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 export const SubmissionBinEntryForm = ({ submissionBinId, report }) => {
   const [entries, setEntries] = useState([]);
@@ -56,6 +57,26 @@ export const SubmissionBinEntryForm = ({ submissionBinId, report }) => {
       <Form
         className="space-y-4"
         onSubmit={(e) => {
+          // validation check if all entries are filled
+          let isValid = true;
+          entries.forEach((entry) => {
+            if (
+              entry.title === "" ||
+              entry.event_name === "" ||
+              entry.date === "" ||
+              entry.duration === "" ||
+              entry.participants.length === 0 ||
+              entry.location === "" ||
+              entry.conducted_by === ""
+            ) {
+              isValid = false;
+            }
+          });
+
+          if (!isValid) {
+            toast.error("Please fill all the entries.");
+            return;
+          }
           e.preventDefault();
           router.post(
             route("reports.submit", { submission_bin_id: submissionBinId }),
@@ -91,8 +112,8 @@ export const SubmissionBinEntryForm = ({ submissionBinId, report }) => {
                 date: new Date(),
                 duration: "",
                 event_name: "",
+                participants: [],
                 documentation: [],
-                participants: JSON.stringify([]),
                 location: "",
                 conducted_by: "",
                 budget: false,

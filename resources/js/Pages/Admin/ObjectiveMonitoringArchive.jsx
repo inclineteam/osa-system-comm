@@ -282,8 +282,14 @@ const ObjectiveMonitoringArchive = ({ classifications }) => {
             <ul>
               {selectedObjective.entries.map((target, index) => (
                 <li key={index}>
-                  {target.objective_entry.description} -{" "}
-                  {target.status === 1 ? "Completed" : "In Progress"}
+                  <p>
+                    {index + 1} .) {target.objective_entry.description}
+                  </p>
+                  <p>
+                    <span>Status:</span>
+                    <br />
+                    {target.status === 1 ? "Completed" : "In Progress"}
+                  </p>
                 </li>
               ))}
             </ul>

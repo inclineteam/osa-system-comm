@@ -259,8 +259,8 @@ const Objective = ({ user }) => {
               return objective;
             }
           });
-          // reload
-          window.location.reload();
+          // // reload
+          // window.location.reload();
           setObjectives(updatedObjectives);
         }
       })
@@ -284,7 +284,7 @@ const Objective = ({ user }) => {
             (objective) => objective.id !== objectiveId
           );
           // reload
-          window.location.reload();
+          // window.location.reload();
           setObjectives(updatedObjectives);
         }
       })
@@ -365,7 +365,7 @@ const Objective = ({ user }) => {
             }}
             className="bg-blue-500 text-white py-1 px-2 rounded-md"
           >
-            Submit
+            Confirm
           </button>
         </div>
       </ModalComponent>

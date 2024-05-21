@@ -53,6 +53,20 @@ export const SubmissionBinEntry = ({
       toast.error("Date must be current or past date");
       return;
     }
+
+    // check if all fields are filled
+    for (const key in data) {
+      if (data[key] === "") {
+        toast.error("Please fill all fields");
+        return;
+      }
+    }
+
+    // check if documentation is empty
+    if (data.documentation.length === 0) {
+      toast.error("Please upload at least one image");
+      return;
+    }
     addDataInEntries(data, id);
     setHide(true);
   };
@@ -166,7 +180,7 @@ export const SubmissionBinEntry = ({
                 />
               </div>
 
-              <div className="ml-4 flex-1">
+              {/* <div className="ml-4 flex-1">
                 <Form.Label className="text-secondary">
                   <span className="text-sm text-danger me-1">*</span>
                   Number of Participants
@@ -174,7 +188,7 @@ export const SubmissionBinEntry = ({
                 <p className="text-2xl font-semibold m-0">
                   {data.participants.length}
                 </p>
-              </div>
+              </div> */}
             </div>
 
             <div>

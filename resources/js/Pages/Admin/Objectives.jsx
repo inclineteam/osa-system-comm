@@ -5,8 +5,9 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import DataTable from "react-data-table-component";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { Tab } from "@headlessui/react";
+import ModalComponent from "@/Components/ModalComponent";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -14,6 +15,12 @@ function classNames(...classes) {
 
 function CreateObjectives() {
   const [objectives, setObjectives] = useState([]);
+
+  // selectedTarget
+  const [selectedTarget, setSelectedTarget] = useState(null);
+
+  // showTargetDeleteModal
+  const [showTargetDeleteModal, setShowTargetDeleteModal] = useState(false);
 
   // fetch all objectives
   const fetchObjectives = () => {
@@ -58,16 +65,18 @@ function CreateObjectives() {
           </a>
           <button
             onClick={() => {
-              // delete objective
-              setObjectives(objectives.filter((data) => data.id !== row.id));
-              axios
-                .delete(route("admin.objectives.delete", row.id))
-                .then(() => {
-                  toast.success("Objective successfully deleted.");
-                  setObjectives(
-                    objectives.filter((data) => data.id !== row.id)
-                  );
-                });
+              // // delete objective
+              // setObjectives(objectives.filter((data) => data.id !== row.id));
+              // axios
+              //   .delete(route("admin.objectives.delete", row.id))
+              //   .then(() => {
+              //     toast.success("Objective successfully deleted.");
+              //     setObjectives(
+              //       objectives.filter((data) => data.id !== row.id)
+              //     );
+              //   });
+              setSelectedTarget(row);
+              setShowTargetDeleteModal(true);
             }}
             className="transition bg-red-600 text-white px-3 py-2 text-sm font-medium shadow hover:bg-red-400 rounded-md ml-2"
           >
@@ -110,6 +119,37 @@ function CreateObjectives() {
       layout={LayoutType.SUPER_ADMIN}
       defaultActiveLink="Create Targets"
     >
+      <ModalComponent
+        size="md"
+        centered={true}
+        show={showTargetDeleteModal}
+        handleClose={() => setShowTargetDeleteModal(false)}
+        closeButton
+        title="Confirm Delete Target"
+      >
+        {/* are you sure you wannt submit the target? */}
+
+        {/* are you sure you want to submit target? */}
+        <div>
+          <p>Are you sure you want to delete target?</p>
+          <button
+            onClick={() => {
+              axios
+                .delete(route("admin.objectives.delete", selectedTarget.id))
+                .then(() => {
+                  toast.success("Objective successfully deleted.");
+                  setObjectives(
+                    objectives.filter((data) => data.id !== selectedTarget.id)
+                  );
+                });
+              setShowTargetDeleteModal(false);
+            }}
+            className="bg-blue-500 text-white py-1 px-2 rounded-md"
+          >
+            Submit
+          </button>
+        </div>
+      </ModalComponent>
       <div className="content-wrapper">
         <Tab.Group>
           <Tab.List className="flex space-x-1 rounded-xl bg-blue-900/20 p-1">

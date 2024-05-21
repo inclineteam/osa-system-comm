@@ -25,7 +25,13 @@ const Calendar = ({ auth, events: allEvents }) => {
   const onSelectDate = (d) => {
     // check if the date is in the past
     const today = new Date();
-    if (d.start < today) {
+    // if (d.start < today) {
+    //   toast.error("You can't add an event in the past");
+    //   return;
+    // }
+
+    // check if date is in the past dont include today
+    if (d.start < today && d.start.getDate() !== today.getDate()) {
       toast.error("You can't add an event in the past");
       return;
     }
@@ -33,7 +39,19 @@ const Calendar = ({ auth, events: allEvents }) => {
     setEndDate(d.endStr);
     setShowAddModal(true);
   };
+
+  // use regex to transform the role to title case for example: admin to Admin and super_admin to Super Admin etc
+  const userRole = auth.user.user_roles[0].name
+    .replace(/_/g, " ")
+    .replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+
+  console.log("user role: ", userRole);
   const onNewEventAdded = (newEvent) => {
+    console.log("new event: ", newEvent);
+
+    newEvent.title = userRole + ": " + newEvent.title;
     setEvents((e) => [...e, newEvent]);
     toast.success("Successfully added!");
   };

@@ -200,7 +200,7 @@ function CreateObjective({ auth, classifications, campuses }) {
                 <div className="text-end mt-3 flex items-center justify-end gap-3">
                   <Link
                     className="link link-secondary text-sm text-decoration-none"
-                    href={route("admin.objectives")}
+                    href={route("admin.submission_bins")}
                   >
                     <i className="fi fi-rr-arrow-back"></i> Cancel
                   </Link>
