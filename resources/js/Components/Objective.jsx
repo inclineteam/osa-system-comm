@@ -15,6 +15,7 @@ const Objective = ({ user }) => {
         const res = await axios.get(route("objectives.user.all", user.id));
         setObjectives(res.data);
         seedInputData(res.data); // Seed the inputData state with required fields
+        console.log(res.data);
       } catch (error) {
         console.error("Error fetching objectives:", error);
       }
@@ -244,25 +245,23 @@ const Objective = ({ user }) => {
         },
       })
       .then((res) => {
-        if (res.statusText === "OK") {
-          console.log("res:", res);
-          // Filter out the updated entry from the objectives array
-          const updatedObjectives = objectives.map((objective) => {
-            if (objective.id === objectiveId) {
-              return {
-                ...objective,
-                entries: objective.entries.map((entry) =>
-                  entry.id === entryId ? { ...entry, status: true } : entry
-                ),
-              };
-            } else {
-              return objective;
-            }
-          });
-          // // reload
-          // window.location.reload();
-          setObjectives(updatedObjectives);
-        }
+        console.log("res:", res);
+        // Filter out the updated entry from the objectives array
+        const updatedObjectives = objectives.map((objective) => {
+          if (objective.id === objectiveId) {
+            return {
+              ...objective,
+              entries: objective.entries.map((entry) =>
+                entry.id === entryId ? { ...entry, status: true } : entry
+              ),
+            };
+          } else {
+            return objective;
+          }
+        });
+        // // reload
+        // window.location.reload();
+        setObjectives(updatedObjectives);
       })
       .catch((error) => console.error("Error updating entry status:", error));
   };
@@ -276,17 +275,15 @@ const Objective = ({ user }) => {
         admin_status: 0,
       })
       .then((res) => {
-        if (res.statusText === "OK") {
-          console.log("res:", res);
-          toast.success("target submitted successfully.");
-          // Filter out the updated objective from the objectives array
-          const updatedObjectives = objectives.filter(
-            (objective) => objective.id !== objectiveId
-          );
-          // reload
-          // window.location.reload();
-          setObjectives(updatedObjectives);
-        }
+        console.log("res:", res);
+        toast.success("target submitted successfully.");
+        // Filter out the updated objective from the objectives array
+        const updatedObjectives = objectives.filter(
+          (objective) => objective.id !== objectiveId
+        );
+        // reload
+        // window.location.reload();
+        setObjectives(updatedObjectives);
       })
       .catch((error) => console.error("Error submitting objective:", error));
   };

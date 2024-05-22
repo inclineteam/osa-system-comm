@@ -25,7 +25,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const SubmissionBins = ({ auth, submission_bins, rows, reports }) => {
+const SubmissionBins = ({ auth, submission_bins, rows, reports, tab }) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [id, setId] = useState(null);
   const [processing, setProcessing] = useState(false);
@@ -214,6 +214,8 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports }) => {
     }
   };
 
+  const [selectedTab, setSelectedTab] = useState(1);
+
   return (
     <PanelLayout
       userAuth={auth}
@@ -232,7 +234,7 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports }) => {
         />
       )}
       <div className="content-wrapper">
-        <Tab.Group>
+        <Tab.Group selectedIndex={selectedTab} onChange={setSelectedTab}>
           <Tab.List className="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
             <Tab
               className={({ selected }) =>
@@ -269,7 +271,7 @@ const SubmissionBins = ({ auth, submission_bins, rows, reports }) => {
                     Create Target
                   </h1>
                   <p className=" leading-none text-slate-500">
-                    Generate a target for users to complete.s
+                    Generate a target for users to complete.
                   </p>
 
                   <div className="flex mb-3 items-center gap-3">

@@ -1,5 +1,6 @@
 import CardComponent from "@/Components/CardComponent";
 import ImageUploader from "@/Components/ImageUploader";
+import TextProfilePic from "@/Components/TextProfilePic";
 import TransparentModal from "@/Components/TransparentModalComponent";
 import getCroppedImg from "@/Components/cropImage";
 import PanelLayout from "@/Layouts/PanelLayout";
@@ -157,9 +158,10 @@ const Profile = ({ auth }) => {
                     />
                   ) : (
                     <TextProfilePic
-                      text={`${unitHead.firstname[0]} ${unitHead.lastname[0]}`}
+                      text={`${user.firstname} ${user.lastname}`}
                       bg="light"
-                      className="text-primary fw-bold"
+                      size="md"
+                      className="text-[0.4rem] text-center font-bold"
                     />
                   )}
                 </Col>

@@ -6,11 +6,14 @@ const LatestAnnouncement = () => {
 
   useEffect(() => {
     const fetchLatestAnnouncement = () => {
-      axios.get(route("announcements.latest")).then((res) => {
-        if (res.statusText === "OK") {
+      axios
+        .get(route("announcements.latest"))
+        .then((res) => {
           setLatestAnnouncement(res.data.latestAnnouncement);
-        }
-      });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     };
 
     fetchLatestAnnouncement();

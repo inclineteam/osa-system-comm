@@ -6,12 +6,15 @@ const LatestReminder = () => {
 
   useEffect(() => {
     const fetchLatestReminder = () => {
-      axios.get(route("reminder.latest")).then((res) => {
-        if (res.statusText === "OK") {
+      axios
+        .get(route("reminder.latest"))
+        .then((res) => {
           setLatestReminder(res.data.latestReminder);
           console.log(res.data);
-        }
-      });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     };
 
     fetchLatestReminder();

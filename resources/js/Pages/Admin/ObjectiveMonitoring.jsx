@@ -292,22 +292,23 @@ const ObjectiveMonitoring = ({ classifications }) => {
                           id: row.id,
                         })
                         .then((res) => {
-                          if (res.statusText === "OK") {
-                            setState((prev) => ({
-                              ...prev,
-                              userObjectives: state.userObjectives.map(
-                                (objective) => {
-                                  if (objective.id === row.id) {
-                                    return {
-                                      ...objective,
-                                      admin_status: 1,
-                                    };
-                                  }
-                                  return objective;
+                          setState((prev) => ({
+                            ...prev,
+                            userObjectives: state.userObjectives.map(
+                              (objective) => {
+                                if (objective.id === row.id) {
+                                  return {
+                                    ...objective,
+                                    admin_status: 1,
+                                  };
                                 }
-                              ),
-                            }));
-                          }
+                                return objective;
+                              }
+                            ),
+                          }));
+                        })
+                        .catch((error) => {
+                          console.log("error approving objective", error);
                         });
                     }}
                   >
@@ -440,23 +441,24 @@ const ObjectiveMonitoring = ({ classifications }) => {
                       comment: comment,
                     })
                     .then((res) => {
-                      if (res.statusText === "OK") {
-                        // dynamically update the user objectives
-                        setState((prev) => ({
-                          ...prev,
-                          userObjectives: state.userObjectives.map(
-                            (objective) => {
-                              if (objective.id === row.id) {
-                                return {
-                                  ...objective,
-                                  admin_status: 2,
-                                };
-                              }
-                              return objective;
+                      // dynamically update the user objectives
+                      setState((prev) => ({
+                        ...prev,
+                        userObjectives: state.userObjectives.map(
+                          (objective) => {
+                            if (objective.id === row.id) {
+                              return {
+                                ...objective,
+                                admin_status: 2,
+                              };
                             }
-                          ),
-                        }));
-                      }
+                            return objective;
+                          }
+                        ),
+                      }));
+                    })
+                    .catch((error) => {
+                      console.log("error rejecting objective", error);
                     });
                   closeCommentModal();
                 }

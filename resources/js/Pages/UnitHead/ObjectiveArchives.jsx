@@ -1,3 +1,4 @@
+import ModalComponent from "@/Components/ModalComponent";
 import PanelLayout from "@/Layouts/PanelLayout";
 import { Link, router } from "@inertiajs/react";
 import { set } from "date-fns";

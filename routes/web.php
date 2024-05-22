@@ -170,7 +170,7 @@ Route::prefix('/admin')->middleware(['auth:web'])->group(function () {
     Route::get('/settings', [AdminController::class, 'settings'])->name('admin.settings')->middleware(['role:super_admin']);
     Route::patch('/settings/{appSettings}', [AppSettingsController::class, 'update'])->name('settings.update')->middleware(['role:super_admin']);
     Route::prefix('/document-tracking')->group(function () {
-        Route::get('/submission-bins', [AdminController::class, 'submission_bins'])->name('admin.submission_bins');
+        Route::get('/submission-bins/', [AdminController::class, 'submission_bins'])->name('admin.submission_bins');
         Route::get('/submission-bins/{id}/details', [AdminController::class, 'viewSubmissionBin'])->name('admin.submission_bin.details');
         Route::get('/submission-bins/create', [AdminController::class, 'create_submission_bin'])->name('admin.create_submission_bin')->middleware(['role:super_admin']);
         Route::get('/submission-bins/{id}/edit', [AdminController::class, 'edit_submission_bin'])->name('admin.edit_submission_bin')->middleware(['role:super_admin']);
